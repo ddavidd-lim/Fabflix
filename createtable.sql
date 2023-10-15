@@ -76,8 +76,8 @@ CREATE TABLE moviedb.sales (
 );
 
 CREATE TABLE moviedb.ratings (
-	moviesId varchar(10) NOT NULL,
+	movieId varchar(10) NOT NULL,
     rating float NOT NULL,
     numVotes int NOT NULL,
-    FOREIGN KEY (moviesId) REFERENCES movies(id) ON DELETE CASCADE
+    FOREIGN KEY (movieId) REFERENCES movies(id) ON DELETE CASCADE
 );

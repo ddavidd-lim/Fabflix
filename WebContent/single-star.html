@@ -20,12 +20,13 @@
     <title>Single Star</title>
 </head>
 <body>
-<h1>Single Star Page</h1>
+<h1 id="star_info"></h1>
 
 <!-- H3 body is left empty here, will be populated with the data retrieved with single-star.js -->
 <!-- single-star.js will find this html element by it's id "star_info" -->
-<h3 id="star_info"></h3>
-<table id=movie_table class="table table-striped">
+<h3 id="star_dob"></h3>
+
+<table id=movie_star_table class="table table-striped">
     <thead>
     <tr>
         <th>Movie Title</th>
@@ -37,7 +38,7 @@
 
     <!-- Table body is left empty here, will be populated with the data retrieved with single-star.js -->
     <!-- single-star.js will find this html element by it's id "movie_table_body" -->
-    <tbody id=movie_table_body></tbody>
+    <tbody id=movie_star_table_body></tbody>
 </table>
 
 <!-- Load jQuery and Bootstrap JS -->

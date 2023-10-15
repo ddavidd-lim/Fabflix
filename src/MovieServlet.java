@@ -63,7 +63,7 @@ public class MovieServlet extends HttpServlet{
 
             // Iterate through each row of rs
             while (rs.next()) {
-                String movie_id = rs.getString("movieId");
+                String movie_id = rs.getString("id");
                 String movie_title = rs.getString("title");
                 String movie_director = rs.getString("director");
                 String movie_year = rs.getString("year");

@@ -21,6 +21,8 @@ function handleStarResult(resultData) {
     let movieTableBodyElement = jQuery("#movie_table_body");
 
     // Iterate through resultData, no more than 10 entries
+    let next_actor = 0;
+    let next_genre = 0;
     for (let i = 0; i < Math.min(20, resultData.length); i++) {
 
         // Concatenate the html tags with resultData jsonObject
@@ -35,12 +37,15 @@ function handleStarResult(resultData) {
             "</th>";
         rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
         rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
-        //insert genres
+        rowHTML += "<th>" + resultData[i]["genre"] + "</th>";
+
+        // for actors
+
         rowHTML += "<th>" +
-                    '<a href="single-star.html?id=' + resultData[i]['star_id'] + '">'
-                    + resultData[i]["star_name"] +
-                    '</a>' +
-                    "</th>";
+            '<a href="single-star.html?id=' + resultData[i]['star_id'] + '">'
+            + resultData[i]["star_name"] +
+            '</a>' +
+            "</th>";
         rowHTML += "<th>" + resultData[i]["movie_rating"] + "</th>";
         rowHTML += "</tr>";
 

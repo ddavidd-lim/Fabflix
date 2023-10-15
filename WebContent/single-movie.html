@@ -20,11 +20,23 @@
     <title>Single Movie</title>
 </head>
 <body>
-<h1>Single Movie Page</h1>
+<h1 id="single_movie_title"></h1>
 
 <!-- H3 body is left empty here, will be populated with the data retrieved with single-star.js -->
 <!-- single-star.js will find this html element by it's id "star_info" -->
 <h3 id="single_movie_info"></h3>
+<table id=single_movie_table_stars class="table table-striped">
+    <thead>
+    <tr>
+        <th>Stars</th>
+    </tr>
+    </thead>
+
+    <!-- Table body is left empty here, will be populated with the data retrieved with single-movie.js -->
+    <!-- movie-star.js will find this html element by it's id "genre_movie_table_body" -->
+    <tbody id=star_movie_table_body></tbody>
+</table>
+</br>
 <table id=single_movie_table_genres class="table table-striped">
     <thead>
     <tr>
@@ -33,20 +45,8 @@
     </thead>
 
     <!-- Table body is left empty here, will be populated with the data retrieved with single-movie.js -->
-    <!-- movie-star.js will find this html element by it's id "genre_movie_table_body" -->
-    <tbody id=genre_movie_table_body></tbody>
-</table>
-</br>
-<table id=single_movie_table_stars class="table table-striped">
-    <thead>
-    <tr>
-        <th>Genres</th>
-    </tr>
-    </thead>
-
-    <!-- Table body is left empty here, will be populated with the data retrieved with single-movie.js -->
     <!-- movie-star.js will find this html element by it's id "stars_movie_table_body" -->
-    <tbody id=stars_movie_table_body></tbody>
+    <tbody id=genre_movie_table_body></tbody>
 </table>
 
 <!-- Load jQuery and Bootstrap JS -->

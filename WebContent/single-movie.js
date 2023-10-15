@@ -38,35 +38,55 @@ function getParameterByName(target) {
 
 function handleResult(resultData) {
 
-    console.log("handleResult: populating star info from resultData");
+    console.log("handleResult: populating movie info from resultData");
 
-    // populate the star info h3
+    // populate single movie h1
+    let movieTitleElement = jQuery("#single_movie_title");
+    movieTitleElement.append("<p><em>" + resultData[0]["movie_title"] +
+        "</em> (" + resultData[0]["movie_year"] + ")</p>");
+
+    // populate the movie info h3
     // find the empty h3 body by id "single_movie_info"
     let movieInfoElement = jQuery("#single_movie_info");
 
     // append two html <p> created to the h3 body, which will refresh the page
-    movieInfoElement.append("<p>" + resultData[0]["movie_title"] +
-        " (" + resultData[0]["movie_year"] + ")</p>" +
+    movieInfoElement.append(
         "<p>Director: " + resultData[0]["movie_director"] + "</p>" +
         "<p>Rating: " + resultData[0]["movie_rating"] + "</p>");
 
     console.log("handleResult: populating movie table from resultData");
 
     // Populate the genre/star table
-    // Find the empty table body by id "genre_stars_table_body"
-    let starTableBodyElement = jQuery("#genre_stars_table_body");
+    // Find the empty table body by id "star_movie_table_body"
+    let starTableBodyElement = jQuery("#star_movie_table_body");
 
     // Concatenate the html tags with resultData jsonObject to create table rows
-    for (let i = 0; i < Math.min(10, resultData.length); i++) {
+    for (let i = 0; i < resultData.length; i++) {
         let rowHTML = "";
         rowHTML += "<tr>";
-        rowHTML += "<th>" + resultData[i]["star_name"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["star_dob"] + "</th>";
+        rowHTML += "<th>" +
+            '<a href="single-star.html?id=' + resultData[i]['star_id'] + '">'
+            + resultData[i]["star_name"] +
+            '</a>' +
+            "</th>";
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
         starTableBodyElement.append(rowHTML);
     }
+
+    // Now do the same for genres
+    let genreTableBodyElement = jQuery("#genre_movie_table_body");
+    for (let i = 0; i < 1; i++) {
+        let rowHTML = "";
+        rowHTML += "<tr>";
+        rowHTML += "<th>" + resultData[i]["genre"] + "</th>";
+        rowHTML += "</tr>";
+
+        // Append the row created to the table body, which will refresh the page
+        genreTableBodyElement.append(rowHTML);
+    }
+
 }
 
 /**

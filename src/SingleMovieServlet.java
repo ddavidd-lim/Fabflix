@@ -11,10 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 // Declaring a WebServlet called SingleMovieServlet, which maps to url "/api/single-movie"
 @WebServlet(name = "SingleMovieServlet", urlPatterns = "/api/single-movie")
@@ -82,6 +79,8 @@ public class SingleMovieServlet extends HttpServlet {
                 String movieYear = rs.getString("year");
                 String movieDirector = rs.getString("director");
 
+                String movieRating = rs.getString("rating");
+
                 // Create a JsonObject based on the data we retrieve from rs
 
                 JsonObject jsonObject = new JsonObject();
@@ -92,6 +91,7 @@ public class SingleMovieServlet extends HttpServlet {
                 jsonObject.addProperty("movie_title", movieTitle);
                 jsonObject.addProperty("movie_year", movieYear);
                 jsonObject.addProperty("movie_director", movieDirector);
+                jsonObject.addProperty("movie_rating", movieRating);
 
                 jsonArray.add(jsonObject);
             }

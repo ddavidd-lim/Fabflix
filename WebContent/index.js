@@ -35,7 +35,13 @@ function handleStarResult(resultData) {
             "</th>";
         rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
         rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
-        //rowHTML += "<th>" + resultData[i]["star_name"] + "</th>"
+        //insert genres
+        rowHTML += "<th>" +
+                    '<a href="single-star.html?id=' + resultData[i]['star_id'] + '">'
+                    + resultData[i]["star_name"] +
+                    '</a>' +
+                    "</th>";
+        rowHTML += "<th>" + resultData[i]["movie_rating"] + "</th>";
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page

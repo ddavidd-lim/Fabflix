@@ -16,28 +16,29 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lexend">
+    <link rel="stylesheet" href="main.css">
     <title>Single Star</title>
 </head>
 <body>
-<h1>Single Star Page</h1>
+<h1 id="star_info"></h1>
 
 <!-- H3 body is left empty here, will be populated with the data retrieved with single-star.js -->
 <!-- single-star.js will find this html element by it's id "star_info" -->
-<h3 id="star_info"></h3>
-<table id=movie_table class="table table-striped">
+<h3 id="star_dob"></h3>
+
+<table id=movie_star_table class="table table-striped">
     <thead>
     <tr>
         <th>Movie Title</th>
         <th>Release Year</th>
         <th>Director</th>
-        <th>
     </tr>
     </thead>
 
     <!-- Table body is left empty here, will be populated with the data retrieved with single-star.js -->
     <!-- single-star.js will find this html element by it's id "movie_table_body" -->
-    <tbody id=movie_table_body></tbody>
+    <tbody id=movie_star_table_body></tbody>
 </table>
 
 <!-- Load jQuery and Bootstrap JS -->

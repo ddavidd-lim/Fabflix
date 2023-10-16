@@ -65,7 +65,7 @@ public class MovieServlet extends HttpServlet{
                         "JOIN ratings as r ON m.id = r.movieId " +
                         "WHERE r.rating IS NOT NULL " +
                         "GROUP BY m.id, r.rating " +
-                        "ORDER BY r.rating DESC;";
+                        "ORDER BY r.rating DESC LIMIT 20;";
 
 
             // Perform the query

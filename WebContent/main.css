@@ -9,7 +9,7 @@ h1 {
     color: #F7F0F0;
     font-style: italic;
     padding-left: 20px;
-    padding-top: 40px;
+    padding-top: 80px;
     padding-bottom: 5px;
 }
 
@@ -52,4 +52,43 @@ a:hover {
 /* selected link */
 a:active {
     color: dodgerblue;
+}
+
+#nav {
+    position:fixed;
+    left:0px;
+    top:0px;
+    height:30px;
+    width:100%;
+    z-index: 1;
+}
+
+.current-page {
+    font-weight: 900;
+    font-style: italic;
+}
+
+#navigation-ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow:hidden;
+    background-color: #1c2145;
+}
+.navigation-li {
+    display: inline;
+    float: left;
+}
+
+a.navigation-list {
+    display: block;
+    color:white;
+    text-align: center;
+    padding: 20px 20px;
+    background-color:#1c2145;
+    text-decoration: none;
+}
+
+a.navigation-list:hover {
+    background-color: #1c2145;
 }

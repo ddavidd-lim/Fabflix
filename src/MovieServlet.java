@@ -54,13 +54,19 @@ public class MovieServlet extends HttpServlet{
 /*
             String query = "SELECT * from movies as m, stars_in_movies as sim, stars as s where s.id=sim.starId and" +
                     "sim.movieId = m.id and m.id=?"; */
-            String query = "SELECT m.id as movieId, s.id as starId, " +
-                    "substring_index(group_concat(g.name SEPARATOR ', '), ', ', 3) as genre, r.rating as rating, " +
-                    "s.name as starName, m.title as title, m.year as year, m.director as director " +
-                    "from stars as s, stars_in_movies as sim, movies as m, genres as g, " +
-                    "genres_in_movies as gim, ratings as r " +
-                    "where m.id = sim.movieId and sim.starId = s.id and gim.movieId=m.id and g.id = gim.genreId " +
-                    "and m.id = r.movieId group by m.id, s.id, r.rating order by r.rating DESC";
+            String query = "SELECT m.id as movieId, r.rating as rating, m.title as title, m.year as year, m.director as director, " +
+                                "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC SEPARATOR ', ') as genres, " +
+                        "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY s.name ASC SEPARATOR ', ') as top3Stars " +
+                        "FROM movies as m " +
+                        "JOIN stars_in_movies as sim ON m.id = sim.movieId " +
+                        "JOIN stars as s ON sim.starId = s.id " +
+                        "JOIN genres_in_movies as gim ON m.id = gim.movieId " +
+                        "JOIN genres as g ON g.id = gim.genreId " +
+                        "JOIN ratings as r ON m.id = r.movieId " +
+                        "WHERE r.rating IS NOT NULL " +
+                        "GROUP BY m.id, r.rating " +
+                        "ORDER BY r.rating DESC;";
+
 
             // Perform the query
             ResultSet rs = statement.executeQuery(query);
@@ -74,8 +80,8 @@ public class MovieServlet extends HttpServlet{
                 String movie_director = rs.getString("director");
                 String movie_year = rs.getString("year");
                 String movie_rating = rs.getString("rating");
-                String star_name = rs.getString("starName");
-                String genre = rs.getString("genre");
+                String top3Stars = rs.getString("top3Stars");
+                String genres = rs.getString("genres");
 
                 // Create a JsonObject based on the data we retrieve from rs
                 JsonObject jsonObject = new JsonObject();
@@ -84,8 +90,8 @@ public class MovieServlet extends HttpServlet{
                 jsonObject.addProperty("movie_director", movie_director);
                 jsonObject.addProperty("movie_year", movie_year);
                 jsonObject.addProperty("movie_rating", movie_rating);
-                jsonObject.addProperty("star_name", star_name);
-                jsonObject.addProperty("genre", genre);
+                jsonObject.addProperty("top3Stars", top3Stars);
+                jsonObject.addProperty("genres", genres);
 
                 jsonArray.add(jsonObject);
             }

@@ -92,3 +92,22 @@ a.navigation-list {
 a.navigation-list:hover {
     background-color: #1c2145;
 }
+
+li.main-genres-li {
+    padding-left: 30px;
+    list-style-type: none;
+    color:#44cf6c;
+}
+
+.main_page_search_type_box {
+    column-gap: 10px;
+    display: grid;
+}
+
+#main_page_boxes {
+    margin: auto;
+    width: 70%;
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}

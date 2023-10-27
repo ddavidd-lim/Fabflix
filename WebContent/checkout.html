@@ -2,9 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Cart</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lexend">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="buttons.css">
 </head>
 <body>
+<div>
+    <nav id="nav">
+        <ul id="navigation-ul">
+            <li class="navigation-li"><a class="navigation-list" href="index.html">Movies List</a></li>
+            <li class="navigation-li"><a class="navigation-list" href="main_page.html">Home</a></li>
+        </ul>
+    </nav>
+</div>
 
+<h1 class="pay_header">Payment Information</h1>
+
+<h6>Payment details</h6>
+
+
+<form action="" method="post">
+    <input type="text" name="cardnumber" placeholder="Card number" class="pay_input">
+    <input type="text" name="firstname" placeholder="First Name" class="pay_input">
+    <input type="text" name="lastname" placeholder="Last Name" class="pay_input">
+    <input type="date" name="expdate" class="pay_input">
+</form>
+<div class="button subtotal">Subtotal: $</div>
+<a href="https://www.google.com/" class="button">Proceed to Checkout</a>
 </body>
 </html>

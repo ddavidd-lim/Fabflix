@@ -15,20 +15,37 @@
 </head>
 <body>
 
-<div>
+<div id="navigation-block">
     <nav id="nav">
         <ul id="navigation-ul">
             <li class="navigation-li"><a class="navigation-list" href="index.html">Movies List</a></li>
             <li class="navigation-li"><a class="navigation-list" href="main_page.html">Home</a></li>
-            <form action="form" method="GET">
-                <input type="text" name="movietitle" value="Title">
-                <input type="number" name="movieyear" value="Year">
-                <input type="text" name="director" value="Director">
-                <input type="text" name="moviestar" value="Star">
-                <input type="submit" value="Search">
-            </form>
         </ul>
+
     </nav>
+</div>
+
+<div id="search_box">
+    <form action="form" method="GET">
+        <!-- Title -->
+        <div class="one_line_search">
+        <input id="movietitleForm" type="text" name="movietitle" placeholder="Title">
+        </div>
+        <!-- Year -->
+        <div class="one_line_search">
+        <input id= "movieyearForm" type="number" name="movieyear" placeholder="Year">
+        </div>
+        <!-- Director -->
+        <div class="one_line_search">
+        <input id="directorForm" type="text" name="director" placeholder="Director">
+        </div>
+        <!-- Star -->
+        <div class="one_line_search">
+        <input id="starForm" type="text" name="moviestar" placeholder="Star">
+        </div>
+        <!--Search Button -->
+        <input id="search_button" type="submit" value="Search">
+    </form>
 </div>
 
 <div id="main_page_boxes">
@@ -40,6 +57,8 @@
 
 <div class="main_page_search_type_box">
     <h1>Browse By Movie Title</h1>
+    <div id="numeric_alpha_titles">
+    </div>
 
 </div>
 </div>

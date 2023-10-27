@@ -1,11 +1,4 @@
-<!-- This example is following frontend and backend separation.
-
-    This .html performs two steps:
-    1. Create a html template skeleton, with all the elements defined (some left empty) and named with ids.
-    2. Load index.js to populate the data into empty elements.
-    -->
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Required meta tags -->
@@ -18,7 +11,7 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lexend">
     <link rel="stylesheet" href="main.css">
-    <title>Movie List</title>
+    <title>Main Page</title>
 </head>
 <body>
 
@@ -26,34 +19,30 @@
     <nav id="nav">
         <ul id="navigation-ul">
             <li class="navigation-li"><a class="navigation-list" href="index.html">Movies List</a></li>
-            <li class="navigation-li"><a class="navigation-list" href="main_page.html">Main Page</a></li>
+            <li class="navigation-li"><a class="navigation-list" href="main_page.html">Home</a></li>
+            <form action="form" method="GET">
+                <input type="text" name="movietitle" value="Title">
+                <input type="number" name="movieyear" value="Year">
+                <input type="text" name="director" value="Director">
+                <input type="text" name="moviestar" value="Star">
+                <input type="submit" value="Search">
+            </form>
         </ul>
     </nav>
 </div>
 
+<div id="main_page_boxes">
+<!-- Movie Genre Search -->
+<div class="main_page_search_type_box">
+    <h1>Browse By Movie Genre</h1>
+    <div id="main_page_genres"></div>
+</div>
 
-<h1>Top 20 Rated Movies</h1>
+<div class="main_page_search_type_box">
+    <h1>Browse By Movie Title</h1>
 
-<!-- Id "star_table" is useful for jQuery to find the html element with id, class here is mapping to Bootstrap defined class CSS -->
-<table id=movie_table class="table table-striped">
-    <!-- Create a table header -->
-    <thead>
-    <tr>
-        <!-- Titles of each column-->
-        <th>Title</th>
-        <th>Year</th>
-        <th>Director</th>
-        <th>Genres</th>
-        <th>Stars</th>
-        <th>Rating</th>
-
-    </tr>
-    </thead>
-    <!-- Table body is left empty here, will be populated with the data retrieved with index.js -->
-    <!-- Again, id "star_table_body" is useful for jQuery to find this html element -->
-    <tbody id=movie_table_body></tbody>
-</table>
-
+</div>
+</div>
 <!-- Load jQuery and Bootstrap JS -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -63,8 +52,7 @@
 <!-- The path is relative to index.html, since these two files are in the same directory -->
 <!-- Note the url does not contain a "/" in the beginning, which means the url is relative to current path
      otherwise the url is relative to the root path-->
-<script src="index.js"></script>
+<script src="main_page.js"></script>
+
 </body>
-
-
 </html>

@@ -111,3 +111,46 @@ li.main-genres-li {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
+
+.button {
+    display: block;
+    margin: auto;
+    margin-bottom: 20px;
+    padding: 5px 10px;
+    background-color: #44cf6c;
+    color: #000000;
+    text-decoration: none;
+    box-sizing: border-box;
+    width: 40%;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.checkout {
+
+}
+
+.subtotal {
+    background-color: aqua;
+}
+
+.pay_input {
+    display: block;
+    margin: auto;
+    margin-bottom: 20px;
+    width: 40%;
+}
+.pay_input:focus  {
+    outline: none;
+    border: 2px solid #0074d9;
+    box-shadow: 0 0 5px #0074d9;
+}
+
+.pay_header {
+    text-align: center;
+}
+
+h6 {
+    text-align: center;
+    color: white;
+}

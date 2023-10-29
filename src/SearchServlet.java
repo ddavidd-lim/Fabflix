@@ -47,11 +47,11 @@ public class SearchServlet extends HttpServlet{
             Connection dbCon = dataSource.getConnection();
             Statement statement = dbCon.createStatement();
 
-            Enumeration<String> params = request.getParameterNames();
-            while(params.hasMoreElements()){
-                String paramName = params.nextElement();
-                System.out.println("Parameter Name - "+paramName+", Value - "+request.getParameter(paramName));
-            }
+//            Enumeration<String> params = request.getParameterNames();
+//            while(params.hasMoreElements()){
+//                String paramName = params.nextElement();
+//                System.out.println("Parameter Name - "+paramName+", Value - "+request.getParameter(paramName));
+//            }
 
             String title = request.getParameter("movietitle");
             System.out.println("Title: " + title);
@@ -63,6 +63,8 @@ public class SearchServlet extends HttpServlet{
             System.out.println("Star:" + star);
             String genre = request.getParameter("genre");
             System.out.println("Genre: " + genre);
+            String type = request.getParameter("type");
+            System.out.println("Type: " + type);
             String whereQuery = "";
             String havingQuery = "";
 
@@ -74,7 +76,15 @@ public class SearchServlet extends HttpServlet{
             }
             if (title != null && !Objects.equals(title, "null")) {
                 if (!title.isEmpty()) {
-                    whereQuery += String.format(" and LOWER(title) like LOWER('%%%s%%') ", title);
+                    if (Objects.equals(type, "browse")) {
+                        if (title.contains("*")) {
+                            whereQuery += "and title regexp '^[^a-zA-Z0-9]'";
+                        } else {
+                            whereQuery += String.format(" and LOWER(title) like LOWER('%s%%') ", title);
+                        }
+                    } else {
+                        whereQuery += String.format(" and LOWER(title) like LOWER('%%%s%%') ", title);
+                    }
                 }
             }
             if (year != null && !Objects.equals(year, "null")) {
@@ -91,7 +101,7 @@ public class SearchServlet extends HttpServlet{
             if(star != null && !Objects.equals(star, "null"))
             {
                 if (!star.isEmpty()) {
-                    havingQuery += String.format("LOWER(top3Stars) like LOWER('%%%s%%') ", star);
+                    havingQuery += String.format(" and LOWER(top3Stars) like LOWER('%%%s%%') ", star);
                 }
             }
 

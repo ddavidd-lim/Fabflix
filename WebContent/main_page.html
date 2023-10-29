@@ -27,6 +27,8 @@
 
 <div id="search_box">
     <form id="search-form" action="/api/results" method="get">
+        <!-- Search/Browse -->
+        <input id="typeForm" type="hidden" name="type" value="search">
         <!-- Title -->
         <div class="one_line_search">
         <input id="movietitleForm" type="text" name="movietitle" placeholder="Title">
@@ -43,7 +45,7 @@
         <div class="one_line_search">
         <input id="starForm" type="text" name="moviestar" placeholder="Star">
         </div>
-
+        <!-- Genre -->
         <input id="genreForm" type="hidden" name="genre">
         <!--Search Button -->
         <input id="search_button" type="submit" value="Search">

@@ -4,7 +4,7 @@
  */
 
 let search = jQuery("#search-form");
-let genre_query = jQuery("#genreForm");
+
 
 function handleGenreResult(resultData) {
     console.log("handleStarResult: populating genres list from resultData");
@@ -17,7 +17,7 @@ function handleGenreResult(resultData) {
         // Concatenate the html tags with resultData jsonObject
         let rowHTML = "";
         rowHTML += "<li class='main-genres-li'>";
-        rowHTML += "<a href=results.html?genre=" + resultData[i]['genreName'] +
+        rowHTML += "<a href=results.html?type=browse&genre=" + resultData[i]['genreName'] +
             " class='genre-link' onclick=" + "changeGenre(" + resultData[i]['genreName'] + ")>";
         rowHTML += resultData[i]['genreName'];
         rowHTML += "</a>"
@@ -39,13 +39,24 @@ function handleMovieTitleResult(resultData) {
         {
             let rowHTML = "";
             rowHTML += "<li class='main-genres-li'>";
+            rowHTML += "<a href=results.html?type=browse&movietitle=" + resultData[i]['movieLetter'] +
+                " class='letter-link' onclick=" + "changeTitle(" + resultData[i]['movieLetter'] + ")>";
             rowHTML += resultData[i]["movieLetter"];
+            rowHTML += "</a>";
             rowHTML += "</li>";
             // Append the row created to the table body, which will refresh the page
             mainPageMovieTitleBodyElement.append(rowHTML);
         }
     }
-    mainPageMovieTitleBodyElement.append("<li class='main-genres-li'>*</li>");
+
+    let row = "<li class='main-genres-li'>";
+    row += "<a href='results.html?type=browse&movietitle=*' class='letter-link' onclick=" +
+        "changeTitle(" + "'*'" + ")>";
+    row += "*";
+    row += "</a>"
+    row += "</li>";
+    mainPageMovieTitleBodyElement.append(row);
+
     console.log("movieTitles added");
 }
 
@@ -58,12 +69,19 @@ function submitSearch(event) {
 
 function changeGenre(genre) {
     let genreForm = jQuery("#genreForm");
+    let typeForm = jQuery("#typeForm");
     genreForm.value = genre;
+    typeForm.value = "browse";
+}
 
+function changeTitle(letter) {
+    let typeForm = jQuery("#typeForm");
+    let titleForm = jQuery("#movietitleForm");
+    titleForm.value = letter;
+    typeForm.value = "browse";
 }
 
 search.submit((event) => submitSearch(event));
-
 
 // Makes the HTTP GET request and registers on success callback function
 

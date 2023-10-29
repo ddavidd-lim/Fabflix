@@ -4,6 +4,7 @@
  */
 
 let search = jQuery("#search-form");
+let genre_query = jQuery("#genreForm");
 
 function handleGenreResult(resultData) {
     console.log("handleStarResult: populating genres list from resultData");
@@ -16,9 +17,11 @@ function handleGenreResult(resultData) {
         // Concatenate the html tags with resultData jsonObject
         let rowHTML = "";
         rowHTML += "<li class='main-genres-li'>";
-        rowHTML += resultData[i]["genreName"];
+        rowHTML += "<a href=results.html?genre=" + resultData[i]['genreName'] +
+            " class='genre-link' onclick=" + "changeGenre(" + resultData[i]['genreName'] + ")>";
+        rowHTML += resultData[i]['genreName'];
+        rowHTML += "</a>"
         rowHTML += "</li>";
-
 
         // Append the row created to the table body, which will refresh the page
         mainPageGenresBodyElement.append(rowHTML);
@@ -53,7 +56,14 @@ function submitSearch(event) {
     window.location.replace(url);
 }
 
+function changeGenre(genre) {
+    let genreForm = jQuery("#genreForm");
+    genreForm.value = genre;
+
+}
+
 search.submit((event) => submitSearch(event));
+
 
 // Makes the HTTP GET request and registers on success callback function
 

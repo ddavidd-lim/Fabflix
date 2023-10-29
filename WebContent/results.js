@@ -96,6 +96,8 @@ function handleResults(resultData) {
 }
 
 
+
+
 /**
  * Once this .js is loaded, following scripts will be executed by the browser
  */
@@ -104,11 +106,15 @@ let title = getParameterByName("movietitle");
 let year = getParameterByName("movieyear");
 let director = getParameterByName("director");
 let star = getParameterByName("moviestar")
+let genre = getParameterByName("genre")
+
+
 
 // Makes the HTTP GET request and registers on success callback function
 jQuery.ajax({
     dataType: "json", // Setting return data type
     method: "GET", // Setting request method
-    url: "api/results?movietitle=" + title + "&movieyear=" + year + "&director=" + director + "&moviestar=" + star, // Setting request url
+    url: "api/results?movietitle=" + title + "&movieyear=" + year + "&director=" + director + "&moviestar=" +
+        star + "&genre=" + genre, // Setting request url
     success: (resultData) => handleResults(resultData)
 });

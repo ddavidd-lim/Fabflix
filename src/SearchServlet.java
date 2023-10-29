@@ -14,6 +14,9 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Enumeration;
+import java.util.Objects;
+
 @WebServlet(name = "SearchServlet", urlPatterns = "/api/results")
 
 public class SearchServlet extends HttpServlet{
@@ -44,44 +47,55 @@ public class SearchServlet extends HttpServlet{
             Connection dbCon = dataSource.getConnection();
             Statement statement = dbCon.createStatement();
 
+            Enumeration<String> params = request.getParameterNames();
+            while(params.hasMoreElements()){
+                String paramName = params.nextElement();
+                System.out.println("Parameter Name - "+paramName+", Value - "+request.getParameter(paramName));
+            }
+
             String title = request.getParameter("movietitle");
-//            System.out.println("Title: " + title);
+            System.out.println("Title: " + title);
             String year = request.getParameter("movieyear");
-//            System.out.println("Year:" + year);
+            System.out.println("Year:" + year);
             String director = request.getParameter("director");
-//            System.out.println("Director:" + director);
+            System.out.println("Director:" + director);
             String star = request.getParameter("moviestar");
-//            System.out.println("Star:" + star);
-            String formQuery = "";
+            System.out.println("Star:" + star);
+            String genre = request.getParameter("genre");
+            System.out.println("Genre: " + genre);
+            String whereQuery = "";
+            String havingQuery = "";
 
-            if (!title.isEmpty()) {
-                formQuery += String.format("title like '%%%s%%' ", title);
-                if (!year.isEmpty() || !director.isEmpty() || !star.isEmpty())
-                {
-                    formQuery += "and ";
+            if (genre != null && !Objects.equals(genre, "null")) {
+                havingQuery += String.format("genres LIKE '%%%s%%' ", genre);
+            }
+            else {
+                havingQuery += "genres LIKE '%%' ";
+            }
+            if (title != null && !Objects.equals(title, "null")) {
+                if (!title.isEmpty()) {
+                    whereQuery += String.format(" and LOWER(title) like LOWER('%%%s%%') ", title);
                 }
             }
-            if (!year.isEmpty()) {
-                formQuery += String.format("year = %s ", year);
-                if (!director.isEmpty() || !star.isEmpty())
-                {
-                    formQuery += "and ";
+            if (year != null && !Objects.equals(year, "null")) {
+                if (!year.isEmpty()) {
+                    whereQuery += String.format(" and year = %s ", year);
                 }
             }
-            if (!director.isEmpty())
+            if (director != null && !Objects.equals(director, "null"))
             {
-                formQuery = String.format("director like '%%%s%%' ", director);
-                if (!star.isEmpty())
-                {
-                    formQuery += "and ";
+                if (!director.isEmpty()) {
+                    whereQuery = String.format(" and LOWER(director) like LOWER('%%%s%%') ", director);
                 }
             }
-            if(!star.isEmpty())
+            if(star != null && !Objects.equals(star, "null"))
             {
-                formQuery += String.format("s.name like '%%%s%%' ", star);
+                if (!star.isEmpty()) {
+                    havingQuery += String.format("LOWER(top3Stars) like LOWER('%%%s%%') ", star);
+                }
             }
 
-            System.out.println("Search: " + formQuery);
+            System.out.println("Search: WHERE - " + whereQuery + " HAVING - " + havingQuery);
 
             String query = "SELECT m.id as movieId, r.rating as rating, m.title as title, m.year as year, m.director as director, " +
                     "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC SEPARATOR ', ') as genres, " +
@@ -92,8 +106,8 @@ public class SearchServlet extends HttpServlet{
                     "JOIN genres_in_movies as gim ON m.id = gim.movieId " +
                     "JOIN genres as g ON g.id = gim.genreId " +
                     "JOIN ratings as r ON m.id = r.movieId " +
-                    "WHERE r.rating IS NOT NULL and " + formQuery +
-                    "GROUP BY m.id, r.rating " +
+                    "WHERE r.rating IS NOT NULL " + whereQuery +
+                    "GROUP BY m.id, r.rating HAVING " + havingQuery +
                     "ORDER BY r.rating;";
 
             request.getServletContext().log("query：" + query);

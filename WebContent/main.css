@@ -129,6 +129,7 @@ li.main-genres-li {
     text-decoration: none;
     box-sizing: border-box;
     width: 40%;
+    min-width: 50px;
     text-align: center;
     border-radius: 5px;
     cursor: pointer;

@@ -9,12 +9,24 @@
  */
 
 
-/**
- * Handles the data returned by the API, read the jsonObject and populate data into html elements
- * @param resultData jsonObject
- */
+function getParameterByName(target) {
+    let url = window.location.href;
+    //
+    target = target.replace(/[\[\]]/g, "\\$&");
+
+    // Ues regular expression to find matched parameter value
+    let regex = new RegExp("[?&]" + target + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+
+    // Return the decoded parameter value
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+
+}
+
 function handleResults(resultData) {
-    console.log("handleStarResult: populating star table from resultData");
+    console.log("handleStarResult: populating results from resultData");
 
     // Populate the star table
     // Find the empty table body by id "star_table_body"
@@ -41,15 +53,17 @@ function handleResults(resultData) {
         // find way to insert all genres
         let genresString = resultData[i]["genres"];
         let genresArray = genresString.split(',');
-        // rowHTML += "<th>" + genresArray[0] + ", " + genresArray[1] + ", " + genresArray[2] + "</th>";
 
         rowHTML += "<th>";
         for (let j = 0; j < Math.min(3, genresArray.length); j++) {
+            rowHTML += "<a href='results.html?type=browse&genre=" + genresArray[j].trim() + "'>"
             rowHTML += genresArray[j];
+            rowHTML += "</a>"
             if (j < genresArray.length - 1) {
                 rowHTML += ", ";
             }
         }
+        rowHTML += "</th>"
 
         // for actors
         // SAMPLE SOLUTION
@@ -75,13 +89,6 @@ function handleResults(resultData) {
             "</th>"
 
 
-
-        // rowHTML += "<th>" +
-        //     '<a href="single-star.html?id=' + resultData[i]['star_id'] + '">'
-        //     + resultData[i]["star_name"] +
-        //     '</a>' +
-        //     "</th>";
-
         rowHTML += "<th>" + resultData[i]["movie_rating"] + "</th>";
         rowHTML += "</tr>";
 
@@ -91,14 +98,26 @@ function handleResults(resultData) {
 }
 
 
+
+
 /**
  * Once this .js is loaded, following scripts will be executed by the browser
  */
 
-// Makes the HTTP GET request and registers on success callback function handleStarResult
+let title = getParameterByName("movietitle");
+let year = getParameterByName("movieyear");
+let director = getParameterByName("director");
+let star = getParameterByName("moviestar");
+let genre = getParameterByName("genre");
+let type = getParameterByName("type");
+
+
+
+// Makes the HTTP GET request and registers on success callback function
 jQuery.ajax({
     dataType: "json", // Setting return data type
     method: "GET", // Setting request method
-    url: "api/results", // Setting request url, which is mapped by MovieServlet in Stars.java
-    success: (resultData) => handleResults(resultData) // Setting callback function to handle data returned successfully by the StarsServlet
+    url: "api/results?type=" + type + "&movietitle=" + title + "&movieyear=" + year + "&director=" + director + "&moviestar=" +
+        star + "&genre=" + genre, // Setting request url
+    success: (resultData) => handleResults(resultData)
 });

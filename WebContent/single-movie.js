@@ -76,16 +76,24 @@ function handleResult(resultData) {
     }
 
     // Now do the same for genres
+    let rowHTML = "<tr>";
+    rowHTML += "<th>";
     let genreTableBodyElement = jQuery("#genre_movie_table_body");
-    for (let i = 0; i < 1; i++) {
-        let rowHTML = "";
-        rowHTML += "<tr>";
-        rowHTML += "<th>" + resultData[i]["genre"] + "</th>";
-        rowHTML += "</tr>";
-
+    let genres = resultData[0]["genre"];
+    let genresArray = genres.split(",");
+    for (let i = 0; i < genresArray.length; i++) {
+        rowHTML += "<a href='results.html?type=browse&genre=" + genresArray[i].trim() + "'>";
+        rowHTML += genresArray[i];
+        rowHTML += "</a>";
+        if (i < genresArray.length - 1) {
+            rowHTML += ", ";
+        }
         // Append the row created to the table body, which will refresh the page
-        genreTableBodyElement.append(rowHTML);
+
     }
+    rowHTML += "</th></tr>";
+    // alert(rowHTML);
+    genreTableBodyElement.append(rowHTML);
 
 }
 

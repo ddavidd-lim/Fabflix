@@ -53,15 +53,17 @@ function handleResults(resultData) {
         // find way to insert all genres
         let genresString = resultData[i]["genres"];
         let genresArray = genresString.split(',');
-        // rowHTML += "<th>" + genresArray[0] + ", " + genresArray[1] + ", " + genresArray[2] + "</th>";
 
         rowHTML += "<th>";
         for (let j = 0; j < Math.min(3, genresArray.length); j++) {
+            rowHTML += "<a href='results.html?type=browse&genre=" + genresArray[j].trim() + "'>"
             rowHTML += genresArray[j];
+            rowHTML += "</a>"
             if (j < genresArray.length - 1) {
                 rowHTML += ", ";
             }
         }
+        rowHTML += "</th>"
 
         // for actors
         // SAMPLE SOLUTION

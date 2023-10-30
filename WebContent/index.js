@@ -73,15 +73,8 @@ function handleStarResult(resultData) {
             "</th>"
 
 
-
-        // rowHTML += "<th>" +
-        //     '<a href="single-star.html?id=' + resultData[i]['star_id'] + '">'
-        //     + resultData[i]["star_name"] +
-        //     '</a>' +
-        //     "</th>";
-
         rowHTML += "<th>" + resultData[i]["movie_rating"] + "</th>";
-        rowHTML += "<th><button class='addtocart button' data-movie-id=" + resultData[0]["movie_id"] + ">Add</button></th>";
+        rowHTML += "<th><button class='addtocart button' data-movie-id=" + resultData[i]["movie_id"] + ">Add</button></th>";
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
@@ -103,11 +96,11 @@ function addToSessionCart(movieId) {
         dataType: "json",
         method: "POST",
         url: "api/cart", // Adjust the URL as needed
-        data: { movie_id: movieId },
+        data: { movie_id: movieId, action: "add"},
         success: () => {
             alert("Successfully added to cart");
         },
-        error: (jqXHR, textStatus, errorThrown) => {
+        error: (jqXHR, textStatus) => {
             alert("Error: " + textStatus);
         }
 

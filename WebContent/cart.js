@@ -5,20 +5,13 @@
  * @param resultDataString jsonObject, consists of session info
  */
 function handleSessionData(resultDataString) {
-    let resultDataJson = resultDataString;
+    let resultDataJson = JSON.parse(resultDataString);
 
     console.log("handle session response");
     console.log(resultDataJson);
-    // let cartTableBodyElement = jQuery("#cart_body");
-    //
-    // for (let i = 0; i < resultArray.length; i++) {
-    //     // Concatenate the html tags with resultData jsonObject
-    //     let rowHTML = "";
-    // }
 
     // show cart information
     handleCartArray(resultDataJson["previousItems"]);
-    // cartTableBodyElement.append(rowHTML);
 }
 
 /**
@@ -27,47 +20,103 @@ function handleSessionData(resultDataString) {
  */
 function handleCartArray(resultArray) {
     console.log(resultArray);
-    let item_list = $("#cart_body");
+    let cart_list = $("#cart_body");
     // change it to html list
-    // clear the old array and show the new array in the frontend
-    item_list.html("");
+    let rowHTML = "";
+    cart_list.empty()
     for (let i = 0; i < resultArray.length; i++) {
-        // each item will be in a bullet point
-        let rowHTML = "<tr>";
-        rowHTML += "<th>" + resultArray[i]["movie_title"] + "</th>";
-        rowHTML += "<th><button class='button removefromcart cart'>-</button>" + resultArray[i]["quantity"] + "<button class='button addtocart cart'>+</button></th>";
-        rowHTML += "<th><button class='button delete'>Delete</button></th>";
-        rowHTML += "<th>" + resultArray[i]["price"] + "</th>";
-        rowHTML += "<th>" + resultArray[i]["quantity"] * resultArray[i]["price"] + "</th>";
+        // each item will be in a row
+        rowHTML += "<tr>";
+        rowHTML += "<td>" + resultArray[i]["movie_title"] + "</td>";
+        rowHTML += "<td><button class='button removefromcart cart' " +
+            "data-movie-id=" + resultArray[i]["movie_id"] + ">-</button>" + resultArray[i]["quantity"] + "<button class='button addtocart cart' " +
+            "data-movie-id=" + resultArray[i]["movie_id"] + ">+</button></td>";
+        rowHTML += "<td><button class='button delete' " +
+            "data-movie-id=" + resultArray[i]["movie_id"] + ">Delete</button></td>";
+        rowHTML += "<td>" + resultArray[i]["price"] + "</td>";
+        rowHTML += "<td>" + resultArray[i]["quantity"] * resultArray[i]["price"] + "</td>";
         rowHTML += "</tr>";
-        item_list.append(rowHTML);
     }
+    // clear the old array and show the new array in the frontend
+
+    cart_list.append(rowHTML);
+
+    const addToCartButtons = document.querySelectorAll('.addtocart');
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const movieId = button.getAttribute('data-movie-id');
+            addToSessionCart(movieId);
+        });
+    });
+    const removeButtons = document.querySelectorAll('.removefromcart');
+    removeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const movieId = button.getAttribute('data-movie-id');
+            removeFromCart(movieId);
+        });
+    });
+    const deleteButtons = document.querySelectorAll('.delete');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const movieId = button.getAttribute('data-movie-id');
+            deleteFromCart(movieId);
+        });
+    });
 }
 
-/**
- * Submit form content with POST method
- * @param cartEvent
- */
-function handleCartInfo(cartEvent) {
-    console.log("submit cart form");
-    /**
-     * When users click the submit button, the browser will not direct
-     * users to the url defined in HTML form. Instead, it will call this
-     * event handler when the event is triggered.
-     */
-    cartEvent.preventDefault();
-
-    $.ajax("api/cart", {
-        method: "POST",     // POST TO UPDATE ITEMS
-        data: cart.serialize(),
+function addToSessionCart(movieId) {
+    // Send an AJAX request to the server to add the movie to the session cart
+    jQuery.ajax({
+        dataType: "json",
+        method: "POST",
+        url: "api/cart", // Adjust the URL as needed
+        data: { movie_id: movieId, action: "add" },
         success: resultDataString => {
-            let resultDataJson = JSON.parse(resultDataString);
-            handleCartArray(resultDataJson["previousItems"]);
+            // let resultDataJson = JSON.parse(resultDataString);
+            handleCartArray(resultDataString["previousItems"])
+            alert("Successfully added to cart");
+        },
+        error: (jqXHR, textStatus) => {
+            alert("AddError: " + textStatus);
         }
-    });
 
-    // clear input form
-    cart[0].reset();
+    });
+}
+
+function removeFromCart(movieId) {
+    // Send an AJAX request to the server to add the movie to the session cart
+    jQuery.ajax({
+        dataType: "json",
+        method: "POST",
+        url: "api/cart", // Adjust the URL as needed
+        data: { movie_id: movieId, action: "remove" },
+        success: resultDataString => {
+            handleCartArray(resultDataString["previousItems"]);
+            alert("Successfully removed from cart");
+        },
+        error: (jqXHR, textStatus) => {
+            alert("RemoveError: " + textStatus);
+        }
+
+    });
+}
+
+function deleteFromCart(movieId) {
+    // Send an AJAX request to the server to add the movie to the session cart
+    jQuery.ajax({
+        dataType: "json",
+        method: "POST",
+        url: "api/cart", // Adjust the URL as needed
+        data: { movie_id: movieId, action: "delete" },
+        success: resultDataString => {
+            handleCartArray(resultDataString["previousItems"]);
+            alert("Successfully deleted from cart");
+        },
+        error: (jqXHR, textStatus) => {
+            alert("DeleteError: " + textStatus);
+        }
+
+    });
 }
 
 $.ajax("api/cart", {

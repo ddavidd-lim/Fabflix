@@ -34,15 +34,13 @@ public class ItemsServlet extends HttpServlet {
         try {
             dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
         } catch (NamingException e) {
-            e.printStackTrace();;
+            e.printStackTrace();
         }
     }
     /**
      * handles GET requests to store session information
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json"); // Response mime type
-
         HttpSession session = request.getSession(); // gets session
 
         JsonObject responseJsonObject = new JsonObject();       // creates new json object to add id/accesstime
@@ -68,7 +66,9 @@ public class ItemsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json"); // Response mime type
         String id = request.getParameter("movie_id");
+        String action = request.getParameter("action"); // Add = 2, Decrement = 1, Delete = 0
         System.out.println(id);
+        System.out.println(action);
         HttpSession session = request.getSession();
 
         PrintWriter out = response.getWriter();
@@ -94,41 +94,83 @@ public class ItemsServlet extends HttpServlet {
             if (rs.next()) {    // if movie exists: it probably does btw
                 movieTitle = rs.getString("title");
 
-                // Create a JsonObject based on the data we retrieve from rs
-                jsonObject.addProperty("movie_title", movieTitle);
-                jsonObject.addProperty("quantity", "1");
-                jsonObject.addProperty("price", "10");
-
-                System.out.println("Found one object");
+                if (action.equals("add")){
+                    // Create a JsonObject based on the data we retrieve from rs
+                    jsonObject.addProperty("movie_id", id);
+                    jsonObject.addProperty("movie_title", movieTitle);
+                    jsonObject.addProperty("quantity", "1");
+                    jsonObject.addProperty("price", "10");
+                }
+                System.out.println("FOUND: Movie: " + movieTitle);
             }
             // get the previous items in a ArrayList
-            System.out.println("get previous items in arraylist");
             ArrayList<JsonObject> previousItems = (ArrayList<JsonObject>) session.getAttribute("previousItems");
-            if (previousItems == null) {
-                previousItems = new ArrayList<>();    // inits array ifndef
-                previousItems.add(jsonObject);
-                session.setAttribute("previousItems", previousItems);   // sets session attr to new array
-                System.out.println("Added new array");
-            } else {
-                // prevent corrupted states through sharing under multi-threads
-                // will only be executed by one thread at a time
-                synchronized (previousItems) {
-                    for (int i = 0; i < previousItems.size(); i++) {
-                        JsonObject item = previousItems.get(i).getAsJsonObject();
-                        if (movieTitle.equals(item.get("movie_title").getAsString())) {
-                            // Update the quantity
-                            int newQuantity = item.get("quantity").getAsInt() + 1;
-                            item.addProperty("quantity", newQuantity);
-                            break; // Stop searching once the item is found and updated
-                        }
-                        else{
-                            previousItems.add(jsonObject);
+            switch (action) {
+                case "add":
+                    if (previousItems == null) {
+                        previousItems = new ArrayList<>();    // inits array ifndef
+                        previousItems.add(jsonObject);
+                        session.setAttribute("previousItems", previousItems);   // sets session attr to new array
+                        System.out.println("Added Movie: " + movieTitle);
+                    } else {
+                        // prevent corrupted states through sharing under multi-threads
+                        // will only be executed by one thread at a time
+                        int found = 0;
+                        synchronized (previousItems) {
+                            for (int i = 0; i < previousItems.size(); i++) {
+                                JsonObject item = previousItems.get(i).getAsJsonObject();
+                                if (movieTitle.equals(item.get("movie_title").getAsString())) {
+                                    // Update the quantity
+                                    int newQuantity = item.get("quantity").getAsInt() + 1;
+                                    item.addProperty("quantity", newQuantity);
+                                    found = 1;
+                                    break; // Stop searching once the item is found and updated
+                                }
+                            }
+                            if (found == 0) {
+                                previousItems.add(jsonObject);
+                            }
+
+                            System.out.println("Successfully added movie");
                         }
                     }
+                    break;
+                case "remove":
+                    synchronized (previousItems) {
+                        for (int i = 0; i < previousItems.size(); i++) {
+                            JsonObject item = previousItems.get(i).getAsJsonObject();
+                            if (movieTitle.equals(item.get("movie_title").getAsString())) {
+                                // Update the quantity
+                                int newQuantity = item.get("quantity").getAsInt() - 1;
+                                if (newQuantity == 0) {
+                                    previousItems.remove(i);
+                                } else {
+                                    item.addProperty("quantity", newQuantity);
+                                }
+                                break;
+                            }
+                        }
 
-                    System.out.println("Successfully added movie");
-                }
+                        System.out.println("Successfully decremented movie");
+                    }
+                    break;
+                case "delete":
+                    synchronized (previousItems) {
+                        for (int i = 0; i < previousItems.size(); i++) {
+                            JsonObject item = previousItems.get(i).getAsJsonObject();
+                            if (movieTitle.equals(item.get("movie_title").getAsString())) {
+                                // Update the quantity
+                                item.addProperty("quantity", 0);
+                                previousItems.remove(i);
+                                System.out.println("Successfully deleted movie");
+                                break;
+                            }
+                        }
+                    }
+                    break;
             }
+
+
             rs.close();
             statement.close();
             // ------------------------------------
@@ -140,7 +182,6 @@ public class ItemsServlet extends HttpServlet {
 
 
             response.getWriter().write(responseJsonObject.toString());
-            System.out.println("Wrote to response");
             // Set response status to 200 (OK)
             System.out.println("Set response 200");
             response.setStatus(200);

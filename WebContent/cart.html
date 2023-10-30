@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lexend">
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<div>
+    <nav id="nav">
+        <ul id="navigation-ul">
+            <li class="navigation-li"><a class="navigation-list" href="index.html">Movies List</a></li>
+            <li class="navigation-li"><a class="navigation-list" href="main_page.html">Home</a></li>
+        </ul>
+    </nav>
+</div>
+
+<h1>Shopping Cart</h1>
+
+
+<!-- Id "cart_table" is useful for jQuery to find the html element with id, class here is mapping to Bootstrap defined class CSS -->
+<table id=cart class="table table-striped">
+    <!-- Create a table header -->
+    <thead>
+    <tr>
+        <!-- Titles of each column-->
+        <th>Title</th>
+        <th>Quantity</th>
+        <th>Delete</th>
+        <th>Price</th>
+        <th>Total</th>
+
+    </tr>
+    </thead>
+    <!-- Table body is left empty here, will be populated with the data retrieved with index.js -->
+    <!-- Again, id "scart_body" is useful for jQuery to find this html element -->
+    <tbody id=cart_body></tbody>
+</table>
+
+<a href="https://www.google.com/" class="button">Proceed to Checkout</a>
+
+<!-- include your own JS file -->
+<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+<script type='text/javascript' src='cart.js'></script>
+</body>
+</html>

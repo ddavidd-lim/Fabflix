@@ -21,8 +21,6 @@ function handleStarResult(resultData) {
     let movieTableBodyElement = jQuery("#movie_table_body");
 
     // Iterate through resultData, no more than 10 entries
-    let next_actor = 0;
-    let next_genre = 0;
     for (let i = 0; i < Math.min(20, resultData.length); i++) {
 
         // Concatenate the html tags with resultData jsonObject

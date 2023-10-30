@@ -52,7 +52,9 @@ function handleResult(resultData) {
     // append two html <p> created to the h3 body, which will refresh the page
     movieInfoElement.append(
         "<p>Director: " + resultData[0]["movie_director"] + "</p>" +
-        "<p>Rating: " + resultData[0]["movie_rating"] + "</p>");
+        "<p>Rating: " + resultData[0]["movie_rating"] + "</p>" +
+        // CREATE ADDTOCART CLASS for button
+        "<button class='addtocart button' data-movie-id=" + resultData[0]["movie_id"] + ">Add</button>");
 
     console.log("handleResult: populating movie table from resultData");
 
@@ -95,7 +97,38 @@ function handleResult(resultData) {
     // alert(rowHTML);
     genreTableBodyElement.append(rowHTML);
 
+    // Attach a click event listener to each "addtocart" button
+    const addToCartButtons = document.querySelectorAll('.addtocart');
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const movieId = button.getAttribute('data-movie-id');
+            addToSessionCart(movieId);
+        });
+    });
+
 }
+
+/**
+ * Submit form content with POST method
+ * @param movieId
+ */
+function addToSessionCart(movieId) {
+    // Send an AJAX request to the server to add the movie to the session cart
+    jQuery.ajax({
+        dataType: "json",
+        method: "POST",
+        url: "api/cart", // Adjust the URL as needed
+        data: { movie_id: movieId },
+        success: () => {
+            alert("Successfully added to cart");
+        },
+        error: (jqXHR, textStatus, errorThrown) => {
+            alert("Error: " + textStatus);
+        }
+
+    });
+}
+
 
 /**
  * Once this .js is loaded, following scripts will be executed by the browser\

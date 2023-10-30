@@ -11,7 +11,7 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lexend">
     <link rel="stylesheet" href="main.css">
-    <title>Main Page</title>
+    <title>Results</title>
 </head>
 <body>
 
@@ -21,51 +21,27 @@
             <li class="navigation-li"><a class="navigation-list" href="index.html">Movies List</a></li>
             <li class="navigation-li"><a class="navigation-list" href="main_page.html">Home</a></li>
         </ul>
-
     </nav>
 </div>
 
-<div id="search_box">
-    <form id="search-form" action="/api/results" method="get">
-        <!-- Search/Browse -->
-        <input id="typeForm" type="hidden" name="type" value="search">
-        <!-- Title -->
-        <div class="one_line_search">
-        <input id="movietitleForm" type="text" name="movietitle" placeholder="Title">
-        </div>
-        <!-- Year -->
-        <div class="one_line_search">
-        <input id= "movieyearForm" type="number" name="movieyear" placeholder="Year">
-        </div>
-        <!-- Director -->
-        <div class="one_line_search">
-        <input id="directorForm" type="text" name="director" placeholder="Director">
-        </div>
-        <!-- Star -->
-        <div class="one_line_search">
-        <input id="starForm" type="text" name="moviestar" placeholder="Star">
-        </div>
-        <!-- Genre -->
-        <input id="genreForm" type="hidden" name="genre">
-        <!--Search Button -->
-        <input id="search_button" type="submit" value="Search">
-    </form>
-</div>
+<h1>Movie Results</h1>
 
-<div id="main_page_boxes">
-<!-- Movie Genre Search -->
-<div class="main_page_search_type_box">
-    <h1>Browse By Movie Genre</h1>
-    <div id="main_page_genres"></div>
-</div>
+<table id=movie_result_table class="table table-striped">
+    <thead>
+    <tr>
+        <!-- Titles of each column-->
+        <th>Title</th>
+        <th>Year</th>
+        <th>Director</th>
+        <th>Genres</th>
+        <th>Stars</th>
+        <th>Rating</th>
+        <th>Cart</th>
+    </tr>
+    </thead>
+    <tbody id=movie_result_table_body></tbody>
+</table>
 
-<div class="main_page_search_type_box">
-    <h1>Browse By Movie Title</h1>
-    <div id="numeric_alpha_titles">
-    </div>
-
-</div>
-</div>
 <!-- Load jQuery and Bootstrap JS -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -75,7 +51,9 @@
 <!-- The path is relative to index.html, since these two files are in the same directory -->
 <!-- Note the url does not contain a "/" in the beginning, which means the url is relative to current path
      otherwise the url is relative to the root path-->
-<script src="main_page.js"></script>
+<script src="results.js"></script>
+
+
 
 </body>
 </html>

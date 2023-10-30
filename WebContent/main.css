@@ -54,6 +54,10 @@ a:active {
     color: dodgerblue;
 }
 
+#navigation-block {
+    padding-bottom: 100px;
+}
+
 #nav {
     position:fixed;
     left:0px;
@@ -94,14 +98,17 @@ a.navigation-list:hover {
 }
 
 li.main-genres-li {
-    padding-left: 30px;
+    padding: 10px;
     list-style-type: none;
     color:#44cf6c;
+    display: inline;
+    float: left;
+
 }
 
 .main_page_search_type_box {
-    column-gap: 10px;
-    display: grid;
+    padding-left: 0px;
+    text-align: center;
 }
 
 #main_page_boxes {
@@ -154,4 +161,23 @@ li.main-genres-li {
 h6 {
     text-align: center;
     color: white;
+}
+
+#search_box {
+    margin: auto;
+    display: block;
+}
+
+#search_button {
+    color:black;
+}
+
+input {
+    display: block;
+    color:black;
+}
+
+.one_line_search {
+    float: left;
+    margin-right: 20px;
 }

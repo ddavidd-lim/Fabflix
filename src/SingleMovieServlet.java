@@ -52,13 +52,14 @@ public class SingleMovieServlet extends HttpServlet {
             // Get a connection from dataSource
 
             // Construct a query with parameter represented by "?"
-            String query = "SELECT m.id as movieId, s.id as starId, group_concat(DISTINCT g.name) as genre, r.rating as rating, " +
+            String query = "SELECT m.id as movieId, s.id as starId, count, " +
+                    "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC SEPARATOR ', ') as genre, r.rating as rating, " +
                     "s.name as starName, m.title as title, m.year as year, m.director as director " +
-                    "from stars as s, stars_in_movies as sim, movies as m, genres as g, " +
-                    "genres_in_movies as gim, ratings as r " +
-                    "where m.id = sim.movieId and sim.starId = s.id and gim.movieId=m.id and g.id = gim.genreId " +
-                    "and m.id = r.movieId and m.id = ?" +
-                    "group by m.id, s.id, r.rating";
+                    "from stars as s, stars_in_movies as sim, movies as m, genres as g, genres_in_movies as gim, ratings as r, " +
+                    "(select s.id, count(*) as count from stars_in_movies as sim, stars as s where sim.starId = s.id group by starId) as movie_count " +
+                    "where m.id = sim.movieId and sim.starId = s.id and gim.movieId=m.id and g.id = gim.genreId and movie_count.id = s.id " +
+                    "and m.id = r.movieId and m.id = ? " +
+                    "group by m.id, s.id, r.rating order by count DESC, starName ASC";
 
             // Declare our statement
             PreparedStatement statement = conn.prepareStatement(query);

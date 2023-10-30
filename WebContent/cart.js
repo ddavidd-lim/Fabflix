@@ -35,8 +35,8 @@ function handleCartArray(resultArray) {
         // each item will be in a bullet point
         let rowHTML = "<tr>";
         rowHTML += "<th>" + resultArray[i]["movie_title"] + "</th>";
-        rowHTML += "<th>" + resultArray[i]["quantity"] + "</th>";
-        rowHTML += "<th>" + "DELETE" + "</th>";
+        rowHTML += "<th><button class='button removefromcart cart'>-</button>" + resultArray[i]["quantity"] + "<button class='button addtocart cart'>+</button></th>";
+        rowHTML += "<th><button class='button delete'>Delete</button></th>";
         rowHTML += "<th>" + resultArray[i]["price"] + "</th>";
         rowHTML += "<th>" + resultArray[i]["quantity"] * resultArray[i]["price"] + "</th>";
         rowHTML += "</tr>";

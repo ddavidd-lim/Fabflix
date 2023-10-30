@@ -13,6 +13,15 @@ h1 {
     padding-bottom: 5px;
 }
 
+h1 p{
+    font-size: 50%;
+}
+
+h1 .button{
+    font-size: 20px;
+    width: 20%;
+}
+
 h3 {
     color: #F7F0F0;
     padding-left: 20px;
@@ -22,6 +31,10 @@ h3 {
 table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
+    text-size-adjust: 50%;
+    font-size: 10px;
+    width: 50px;
+    text-align: center;
 }
 
 thead {
@@ -36,12 +49,12 @@ tbody {
 
 /* unvisited link */
 a:link {
-    color: blue;
+    color: black;
 }
 
 /* visited link */
 a:visited {
-    color: blue;
+    color: black;
 }
 
 /* mouse over link */
@@ -52,6 +65,7 @@ a:hover {
 /* selected link */
 a:active {
     color: dodgerblue;
+    text-decoration: none;
 }
 
 #navigation-block {
@@ -108,6 +122,8 @@ li.main-genres-li {
 
 .main_page_search_type_box {
     padding-left: 0px;
+    column-gap: 10px;
+    display: grid;
     text-align: center;
 }
 
@@ -123,7 +139,7 @@ li.main-genres-li {
     display: block;
     margin: auto;
     margin-bottom: 20px;
-    padding: 5px 10px;
+    padding: 5px;
     background-color: #44cf6c;
     color: #000000;
     text-decoration: none;
@@ -162,6 +178,13 @@ li.main-genres-li {
 h6 {
     text-align: center;
     color: white;
+}
+
+.cart {
+    display:inline;
+    width: 20px;
+    text-align: center;
+    margin: 5px;
 }
 
 #search_box {

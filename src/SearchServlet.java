@@ -67,9 +67,15 @@ public class SearchServlet extends HttpServlet{
             System.out.println("Type: " + type);
             String sort = request.getParameter("sort");
             System.out.println("Sorting: " + sort);
+            String limit = request.getParameter("limit");
+            System.out.println("Limit: " + limit);
+            String page = request.getParameter("page");
+            System.out.println("Page Number: " + page);
             String whereQuery = "";
             String havingQuery = "";
             String orderQuery = "title ASC, rating ASC"; // default
+            String limitQuery = "";
+            String pageQuery = "";
 
             if (genre != null && !Objects.equals(genre, "null")) {
                 havingQuery += String.format("genres LIKE '%%%s%%' ", genre);
@@ -139,6 +145,27 @@ public class SearchServlet extends HttpServlet{
                 }
             }
 
+            if (limit != null && !Objects.equals(limit, "null"))
+            {
+                limitQuery = limit;
+            }
+            else {
+                limit = "25";
+                limitQuery = "25";
+            }
+            if (page != null && !Objects.equals(page, "null"))
+            {
+                var offset = Integer.parseInt(page) - 1; // page will start at 1
+                var limit_num = Integer.parseInt(limit);
+                offset = offset * limit_num;
+                pageQuery = Integer.toString(offset);
+            } else if (Objects.equals(page, "1")) {
+                pageQuery = "0";
+            }
+            else {
+                pageQuery = "0";
+            }
+
 
             System.out.println("Search: WHERE - " + whereQuery + " HAVING - " + havingQuery);
 
@@ -153,7 +180,7 @@ public class SearchServlet extends HttpServlet{
                     "JOIN ratings as r ON m.id = r.movieId " +
                     "WHERE r.rating IS NOT NULL " + whereQuery +
                     "GROUP BY m.id, r.rating HAVING " + havingQuery +
-                    "ORDER BY " + orderQuery + ";";
+                    "ORDER BY " + orderQuery + " LIMIT " + limitQuery + " OFFSET " + pageQuery + ";";
 
             // (select s.id, count(*) as count from stars_in_movies as sim, stars as s where sim.starId = s.id group by starId) as movie_count
             request.getServletContext().log("query：" + query);

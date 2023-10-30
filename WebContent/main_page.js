@@ -15,6 +15,7 @@ function handleGenreResult(resultData) {
         let rowHTML = "";
         rowHTML += "<li class='main-genres-li'>";
         rowHTML += "<a href=results.html?type=browse&genre=" + resultData[i]['genreName'] +
+            "&sort=AscTitleAscRating&limit=25&page=1" +
             " class='genre-link' onclick=" + "changeGenre(" + resultData[i]['genreName'] + ")>";
         rowHTML += resultData[i]['genreName'];
         rowHTML += "</a>"
@@ -37,7 +38,8 @@ function handleMovieTitleResult(resultData) {
             let rowHTML = "";
             rowHTML += "<li class='main-genres-li'>";
             rowHTML += "<a href=results.html?type=browse&movietitle=" + resultData[i]['movieLetter'] +
-                " class='letter-link' onclick=" + "changeTitle(" + resultData[i]['movieLetter'] + ")>";
+                "&sort=AscTitleAscRating&limit=25&page=1" +
+                " class='genre-link' onclick=changeTitle(" + resultData[i]['movieLetter'] + ")>";
             rowHTML += resultData[i]["movieLetter"];
             rowHTML += "</a>";
             rowHTML += "</li>";
@@ -47,7 +49,8 @@ function handleMovieTitleResult(resultData) {
     }
 
     let row = "<li class='main-genres-li'>";
-    row += "<a href='results.html?type=browse&movietitle=*' class='letter-link' onclick=" +
+    row += "<a href='results.html?type=browse&movietitle=*&sort=AscTitleAscRating&limit=25&page=1'"
+        + " class='letter-link' onclick=" +
         "changeTitle(" + "'*'" + ")>";
     row += "*";
     row += "</a>"

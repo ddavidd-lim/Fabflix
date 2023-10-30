@@ -45,6 +45,14 @@
         <option value="DecRatingAscTitle">&darr; Rating , &uarr; Title</option>
         <option value="DecRatingDecTitle">&darr; Rating , &darr; Title</option>
     </select>
+    <label for="pageNumberSelection">Movies Per Page</label>
+    <select name="limit" id="pageNumberSelection">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+    </select>
+    <input id="pageNumberCurrent" type="hidden" name="page" value="1">
     <button id="sortingUpdateButton" form="sortForm" type="submit" value="Update">Update</button>
 </form>
 </div>
@@ -64,6 +72,12 @@
     </thead>
     <tbody id=movie_result_table_body></tbody>
 </table>
+<a id="prevButtonLink">
+<button id="prevButton">Prev</button>
+</a>
+<a id="nextButtonLink">
+<button id="nextButton">Next</button>
+</a>
 
 <!-- Load jQuery and Bootstrap JS -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

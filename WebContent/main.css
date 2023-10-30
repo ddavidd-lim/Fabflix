@@ -124,6 +124,7 @@ li.main-genres-li {
     width: 40%;
     text-align: center;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .checkout {

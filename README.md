@@ -7,10 +7,14 @@
 
 Caitlynn Chang
 - Main Page (search and browse)
+- Single Star Page + Single Movie Page (not including SQL for star sorting)
 
 
 David Lim
 - Login Page
+
+## Where Used LIKE/ILIKE
+
  
 # **CS 122B Project 1**
 

@@ -113,7 +113,19 @@ public class ItemsServlet extends HttpServlet {
                 // prevent corrupted states through sharing under multi-threads
                 // will only be executed by one thread at a time
                 synchronized (previousItems) {
-                    previousItems.add(jsonObject);    // adds new item to existing array
+                    for (int i = 0; i < previousItems.size(); i++) {
+                        JsonObject item = previousItems.get(i).getAsJsonObject();
+                        if (movieTitle.equals(item.get("movie_title").getAsString())) {
+                            // Update the quantity
+                            int newQuantity = item.get("quantity").getAsInt() + 1;
+                            item.addProperty("quantity", newQuantity);
+                            break; // Stop searching once the item is found and updated
+                        }
+                        else{
+                            previousItems.add(jsonObject);
+                        }
+                    }
+
                     System.out.println("Successfully added movie");
                 }
             }

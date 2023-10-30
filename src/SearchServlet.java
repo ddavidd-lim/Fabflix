@@ -65,8 +65,11 @@ public class SearchServlet extends HttpServlet{
             System.out.println("Genre: " + genre);
             String type = request.getParameter("type");
             System.out.println("Type: " + type);
+            String sort = request.getParameter("sort");
+            System.out.println("Sorting: " + sort);
             String whereQuery = "";
             String havingQuery = "";
+            String orderQuery = "title ASC, rating ASC"; // default
 
             if (genre != null && !Objects.equals(genre, "null")) {
                 havingQuery += String.format("genres LIKE '%%%s%%' ", genre);
@@ -104,6 +107,38 @@ public class SearchServlet extends HttpServlet{
                     havingQuery += String.format(" and LOWER(top3Stars) like LOWER('%%%s%%') ", star);
                 }
             }
+            if (sort != null && !Objects.equals(sort, "null"))
+            {
+                if (sort.contains("AscTitleDecRating"))
+                {
+                    orderQuery = "title ASC, rating DESC";
+                }
+                if (sort.contains("DecTitleAscRating"))
+                {
+                    orderQuery = "title DESC, rating ASC";
+                }
+                if (sort.contains("DecTitleDecRating"))
+                {
+                    orderQuery = "title DESC, rating DESC";
+                }
+                if (sort.contains("AscRatingAscTitle"))
+                {
+                    orderQuery = "rating ASC, title ASC";
+                }
+                if (sort.contains("AscRatingDecTitle"))
+                {
+                    orderQuery = "rating ASC, title DESC";
+                }
+                if (sort.contains("DecRatingAscTitle"))
+                {
+                    orderQuery = "rating DESC, title ASC";
+                }
+                if (sort.contains("DecRatingDecTitle"))
+                {
+                    orderQuery = "rating DESC, title DESC";
+                }
+            }
+
 
             System.out.println("Search: WHERE - " + whereQuery + " HAVING - " + havingQuery);
 
@@ -118,8 +153,9 @@ public class SearchServlet extends HttpServlet{
                     "JOIN ratings as r ON m.id = r.movieId " +
                     "WHERE r.rating IS NOT NULL " + whereQuery +
                     "GROUP BY m.id, r.rating HAVING " + havingQuery +
-                    "ORDER BY r.rating;";
+                    "ORDER BY " + orderQuery + ";";
 
+            // (select s.id, count(*) as count from stars_in_movies as sim, stars as s where sim.starId = s.id group by starId) as movie_count
             request.getServletContext().log("query：" + query);
             System.out.println("Full Query: " + query);
 

@@ -3,9 +3,6 @@
  * @param resultData jsonObject
  */
 
-let search = jQuery("#search-form");
-
-
 function handleGenreResult(resultData) {
     console.log("handleStarResult: populating genres list from resultData");
 
@@ -60,13 +57,6 @@ function handleMovieTitleResult(resultData) {
     console.log("movieTitles added");
 }
 
-function submitSearch(event) {
-    event.preventDefault();
-    let url = "results.html?";
-    url += search.serialize();
-    window.location.replace(url);
-}
-
 function changeGenre(genre) {
     let genreForm = jQuery("#genreForm");
     let typeForm = jQuery("#typeForm");
@@ -80,8 +70,6 @@ function changeTitle(letter) {
     titleForm.value = letter;
     typeForm.value = "browse";
 }
-
-search.submit((event) => submitSearch(event));
 
 // Makes the HTTP GET request and registers on success callback function
 

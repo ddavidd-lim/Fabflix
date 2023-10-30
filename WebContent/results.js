@@ -8,7 +8,6 @@
  *      2. Populate the data to correct html elements.
  */
 
-
 function getParameterByName(target) {
     let url = window.location.href;
     //
@@ -98,8 +97,6 @@ function handleResults(resultData) {
 }
 
 
-
-
 /**
  * Once this .js is loaded, following scripts will be executed by the browser
  */
@@ -110,14 +107,28 @@ let director = getParameterByName("director");
 let star = getParameterByName("moviestar");
 let genre = getParameterByName("genre");
 let type = getParameterByName("type");
+let sort = getParameterByName("sort");
 
-
+$("#typeForm_results").val(type);;
+$("#movietitleForm_results").val(title);
+$("#movieyearForm_results").val(year);
+$("#directorForm_results").val(director);
+$("#starForm_results").val(star);
+$("#genreForm_results").val(genre);
 
 // Makes the HTTP GET request and registers on success callback function
 jQuery.ajax({
     dataType: "json", // Setting return data type
     method: "GET", // Setting request method
     url: "api/results?type=" + type + "&movietitle=" + title + "&movieyear=" + year + "&director=" + director + "&moviestar=" +
-        star + "&genre=" + genre, // Setting request url
+        star + "&genre=" + genre + "&sort=" + sort, // Setting request url
+    success: (resultData) => handleResults(resultData)
+});
+
+jQuery.ajax({
+    dataType: "json", // Setting return data type
+    method: "POST", // Setting request method
+    url: "api/results?type=" + type + "&movietitle=" + title + "&movieyear=" + year + "&director=" + director + "&moviestar=" +
+        star + "&genre=" + genre + "&sort=" + sort, // Setting request url
     success: (resultData) => handleResults(resultData)
 });

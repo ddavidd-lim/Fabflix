@@ -24,13 +24,16 @@
 <h6>Payment details</h6>
 
 
-<form action="" method="post">
+<form id="card_info" action="#" method="post">
     <input type="text" name="cardnumber" placeholder="Card number" class="pay_input">
     <input type="text" name="firstname" placeholder="First Name" class="pay_input">
     <input type="text" name="lastname" placeholder="Last Name" class="pay_input">
     <input type="date" name="expdate" class="pay_input">
+    <div class="button subtotal"></div>
+    <input type="submit" class="button" value="Place order">
 </form>
-<div class="button subtotal">Subtotal: $</div>
-<a href="https://www.google.com/" class="button">Proceed to Checkout</a>
+
+<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+<script src="checkout.js"></script>
 </body>
 </html>

@@ -118,11 +118,11 @@ function addToSessionCart(movieId) {
         dataType: "json",
         method: "POST",
         url: "api/cart", // Adjust the URL as needed
-        data: { movie_id: movieId },
+        data: { movie_id: movieId, action: "add"},
         success: () => {
             alert("Successfully added to cart");
         },
-        error: (jqXHR, textStatus, errorThrown) => {
+        error: (jqXHR, textStatus) => {
             alert("Error: " + textStatus);
         }
 

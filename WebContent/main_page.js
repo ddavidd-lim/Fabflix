@@ -3,9 +3,6 @@
  * @param resultData jsonObject
  */
 
-let search = jQuery("#search-form");
-
-
 function handleGenreResult(resultData) {
     console.log("handleStarResult: populating genres list from resultData");
 
@@ -17,7 +14,8 @@ function handleGenreResult(resultData) {
         // Concatenate the html tags with resultData jsonObject
         let rowHTML = "";
         rowHTML += "<li class='main-genres-li'>";
-        rowHTML += "<a href=results.html?type=browse&genre=" + resultData[i]['genreName'] +
+        rowHTML += "<a class='browse-link' href=results.html?type=browse&genre=" + resultData[i]['genreName'] +
+            "&sort=AscTitleAscRating&limit=25&page=1" +
             " class='genre-link' onclick=" + "changeGenre(" + resultData[i]['genreName'] + ")>";
         rowHTML += resultData[i]['genreName'];
         rowHTML += "</a>"
@@ -39,8 +37,9 @@ function handleMovieTitleResult(resultData) {
         {
             let rowHTML = "";
             rowHTML += "<li class='main-genres-li'>";
-            rowHTML += "<a href=results.html?type=browse&movietitle=" + resultData[i]['movieLetter'] +
-                " class='letter-link' onclick=" + "changeTitle(" + resultData[i]['movieLetter'] + ")>";
+            rowHTML += "<a class='browse-link' href=results.html?type=browse&movietitle=" + resultData[i]['movieLetter'] +
+                "&sort=AscTitleAscRating&limit=25&page=1" +
+                " class='genre-link' onclick=changeTitle(" + resultData[i]['movieLetter'] + ")>";
             rowHTML += resultData[i]["movieLetter"];
             rowHTML += "</a>";
             rowHTML += "</li>";
@@ -50,7 +49,8 @@ function handleMovieTitleResult(resultData) {
     }
 
     let row = "<li class='main-genres-li'>";
-    row += "<a href='results.html?type=browse&movietitle=*' class='letter-link' onclick=" +
+    row += "<a class='browse-link' href='results.html?type=browse&movietitle=*&sort=AscTitleAscRating&limit=25&page=1'"
+        + " class='letter-link' onclick=" +
         "changeTitle(" + "'*'" + ")>";
     row += "*";
     row += "</a>"
@@ -58,13 +58,6 @@ function handleMovieTitleResult(resultData) {
     mainPageMovieTitleBodyElement.append(row);
 
     console.log("movieTitles added");
-}
-
-function submitSearch(event) {
-    event.preventDefault();
-    let url = "results.html?";
-    url += search.serialize();
-    window.location.replace(url);
 }
 
 function changeGenre(genre) {
@@ -80,8 +73,6 @@ function changeTitle(letter) {
     titleForm.value = letter;
     typeForm.value = "browse";
 }
-
-search.submit((event) => submitSearch(event));
 
 // Makes the HTTP GET request and registers on success callback function
 

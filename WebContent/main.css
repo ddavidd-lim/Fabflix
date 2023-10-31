@@ -205,3 +205,26 @@ input {
     float: left;
     margin-right: 20px;
 }
+
+label {
+    color: white;
+}
+
+a.browse-link:link {
+    color: #44cf6c;
+}
+
+/* visited link */
+a.browse-link:visited {
+    color: #44cf6c;
+}
+
+/* mouse over link */
+a.browse-link:hover {
+    color: #5fe385;
+}
+
+/* selected link */
+a.browse-link:active {
+    color: #5fe385;
+}

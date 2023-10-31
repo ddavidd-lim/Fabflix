@@ -7,14 +7,17 @@
 
 Caitlynn Chang
 - Main Page (search and browse)
-- Single Star Page + Single Movie Page (not including SQL for star sorting)
+- Single Star/Movie Pages + Jump Functionaility
+- Movie List Page 
 
 
 David Lim
 - Login Page
+- Shopping Cart + Payment Pages and Functions
+- Demo Video
 
 ## Where Used LIKE/ILIKE
-
+LIKE was mainly used for the Search and Browse Function (SearchServlet). For the search feature, LIKE was used for finding the title, director and star with the pattern being %substring%. For the browsing feature, LIKE was used for genres with the format %genre% and movie titles with the format pattern% (expect for *). Genre was formatted this way due to query returning genres as a string of all the genres. 
  
 # **CS 122B Project 1**
 

@@ -34,6 +34,21 @@ function handleTotalDisplay(resultArray) {
 }
 
 
+function makeTransaction(){
+    console.log("Adding sale in database");
+
+    $.ajax("api/creditcard", {
+        method: "POST",     // POST TO UPDATE ITEMS
+        data: card_info.serialize(),
+        success: resultDataString => {
+            let resultDataJson = JSON.parse(resultDataString);
+            handleCartArray(resultDataJson["previousItems"]);
+            alert("Successfully added to cart");
+        }
+    });
+}
+
+
 /**
  * Submit form content with POST method
  * @param cardEvent
@@ -47,13 +62,18 @@ function handleCardInfo(cardEvent) {
      */
     cardEvent.preventDefault();
 
-    $.ajax("api/cart", {
+    $.ajax("api/creditcard", {
         method: "POST",     // POST TO UPDATE ITEMS
         data: card_info.serialize(),
-        success: resultDataString => {
-            let resultDataJson = JSON.parse(resultDataString);
-            handleCartArray(resultDataJson["previousItems"]);
-            alert("Successfully added to cart");
+        success: isValid => {   // need to pass in customerID from credit card info, saleDate, id=0, auto inc, and movieid
+            if (isValid == "true"){
+                alert("Valid Credit Card");
+                makeTransaction(card_info.serialize())
+            }
+            else if (isValid == "false"){
+                alert("Invalid Credit Card");   // instead of alerts, modify a tag in html
+            }
+
         }
     });
 

@@ -20,11 +20,43 @@
         <ul id="navigation-ul">
             <li class="navigation-li"><a class="navigation-list" href="index.html">Movies List</a></li>
             <li class="navigation-li"><a class="navigation-list" href="main_page.html">Home</a></li>
+            <li class="navigation-li"><a class="navigation-list last-search">Result</a></li>
         </ul>
     </nav>
 </div>
 
 <h1>Movie Results</h1>
+
+<div id="sorting_dropdown">
+<form id="sortForm" action="" method="get">
+    <input id="typeForm_results" type="hidden" name="type">
+    <input id="movietitleForm_results" type="hidden" name="movietitle">
+    <input id="movieyearForm_results" type="hidden" name="movieyear">
+    <input id="directorForm_results" type="hidden" name="director">
+    <input id="starForm_results" type="hidden" name="moviestar">
+    <input id="genreForm_results" type="hidden" name="genre">
+    <label for="sortSelection">Sort By: </label>
+    <select name="sort" id="sortSelection">
+        <option value="AscTitleAscRating">&uarr; Title , &uarr; Rating</option> <!-- ASC Title, ASC Rating -->
+        <option value="AscTitleDecRating">&uarr; Title , &darr; Rating</option> <!-- ASC Title, DEC Rating -->
+        <option value="DecTitleAscRating">&darr; Title , &uarr; Rating</option> <!-- DEC Title, ASC Rating -->
+        <option value="DecTitleDecRating">&darr; Title , &darr; Rating</option> <!-- DEC Title, DEC Rating -->
+        <option value="AscRatingAscTitle">&uarr; Rating , &uarr; Title</option>
+        <option value="AscRatingDecTitle">&uarr; Rating , &darr; Title</option>
+        <option value="DecRatingAscTitle">&darr; Rating , &uarr; Title</option>
+        <option value="DecRatingDecTitle">&darr; Rating , &darr; Title</option>
+    </select>
+    <label for="pageNumberSelection">Movies Per Page</label>
+    <select name="limit" id="pageNumberSelection">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+    </select>
+    <input id="pageNumberCurrent" type="hidden" name="page" value="1">
+    <button id="sortingUpdateButton" form="sortForm" type="submit" value="Update">Update</button>
+</form>
+</div>
 
 <table id=movie_result_table class="table table-striped">
     <thead>
@@ -41,6 +73,12 @@
     </thead>
     <tbody id=movie_result_table_body></tbody>
 </table>
+<a id="prevButtonLink">
+<button id="prevButton">Prev</button>
+</a>
+<a id="nextButtonLink">
+<button id="nextButton">Next</button>
+</a>
 
 <!-- Load jQuery and Bootstrap JS -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

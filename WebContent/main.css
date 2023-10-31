@@ -181,3 +181,7 @@ input {
     float: left;
     margin-right: 20px;
 }
+
+label {
+    color: white;
+}

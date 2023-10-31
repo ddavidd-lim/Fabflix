@@ -8,7 +8,7 @@
  *      2. Populate the data to correct html elements.
  */
 
-
+let resultLength = 0;
 function getParameterByName(target) {
     let url = window.location.href;
     //
@@ -31,11 +31,13 @@ function handleResults(resultData) {
     // Populate the star table
     // Find the empty table body by id "star_table_body"
     let movieTableBodyElement = jQuery("#movie_result_table_body");
+    let limit_num = parseInt(getParameterByName("limit"));
+    resultLength = resultData.length;
 
     // Iterate through resultData, no more than 10 entries
     let next_actor = 0;
     let next_genre = 0;
-    for (let i = 0; i < Math.min(20, resultData.length); i++) {
+    for (let i = 0; i < resultData.length; i++) {
 
         // Concatenate the html tags with resultData jsonObject
         let rowHTML = "";
@@ -95,10 +97,41 @@ function handleResults(resultData) {
         // Append the row created to the table body, which will refresh the page
         movieTableBodyElement.append(rowHTML);
     }
+    changeNavButtons(resultData.length)
 }
 
 
+function changeNavButtons(table_rows) {
+    let url = window.location.toString();
+    if (!url.includes("&page=")) // we assume page 1
+    {
+        document.getElementById("prevButton").disabled = true;
+        document.getElementById("nextButton").disabled = false;
+        document.getElementById('nextButtonLink').setAttribute('href',url + "&page=2");
+    }
+    else {
+        let pageNum = parseInt(url.split("&page=")[1]);
+        url = url.split("&page=")[0];
 
+        if (pageNum === 1) {
+            document.getElementById("prevButton").disabled = true;
+        }
+        else
+        {
+            document.getElementById("prevButton").disabled = false;
+            document.getElementById("prevButtonLink").setAttribute('href', url + "&page=" + (pageNum-1).toString());
+        }
+        let limitNum = parseInt(url.split("&limit=")[1]);
+        if (table_rows < limitNum)
+        {
+            document.getElementById("nextButton").disabled = true;
+        }
+        else
+        {
+            document.getElementById("nextButtonLink").setAttribute('href', url + "&page=" + (pageNum+1).toString());
+        }
+    }
+}
 
 /**
  * Once this .js is loaded, following scripts will be executed by the browser
@@ -110,14 +143,27 @@ let director = getParameterByName("director");
 let star = getParameterByName("moviestar");
 let genre = getParameterByName("genre");
 let type = getParameterByName("type");
+let sort = getParameterByName("sort");
+let limit = getParameterByName("limit");
+let page = getParameterByName("page");
 
+let result_nav = jQuery(".last-search").attr("href", window.location.href);
 
+const search_result = window.location.href;
+sessionStorage.setItem('search_result', search_result);
+
+jQuery("#typeForm_results").val(type);
+jQuery("#movietitleForm_results").val(title);
+jQuery("#movieyearForm_results").val(year);
+jQuery("#directorForm_results").val(director);
+jQuery("#starForm_results").val(star);
+jQuery("#genreForm_results").val(genre);
 
 // Makes the HTTP GET request and registers on success callback function
 jQuery.ajax({
     dataType: "json", // Setting return data type
     method: "GET", // Setting request method
     url: "api/results?type=" + type + "&movietitle=" + title + "&movieyear=" + year + "&director=" + director + "&moviestar=" +
-        star + "&genre=" + genre, // Setting request url
+        star + "&genre=" + genre + "&sort=" + sort + "&limit=" + limit + "&page=" + page, // Setting request url
     success: (resultData) => handleResults(resultData)
 });

@@ -136,6 +136,11 @@ function addToSessionCart(movieId) {
 
 // Get id from URL
 let movieId = getParameterByName('id');
+const search_result = sessionStorage.getItem('search_result');
+let result = sessionStorage.getItem('search_result', search_result);
+
+jQuery(".last-search").attr("href", result);
+
 
 // Makes the HTTP GET request and registers on success callback function handleResult
 jQuery.ajax({

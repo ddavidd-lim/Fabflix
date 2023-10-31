@@ -164,11 +164,3 @@ jQuery.ajax({
         star + "&genre=" + genre + "&sort=" + sort + "&limit=" + limit + "&page=" + page, // Setting request url
     success: (resultData) => handleResults(resultData)
 });
-
-jQuery.ajax({
-    dataType: "json", // Setting return data type
-    method: "POST", // Setting request method
-    url: "api/results?type=" + type + "&movietitle=" + title + "&movieyear=" + year + "&director=" + director + "&moviestar=" +
-        star + "&genre=" + genre + "&sort=" + sort, // Setting request url
-    success: (resultData) => handleResults(resultData)
-});

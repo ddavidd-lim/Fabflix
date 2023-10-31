@@ -214,6 +214,7 @@ public class SearchServlet extends HttpServlet{
             }
             rs.close();
             statement.close();
+            dbCon.close();
 
             // Log to localhost log
             request.getServletContext().log("getting " + jsonArray.size() + " results");
@@ -228,12 +229,14 @@ public class SearchServlet extends HttpServlet{
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("errorMessage", e.toString());
             out.write(jsonObject.toString());
+            System.out.println("Failed To Search");
 
             // Set response status to 500 (Internal Server Error)
             response.setStatus(500);
         }
         finally {
             out.close();
+            System.out.println("Search Closing");
         }
     }
 

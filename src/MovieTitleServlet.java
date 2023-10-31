@@ -70,6 +70,7 @@ public class MovieTitleServlet extends HttpServlet {
             }
             rs.close();
             statement.close();
+            conn.close();
 
             // Log to localhost log
             request.getServletContext().log("getting " + jsonArray.size() + " results");

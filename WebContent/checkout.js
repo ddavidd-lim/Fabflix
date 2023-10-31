@@ -40,8 +40,13 @@ function makeTransaction(){
     $.ajax("api/creditcard", {
         method: "POST",     // POST TO UPDATE ITEMS
         data: card_info.serialize(),
-        success: () => {
-            alert("Successful transaction");
+        success: result => {
+            if (result){
+                alert("Successful transaction");
+            }
+            else{
+                alert("Failed transaction");
+            }
         }
     });
 }

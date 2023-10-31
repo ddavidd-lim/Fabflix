@@ -65,25 +65,21 @@ public class CreditCardServlet extends HttpServlet{
 
 
             String query = "SELECT * FROM creditcards WHERE id = ? AND firstName = ? AND lastName = ? AND expiration = ?";
-            System.out.println("So far: 1");
             // Declare our statement
             PreparedStatement statement = conn.prepareStatement(query);
-            System.out.println("So far: 2");
             statement.setString(1, cardnumber);
             statement.setString(2, firstname);
             statement.setString(3, lastname);
             statement.setString(4, expdate);
-            System.out.println("So far before rs");
 
             // Perform the query
             ResultSet rs = statement.executeQuery();
             String isValid = "false";
-            System.out.println("So far: " + isValid);
             // Check if query returned anything
             if (rs.next()) {
                 isValid = "true";
             }
-            System.out.println("Now: " + isValid);
+
             rs.close();
             statement.close();
 
@@ -112,6 +108,7 @@ public class CreditCardServlet extends HttpServlet{
     // ADDS to the previous items list
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json"); // Response mime type
+        System.out.println("So far before rs");
         String cardnumber = request.getParameter("cardnumber");
         String firstname = request.getParameter("firstname");
         String lastname = request.getParameter("lastname");
@@ -132,23 +129,26 @@ public class CreditCardServlet extends HttpServlet{
                 JsonObject item = obj.getAsJsonObject();
                 String movie_id = String.valueOf(item.get("movie_id"));
                 // Construct a query with parameter represented by "?"
-                String query = "SELECT c.cid as customer_id FROM movies as m, customers as c " +
-                        "WHERE c.ccId = ? AND m.id = ? AND c.firstName = ? AND c.lastName = ?";
+                String query = "SELECT c.ccid as customer_id FROM customers as c " +
+                        "WHERE c.ccId = ? AND c.firstName = ? AND c.lastName = ?";
 
                 // Declare our statement
                 statement = conn.prepareStatement(query); // want customer_id out of query
 
                 // Set the parameter represented by "?" in the query to the id we get from url,
                 statement.setString(1, cardnumber);
-                statement.setString(2, movie_id);
-                statement.setString(3, firstname);
-                statement.setString(4, lastname);
+//                statement.setString(2, movie_id);
+                statement.setString(2, firstname);
+                statement.setString(3, lastname);
 
                 // Perform the query
+                System.out.println("So far before rs");
                 rs = statement.executeQuery();
+                System.out.println("After rs");
 
                 // Iterate through each row of rs
                 if (rs.next()) {    // if movie exists: it probably does btw
+                    System.out.println("Found customerID");
                     int customer_id = rs.getInt("customer_id");
                     // movie_id acquired
                     // Sale date
@@ -161,6 +161,12 @@ public class CreditCardServlet extends HttpServlet{
                     statement.setInt(1, customer_id);
                     statement.setString(2, movie_id);
                     statement.setDate(3, date);
+                    int rowsAffected = statement.executeUpdate();
+                    if (rowsAffected > 0) {
+                        System.out.println("Insert operation was successful.");
+                    } else {
+                        System.out.println("Insert operation failed.");
+                    }
                 }
             }
 
@@ -168,13 +174,8 @@ public class CreditCardServlet extends HttpServlet{
             statement.close();
             // ------------------------------------
 
-            JsonObject responseJsonObject = new JsonObject();
-            JsonArray previousItemsJsonArray = new JsonArray();
-            previousItems.forEach(previousItemsJsonArray::add); // convert string array in session to json array
-            responseJsonObject.add("previousItems", previousItemsJsonArray);    // adds json array as element of response
 
-
-            response.getWriter().write(responseJsonObject.toString());
+            response.getWriter().write("true");
             // Set response status to 200 (OK)
             System.out.println("Set response 200");
             response.setStatus(200);

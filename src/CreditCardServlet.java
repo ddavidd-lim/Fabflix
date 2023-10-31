@@ -156,7 +156,7 @@ public class CreditCardServlet extends HttpServlet{
                     java.sql.Date date = new java.sql.Date(millis);
 
                     // insert sale into table
-                    query = "INSERT INTO sales (customerId, movie_id, sale_date) VALUES (?, ?, ?)";
+                    query = "INSERT INTO sales (customerId, movie_ida, sale_date) VALUES (?, ?, ?)";
                     statement = conn.prepareStatement(query); // want customer_id out of query
                     statement.setInt(1, customer_id);
                     statement.setString(2, movie_id);

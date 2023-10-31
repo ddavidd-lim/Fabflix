@@ -137,8 +137,6 @@ function changeNavButtons(table_rows) {
  * Once this .js is loaded, following scripts will be executed by the browser
  */
 
-
-
 let title = getParameterByName("movietitle");
 let year = getParameterByName("movieyear");
 let director = getParameterByName("director");
@@ -148,6 +146,11 @@ let type = getParameterByName("type");
 let sort = getParameterByName("sort");
 let limit = getParameterByName("limit");
 let page = getParameterByName("page");
+
+let result_nav = jQuery(".last-search").attr("href", window.location.href);
+
+const search_result = window.location.href;
+sessionStorage.setItem('search_result', search_result);
 
 jQuery("#typeForm_results").val(type);
 jQuery("#movietitleForm_results").val(title);

@@ -147,7 +147,7 @@ let sort = getParameterByName("sort");
 let limit = getParameterByName("limit");
 let page = getParameterByName("page");
 
-let result_nav = jQuery(".last-search").attr("href", window.location.href);
+jQuery(".last-search").attr("href", window.location.href);
 
 const search_result = window.location.href;
 sessionStorage.setItem('search_result', search_result);

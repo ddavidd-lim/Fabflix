@@ -1,3 +1,5 @@
+package Servlets;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import jakarta.servlet.ServletConfig;
@@ -16,16 +18,17 @@ import javax.sql.DataSource;
 
 
 @WebServlet(
-        name = "MovieTitleServlet",
-        urlPatterns = {"/api/movieTitle"}
+        name = "Servlets.GenreServlet",
+        urlPatterns = {"/api/genres"}
 )
-public class MovieTitleServlet extends HttpServlet {
+
+public class GenreServlet extends HttpServlet{
     private static final long serialVersionUID = 1L;
 
     // Create a dataSource which registered in web.
     private DataSource dataSource;
 
-    public MovieTitleServlet() {
+    public GenreServlet() {
     }
 
     public void init(ServletConfig config) {
@@ -51,7 +54,7 @@ public class MovieTitleServlet extends HttpServlet {
 /*
             String query = "SELECT * from movies as m, stars_in_movies as sim, stars as s where s.id=sim.starId and" +
                     "sim.movieId = m.id and m.id=?"; */
-            String query = "SELECT DISTINCT SUBSTRING(UPPER(movies.title), 1, 1) as letter FROM movies ORDER BY letter ASC;";
+            String query = "SELECT genres.name as name FROM genres ORDER BY genres.name ASC;";
 
             // Perform the query
             ResultSet rs = statement.executeQuery(query);
@@ -60,11 +63,11 @@ public class MovieTitleServlet extends HttpServlet {
 
             // Iterate through each row of rs
             while (rs.next()) {
-                String movie_letters = rs.getString("letter");
+                String genres = rs.getString("name");
 
                 // Create a JsonObject based on the data we retrieve from rs
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("movieLetter", movie_letters);
+                jsonObject.addProperty("genreName", genres);
 
                 jsonArray.add(jsonObject);
             }

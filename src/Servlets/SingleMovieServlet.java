@@ -1,3 +1,5 @@
+package Servlets;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -11,13 +13,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 
-// Declaring a WebServlet called SingleStarServlet, which maps to url "/api/single-star"
-@WebServlet(name = "SingleStarServlet", urlPatterns = "/api/single-star")
-public class SingleStarServlet extends HttpServlet {
+// Declaring a WebServlet called Servlets.SingleMovieServlet, which maps to url "/api/single-movie"
+@WebServlet(name = "Servlets.SingleMovieServlet", urlPatterns = "/api/single-movie")
+
+public class SingleMovieServlet extends HttpServlet {
     private static final long serialVersionUID = 2L;
 
     // Create a dataSource which registered in web.xml
@@ -27,7 +28,7 @@ public class SingleStarServlet extends HttpServlet {
         try {
             dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
         } catch (NamingException e) {
-            e.printStackTrace();
+            e.printStackTrace();;
         }
     }
 
@@ -53,8 +54,14 @@ public class SingleStarServlet extends HttpServlet {
             // Get a connection from dataSource
 
             // Construct a query with parameter represented by "?"
-            String query = "SELECT * from stars as s, stars_in_movies as sim, movies as m " +
-                    "where m.id = sim.movieId and sim.starId = s.id and s.id = ? ORDER BY year DESC, title ASC";
+            String query = "SELECT m.id as movieId, s.id as starId, count, " +
+                    "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC SEPARATOR ', ') as genre, r.rating as rating, " +
+                    "s.name as starName, m.title as title, m.year as year, m.director as director " +
+                    "from stars as s, stars_in_movies as sim, movies as m, genres as g, genres_in_movies as gim, ratings as r, " +
+                    "(select s.id, count(*) as count from stars_in_movies as sim, stars as s where sim.starId = s.id group by starId) as movie_count " +
+                    "where m.id = sim.movieId and sim.starId = s.id and gim.movieId=m.id and g.id = gim.genreId and movie_count.id = s.id " +
+                    "and m.id = r.movieId and m.id = ? " +
+                    "group by m.id, s.id, r.rating order by count DESC, starName ASC";
 
             // Declare our statement
             PreparedStatement statement = conn.prepareStatement(query);
@@ -72,24 +79,28 @@ public class SingleStarServlet extends HttpServlet {
             while (rs.next()) {
 
                 String starId = rs.getString("starId");
-                String starName = rs.getString("name");
-                String starDob = rs.getString("birthYear");
+                String starName = rs.getString("starName");
+
+                String genre = rs.getString("genre");
 
                 String movieId = rs.getString("movieId");
                 String movieTitle = rs.getString("title");
                 String movieYear = rs.getString("year");
                 String movieDirector = rs.getString("director");
 
+                String movieRating = rs.getString("rating");
+
                 // Create a JsonObject based on the data we retrieve from rs
 
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("star_id", starId);
                 jsonObject.addProperty("star_name", starName);
-                jsonObject.addProperty("star_dob", starDob);
                 jsonObject.addProperty("movie_id", movieId);
                 jsonObject.addProperty("movie_title", movieTitle);
                 jsonObject.addProperty("movie_year", movieYear);
                 jsonObject.addProperty("movie_director", movieDirector);
+                jsonObject.addProperty("movie_rating", movieRating);
+                jsonObject.addProperty("genre", genre);
 
                 jsonArray.add(jsonObject);
             }
@@ -119,5 +130,4 @@ public class SingleStarServlet extends HttpServlet {
         // Always remember to close db connection after usage. Here it's done by try-with-resources
 
     }
-
 }

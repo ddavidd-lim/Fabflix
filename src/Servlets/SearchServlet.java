@@ -1,3 +1,5 @@
+package Servlets;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
@@ -17,7 +19,7 @@ import java.sql.Statement;
 import java.util.Enumeration;
 import java.util.Objects;
 
-@WebServlet(name = "SearchServlet", urlPatterns = "/api/results")
+@WebServlet(name = "Servlets.SearchServlet", urlPatterns = "/api/results")
 
 public class SearchServlet extends HttpServlet{
 

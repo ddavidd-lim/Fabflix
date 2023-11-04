@@ -1,3 +1,5 @@
+package Servlets;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -23,7 +25,7 @@ import java.util.Date;
  * This IndexServlet is declared in the web annotation below,
  * which is mapped to the URL pattern /api/index.
  */
-@WebServlet(name = "ItemsServlet", urlPatterns = "/api/cart")
+@WebServlet(name = "Servlets.ItemsServlet", urlPatterns = "/api/cart")
 public class ItemsServlet extends HttpServlet {
     private static final long serialVersionUID = 2L;
 

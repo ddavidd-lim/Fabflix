@@ -1,3 +1,5 @@
+package Servlets;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mysql.cj.x.protobuf.MysqlxPrepare;
@@ -22,7 +24,7 @@ import java.util.Date;
 
 
 @WebServlet(
-        name = "CreditCardServlet",
+        name = "Servlets.CreditCardServlet",
         urlPatterns = {"/api/creditcard"}
 )
 

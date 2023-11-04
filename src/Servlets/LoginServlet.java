@@ -1,3 +1,5 @@
+package Servlets;
+
 import com.google.gson.JsonObject;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,8 +14,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import Entities.User;
 
-@WebServlet(name = "LoginServlet", urlPatterns = "/api/login")
+@WebServlet(name = "Servlets.LoginServlet", urlPatterns = "/api/login")
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 2L;
 

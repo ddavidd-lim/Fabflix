@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS moviedb.genres;
 DROP TABLE IF EXISTS moviedb.creditcards;
 DROP TABLE IF EXISTS moviedb.movies;
 DROP TABLE IF EXISTS moviedb.stars;
-DROP TABLE IF EXISTS moviedb.employees
+DROP TABLE IF EXISTS moviedb.employees;
 
 
 CREATE TABLE moviedb.movies (

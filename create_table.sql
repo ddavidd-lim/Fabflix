@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS moviedb.genres;
 DROP TABLE IF EXISTS moviedb.creditcards;
 DROP TABLE IF EXISTS moviedb.movies;
 DROP TABLE IF EXISTS moviedb.stars;
+DROP TABLE IF EXISTS moviedb.employees
 
 
 CREATE TABLE moviedb.movies (
@@ -80,4 +81,11 @@ CREATE TABLE moviedb.ratings (
     rating float NOT NULL,
     numVotes int NOT NULL,
     FOREIGN KEY (movieId) REFERENCES movies(id) ON DELETE CASCADE
+);
+
+CREATE TABLE moviedb.employees (
+    email varchar(50),
+    password varchar(20) NOT NULL,
+    fullname varchar(100),
+    PRIMARY KEY (email)
 );

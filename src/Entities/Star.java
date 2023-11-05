@@ -1,14 +1,12 @@
 package Entities;
 
 public class Star {
-    private final String starId;
-    private final String name;
-    private final int birthYear;
+    private String starId;
+    private String name;
+    private int birthYear;
 
-    public Star(String id, String name, int birthYear){
-        this.starId = id;
-        this.name = name;
-        this.birthYear = birthYear;
+    public Star(){
+
     }
 
     public String getStarId() {
@@ -21,5 +19,17 @@ public class Star {
 
     public int getBirthYear() {
         return birthYear;
+    }
+
+    public void setStarId(String starId) {
+        this.starId = starId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setBirthYear(int birthYear) {
+        this.birthYear = birthYear;
     }
 }

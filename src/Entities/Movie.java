@@ -77,4 +77,17 @@ public class Movie {
     public void setRatingVotes(int v){
         this.ratingVotes = v;
     }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("Movie Details - ");
+        sb.append("Title:" + getTitle());
+        sb.append(", ");
+        sb.append("year:" + getYear());
+        sb.append(", ");
+        sb.append("Director:" + getDirector());
+        sb.append(".");
+
+        return sb.toString();
+    }
 }

@@ -3,22 +3,17 @@ package Entities;
 import java.util.ArrayList;
 
 public class Movie {
-    private final String movieId;
-    private final String title;
-    private final int year;
-    private final String director;
+    private String movieId;
+    private String title;
+    private int year;
+    private String director;
 
     private ArrayList<Star> stars;
     private ArrayList<Genre> genres;
     private float rating;
     private int ratingVotes;
 
-    public Movie(String movieId, String title, int year, String director){
-        this.movieId = movieId;
-        this.title = title;
-        this.year = year;
-        this.director = director;
-    }
+    public Movie(){}
     public String getMovieId(){
         return movieId;
     }
@@ -57,6 +52,22 @@ public class Movie {
 
     public void addGenre(Genre g){
         genres.add(g);
+    }
+
+    public void setMovieId(String movieId) {
+        this.movieId = movieId;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
     }
 
     public void setRating(float r){

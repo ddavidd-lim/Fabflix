@@ -67,9 +67,9 @@
 //     */
 //    private void printData() {
 //
-//        System.out.println("No of Employees '" + myEmpls.size() + "'.");
+//        System.out.println("No of Movies '" + movies.size() + "'.");
 //
-//        Iterator<Employee> it = myEmpls.iterator();
+//        Iterator<Movie> it = movies.iterator();
 //        while (it.hasNext()) {
 //            System.out.println(it.next().toString());
 //        }
@@ -79,9 +79,9 @@
 //    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 //        //reset
 //        tempVal = "";
-//        if (qName.equalsIgnoreCase("Employee")) {
-//            //create a new instance of employee
-//            tempEmp = new Employee();
+//        if (qName.equalsIgnoreCase("film")) {
+//            //create a new instance of movie
+//            tempMovie = new Movie();
 //            tempEmp.setType(attributes.getValue("type"));
 //        }
 //    }

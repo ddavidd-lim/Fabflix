@@ -8,22 +8,31 @@
 //import javax.xml.parsers.SAXParser;
 //import javax.xml.parsers.SAXParserFactory;
 //
+//import Entities.*;
 //import org.xml.sax.Attributes;
 //import org.xml.sax.SAXException;
 //
 //import org.xml.sax.helpers.DefaultHandler;
 //
-//public class SAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT LISTENERS LOOKING FOR CERTAIN TAGS
+//public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT LISTENERS LOOKING FOR CERTAIN TAGS
 //
-//    List<Employee> myEmpls;
-//
+//    List<Movie> movies;
+//    List<Star> stars;
+//    List<Genre> genres;
+//    List<CreditCard> cards;
 //    private String tempVal;
 //
 //    //to maintain context
-//    private Employee tempEmp;
+//    private Movie tempMovie;
+//    private Movie tempStar;
+//    private Movie tempGenre;
+//    private Movie tempCard;
 //
-//    public SAXParsere() {
-//        myEmpls = new ArrayList<Employee>();
+//    public MovieSAXParser() {
+//        movies = new ArrayList<Movie>();
+//        stars = new ArrayList<Star>();
+//        genres = new ArrayList<Genre>();
+//        cards = new ArrayList<CreditCard>();
 //    }
 //
 //    public void runExample() {
@@ -96,6 +105,28 @@
 //        }
 //
 //    }
+//
+////    public void insertIntoDB(){
+////        try (Connection conn = dataSource.getConnection()) {
+////            query = "INSERT INTO sales (customerId, movieId, salesDate) VALUES (?, ?, ?)";
+////            statement = conn.prepareStatement(query); // want customer_id out of query
+////            statement.setInt(1, customer_id);
+////            statement.setString(2, movie_id);
+////            statement.setDate(3, date);
+////            System.out.println("Before Insert");
+////            int rowsAffected = statement.executeUpdate();
+////            if (rs.next()) {
+////                // Login success:
+////
+////                // set this user into the session
+////                request.getSession().setAttribute("user", new User(username));
+////
+////                responseJsonObject.addProperty("status", "success");
+////                responseJsonObject.addProperty("message", "success");
+////
+////            }
+////        }
+////    }
 //
 //    public static void main(String[] args) {
 //        SAXParser spe = new SAXParser();

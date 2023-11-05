@@ -131,7 +131,7 @@ public class CreditCardServlet extends HttpServlet{
                 JsonObject item = obj.getAsJsonObject();
                 String movie_id = String.valueOf(item.get("movie_id"));
                 // Construct a query with parameter represented by "?"
-                String query = "SELECT c.ccid as customer_id FROM customers as c " +
+                String query = "SELECT c.id as customer_id FROM customers as c " +
                         "WHERE c.ccId = ? AND c.firstName = ? AND c.lastName = ?";
 
                 // Declare our statement
@@ -154,16 +154,20 @@ public class CreditCardServlet extends HttpServlet{
                     int customer_id = rs.getInt("customer_id");
                     // movie_id acquired
                     // Sale date
+                    System.out.println("Before Insert");
                     long millis = System.currentTimeMillis();
+                    System.out.println("Before Insert");
                     java.sql.Date date = new java.sql.Date(millis);
-
+                    System.out.println("Before Insert");
                     // insert sale into table
-                    query = "INSERT INTO sales (customerId, movie_ida, sale_date) VALUES (?, ?, ?)";
+                    query = "INSERT INTO sales (customerId, movieId, salesDate) VALUES (?, ?, ?)";
                     statement = conn.prepareStatement(query); // want customer_id out of query
                     statement.setInt(1, customer_id);
                     statement.setString(2, movie_id);
                     statement.setDate(3, date);
+                    System.out.println("Before Insert");
                     int rowsAffected = statement.executeUpdate();
+                    System.out.println("After Insert");
                     if (rowsAffected > 0) {
                         System.out.println("Insert operation was successful.");
                     } else {

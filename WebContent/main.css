@@ -81,6 +81,15 @@ a:active {
     z-index: 1;
 }
 
+#employee_nav {
+    position:fixed;
+    left:0px;
+    top:0px;
+    height:30px;
+    width:100%;
+    z-index: 1;
+}
+
 .current-page {
     font-weight: 900;
     font-style: italic;
@@ -93,9 +102,19 @@ a:active {
     overflow:hidden;
     background-color: #1c2145;
 }
+
+#employee_navigation-ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow:hidden;
+    background-color: #1c2145;
+}
+
 .navigation-li {
     display: inline;
     float: left;
+    color: white;
 }
 
 a.navigation-list {

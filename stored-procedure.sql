@@ -1,4 +1,5 @@
 DROP PROCEDURE IF EXISTS add_movie;
+DROP PROCEDURE IF EXISTS add_star;
 USE moviedb;
 
 -- Change DELIMITER to $$
@@ -14,31 +15,31 @@ CREATE PROCEDURE add_movie (
 BEGIN
 	-- inserting movie into movie table
 	IF (SELECT title FROM movies WHERE title = movieTitle) THEN -- movie exists, don't do anything
-		LEAVE add_movie; 
+		SELECT "Movie already exists"; 
 	END IF;
 	IF movieTitle = '' THEN -- movie title is empty, don't do anything
-		LEAVE add_movie;
+		SELECT "Invalid input for movie title";
     END IF;    
     IF movieYear = "" THEN -- movie year is empty, don't do anything
-		LEAVE add_movie;
+		SELECT "Invalid input for movie year";
 	END IF;
     IF movieDirector = "" THEN -- movie director is empty, don't do anything
-		LEAVE add_movie;
+		SELECT "Invalid input for director";
 	END IF;
-    SET @movieId = CONCAT("tt", (SELECT MAX(SUBSTRING(id, 3)) FROM movies) + 1);
+    SET @movieId = CONCAT("tt", (SELECT MAX(SUBSTRING(id, 3)) FROM movies)) + 1;
     
     -- checking the star
     IF movieStar = "" THEN -- movie star is empty 
-		LEAVE add_movie;
+		SELECT "Invalid input for movie star";
 	END IF;
 	IF ((SELECT COUNT(*) FROM stars WHERE name = movieStar) = 0) THEN
-		SET @starId = CONCAT("nm", (SELECT MAX(SUBSTRING(id, 3)) FROM stars) + 1);
-        INSERT INTO stars(id, name, birthYear) VALUES (@starId, movieStar, NULL);
-    END IF;
+		SET @starId = CONCAT("nm", (SELECT MAX(SUBSTRING(id, 3)) FROM stars)) + 1;
+        INSERT INTO stars(id, name) VALUES (@starId, movieStar); 
+        END IF;
     
     -- checking the genre
     IF movieGenre = "" THEN -- movie genre is empty
-		LEAVE add_movie;
+		SELECT "Invalid input for genre";
     END IF;
     IF ((SELECT COUNT(*) FROM genres WHERE name = movieGenre) = 0) THEN
         INSERT INTO genres(name) values (movieGenre);
@@ -52,9 +53,23 @@ BEGIN
     INSERT INTO movies(id, title, year, director) VALUES (@movieId, movieTitle, movieYear, movieDirector);
     INSERT INTO stars_in_movies(starId, movieId) VALUES (@starId, @movieId);
     INSERT INTO genres_in_movies(genreId, movieId) VALUES (@genreId, @movieId);
+    SELECT "movieID: " + @movieId + " starID: " + @starId + " genreID: " + @genreId;
 END
 $$
 
 -- Change back DELIMITER to ;
 DELIMITER ;
+
+
+DELIMITER $$
+CREATE PROCEDURE add_star (IN starName VARCHAR(100), IN starYear INTEGER)
+BEGIN
+	SET @starId = CONCAT("nm", 
+					CAST((SELECT MAX(SUBSTRING(id, 3)) + 1 FROM stars) AS UNSIGNED));
+    INSERT INTO stars(id, name, birthYear) VALUES (@starId, starName, starYear);
+    SELECT @starId;
+END
+$$
+DELIMITER ;
+
 

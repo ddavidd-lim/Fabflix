@@ -51,7 +51,7 @@ public class DashboardServlet extends HttpServlet{
 
             JsonArray results = new JsonArray();
 
-            ResultSet rs = metadata.getTables(null, null, null, new String[]{"TABLE"});
+            ResultSet rs = metadata.getTables(null, "moviedb", null, new String[]{"TABLE"});
             while (rs.next())
             {
                 JsonObject info = new JsonObject();

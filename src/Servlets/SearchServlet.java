@@ -103,7 +103,7 @@ public class SearchServlet extends HttpServlet{
                 if (!title.isEmpty()) {
                     if (Objects.equals(type, "browse")) {
                         if (title.contains("*")) {
-                            query += "and title regexp '^[^a-zA-Z0-9]'";
+                            query += " and title regexp '^[^a-zA-Z0-9]'";
                         } else {
                             query +=" and LOWER(title) like LOWER(?) ";
                             i += 1;

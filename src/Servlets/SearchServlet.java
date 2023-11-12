@@ -13,10 +13,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @WebServlet(name = "Servlets.SearchServlet", urlPatterns = "/api/results")
@@ -44,10 +44,21 @@ public class SearchServlet extends HttpServlet{
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
+        String query = "SELECT m.id as movieId, r.rating as rating, m.title as title, m.year as year, m.director as director, " +
+                "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC SEPARATOR ', ') as genres, " +
+                "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY s.name ASC SEPARATOR ', ') as top3Stars " +
+                "FROM movies as m " +
+                "JOIN stars_in_movies as sim ON m.id = sim.movieId " +
+                "JOIN stars as s ON sim.starId = s.id " +
+                "JOIN genres_in_movies as gim ON m.id = gim.movieId " +
+                "JOIN genres as g ON g.id = gim.genreId " +
+                "JOIN ratings as r ON m.id = r.movieId " +
+                "WHERE r.rating IS NOT NULL";
+
 
         try {
             Connection dbCon = dataSource.getConnection();
-            Statement statement = dbCon.createStatement();
+//            Statement statement = dbCon.createStatement();
 
 //            Enumeration<String> params = request.getParameterNames();
 //            while(params.hasMoreElements()){
@@ -73,48 +84,118 @@ public class SearchServlet extends HttpServlet{
             System.out.println("Limit: " + limit);
             String page = request.getParameter("page");
             System.out.println("Page Number: " + page);
+
+
             String whereQuery = "";
-            String havingQuery = "";
+            String genres_query = "";
+            String stars_query = "";
+            Integer year_query = 0;
+
             String orderQuery = "title ASC, rating ASC"; // default
             String limitQuery = "";
             String pageQuery = "";
 
-            if (genre != null && !Objects.equals(genre, "null")) {
-                havingQuery += String.format("genres LIKE '%%%s%%' ", genre);
-            }
-            else {
-                havingQuery += "genres LIKE '%%' ";
-            }
+            int i = 0;
+            HashMap<Integer, String> statementNumbers = new HashMap<Integer, String>();
+            System.out.println("hashmap created");
+            // insert title into query
             if (title != null && !Objects.equals(title, "null")) {
                 if (!title.isEmpty()) {
                     if (Objects.equals(type, "browse")) {
                         if (title.contains("*")) {
-                            whereQuery += "and title regexp '^[^a-zA-Z0-9]'";
+                            query += "and title regexp '^[^a-zA-Z0-9]'";
                         } else {
-                            whereQuery += String.format(" and LOWER(title) like LOWER('%s%%') ", title);
+                            query +=" and LOWER(title) like LOWER(?) ";
+                            i += 1;
+                            statementNumbers.put(i, title + "%");
                         }
                     } else {
-                        whereQuery += String.format(" and LOWER(title) like LOWER('%%%s%%') ", title);
+                        query += " and LOWER(title) like LOWER(?) ";
+                        i += 1;
+                        statementNumbers.put(i, "%" + title + "%");
                     }
                 }
+                else {
+                    query += " and LOWER(title) like LOWER(?) ";
+                    i += 1;
+                    statementNumbers.put(i, "%");
+                }
             }
+            else {
+                query += " and LOWER(title) like LOWER(?) ";
+                i += 1;
+                statementNumbers.put(i, "%");
+            }
+            System.out.println("title added " + i);
+
+            // insert year into query
             if (year != null && !Objects.equals(year, "null")) {
                 if (!year.isEmpty()) {
-                    whereQuery += String.format(" and year = %s ", year);
+                    query += " and year = ? ";
+                    year_query = Integer.parseInt(year);
+                    i += 1;
+                    statementNumbers.put(i, year);
                 }
             }
+            System.out.println("year added" + i);
+
+            // insert director into query
             if (director != null && !Objects.equals(director, "null"))
             {
-                if (!director.isEmpty()) {
-                    whereQuery = String.format(" and LOWER(director) like LOWER('%%%s%%') ", director);
+                if (director.isEmpty()) {
+                    director = "";
                 }
             }
+            else {
+                director = "";
+            }
+            query += " and LOWER(director) like LOWER(?) ";
+            i += 1;
+            statementNumbers.put(i, "%" + director + "%");
+            System.out.println("director added " + i);
+
+            // Group by and now move to genres and stars
+            query += "GROUP BY m.id, r.rating HAVING ";
+
+
+            if (genre != null && !Objects.equals(genre, "null")) {
+                if (genre.isEmpty())
+                {
+                    genres_query = "%";
+                }
+                else {
+                    genres_query = genre;
+                }
+
+            }
+            else {
+                genres_query = "%";
+            }
+            query += " genres LIKE ? AND ";
+            i += 1;
+            statementNumbers.put(i, genres_query);
+            System.out.println("genres added " + i);
+
+
             if(star != null && !Objects.equals(star, "null"))
             {
                 if (!star.isEmpty()) {
-                    havingQuery += String.format(" and LOWER(top3Stars) like LOWER('%%%s%%') ", star);
+                    stars_query = star;
+                }
+                else
+                {
+                    stars_query = "%";
                 }
             }
+            else {
+                stars_query = "%";
+            }
+            query += "LOWER(top3Stars) like LOWER(?) ";
+            i += 1;
+            statementNumbers.put(i, stars_query);
+            System.out.println("stars added " + i);
+
+
             if (sort != null && !Objects.equals(sort, "null"))
             {
                 if (sort.contains("AscTitleDecRating"))
@@ -168,27 +249,44 @@ public class SearchServlet extends HttpServlet{
                 pageQuery = "0";
             }
 
+            query += "ORDER BY " + orderQuery + " LIMIT " + limitQuery + " OFFSET " + pageQuery + ";";
 
-            System.out.println("Search: WHERE - " + whereQuery + " HAVING - " + havingQuery);
+            System.out.println("query: " + query);
 
-            String query = "SELECT m.id as movieId, r.rating as rating, m.title as title, m.year as year, m.director as director, " +
-                    "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC SEPARATOR ', ') as genres, " +
-                    "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY s.name ASC SEPARATOR ', ') as top3Stars " +
-                    "FROM movies as m " +
-                    "JOIN stars_in_movies as sim ON m.id = sim.movieId " +
-                    "JOIN stars as s ON sim.starId = s.id " +
-                    "JOIN genres_in_movies as gim ON m.id = gim.movieId " +
-                    "JOIN genres as g ON g.id = gim.genreId " +
-                    "JOIN ratings as r ON m.id = r.movieId " +
-                    "WHERE r.rating IS NOT NULL " + whereQuery +
-                    "GROUP BY m.id, r.rating HAVING " + havingQuery +
-                    "ORDER BY " + orderQuery + " LIMIT " + limitQuery + " OFFSET " + pageQuery + ";";
+//            query = "SELECT m.id as movieId, r.rating as rating, m.title as title, m.year as year, m.director as director, " +
+//                    "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC SEPARATOR ', ') as genres, " +
+//                    "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY s.name ASC SEPARATOR ', ') as top3Stars " +
+//                    "FROM movies as m " +
+//                    "JOIN stars_in_movies as sim ON m.id = sim.movieId " +
+//                    "JOIN stars as s ON sim.starId = s.id " +
+//                    "JOIN genres_in_movies as gim ON m.id = gim.movieId " +
+//                    "JOIN genres as g ON g.id = gim.genreId " +
+//                    "JOIN ratings as r ON m.id = r.movieId " +
+//                    "WHERE r.rating IS NOT NULL and " +
+//                    "year = ? and " +
+//                    "LOWER(director) like LOWER(?) + ? " +
+//                    "GROUP BY m.id, r.rating " +
+//                    "HAVING genres LIKE ? AND " +
+//                    "LOWER(top3Stars) like LOWER(?) " +
+//                    "ORDER BY " + orderQuery + " LIMIT " + limitQuery + " OFFSET " + pageQuery + ";";
+
+            PreparedStatement statement = dbCon.prepareStatement(query);
+            statementNumbers.forEach((key, value) -> {
+                System.out.println("Key=" + key + ", Value=" + value);
+                try {
+                    statement.setString(key, value);
+                } catch (SQLException e) {
+                    System.out.println(e);
+                    throw new RuntimeException(e);
+                }
+            });
+
 
             // (select s.id, count(*) as count from stars_in_movies as sim, stars as s where sim.starId = s.id group by starId) as movie_count
             request.getServletContext().log("query：" + query);
-            System.out.println("Full Query: " + query);
+            System.out.println("Full Query: " + statement);
 
-            ResultSet rs = statement.executeQuery(query);
+            ResultSet rs = statement.executeQuery();
 
             JsonArray jsonArray = new JsonArray();
 

@@ -19,8 +19,9 @@ import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.Objects;
 
-@WebServlet(name = "Servlets.AddStarServlet", urlPatterns = "/api/addStar")
-public class AddStarServlet extends HttpServlet {
+@WebServlet(name = "Servlets.AddMovieServlet", urlPatterns = "/api/addMovie")
+public class AddMovieServlet extends HttpServlet
+{
     private static final long serialVersionUID = 2L;
 
     // Create a dataSource which registered in web.xml
@@ -36,49 +37,55 @@ public class AddStarServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json"); // Response mime type
-        String starName = request.getParameter("starName");
-        String starYear = request.getParameter("starYear");
+        String title = request.getParameter("movieTitle");
+        String year = request.getParameter("movieYear");
+        String director = request.getParameter("movieDirector");
+        String actor = request.getParameter("movieStar");
+        String genre = request.getParameter("movieGenre");
 
-        System.out.println("Star Name: " + starName + "\nStar Year: " + starYear);
+        System.out.println("title: " + title + "\n" +
+                           "year: " + year + "\n" +
+                           "director: " + director + "\n" +
+                           "star: " + actor + "\n" +
+                           "genre: " + genre + "\n");
         JsonObject responseJsonObject = new JsonObject();
         try {
             Connection conn = dataSource.getConnection();
 
-            // INSERT INTO stars(id, name, birthYear) VALUES (@starId, movieStar, NULL);
-            String query = "CALL add_star(?, ?)";
-            Integer starYearInt;
+            String query = "CALL add_movie(?, ? , ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(query);
-            statement.setString(1, starName);
-            if (!Objects.equals(starYear, "") && !Objects.equals(starYear, "null"))
+
+            statement.setString(1, title);
+            statement.setString(3, director);
+            statement.setString(4, actor);
+            statement.setString(5, genre);
+
+            if (!Objects.equals(year, "") && !Objects.equals(year, "null"))
             {
-                starYearInt = Integer.parseInt(starYear);
-                System.out.println("Star year set to " + starYearInt);
-                statement.setInt(2, starYearInt);
+                statement.setInt(2, Integer.parseInt(year));
             }
-            else {;
-                System.out.println("Star year set to null");
+            else {
                 statement.setNull(2, Types.NULL);
             }
 
             ResultSet rs = statement.executeQuery();
-
-            String starId = "";
+            String message = "";
             while (rs.next())
             {
-                starId = rs.getString("@starId");
-                System.out.println("star id found: " + starId);
+                message = rs.getString("message");
+                System.out.println("message returned: " + message);
             }
             rs.close();
             statement.close();
             conn.close();
 
-            responseJsonObject.addProperty("message", starId);
+            responseJsonObject.addProperty("message", message);
             response.getWriter().write(responseJsonObject.toString());
 
-            System.out.println("star added");
+            System.out.println("movie added");
 
-            // Set response status to 200 (OK)
             response.setStatus(200);
+
         } catch (Exception e) {
             // Write error message JSON object to output
             JsonObject jsonObject = new JsonObject();
@@ -93,6 +100,6 @@ public class AddStarServlet extends HttpServlet {
             response.getWriter().close();
             System.out.println("Closing writer");
         }
-
     }
+
 }

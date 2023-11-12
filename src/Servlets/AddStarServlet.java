@@ -19,7 +19,7 @@ import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.Objects;
 
-@WebServlet(name = "Servlets.LoginServlet", urlPatterns = "/api/addStar")
+@WebServlet(name = "Servlets.AddStarServlet", urlPatterns = "/api/addStar")
 public class AddStarServlet extends HttpServlet {
     private static final long serialVersionUID = 2L;
 
@@ -40,8 +40,6 @@ public class AddStarServlet extends HttpServlet {
         String starYear = request.getParameter("starYear");
 
         System.out.println("Star Name: " + starName + "\nStar Year: " + starYear);
-
-        PrintWriter out = response.getWriter();
         JsonObject responseJsonObject = new JsonObject();
         try {
             Connection conn = dataSource.getConnection();
@@ -74,12 +72,14 @@ public class AddStarServlet extends HttpServlet {
             statement.close();
             conn.close();
 
-            out.write(starId);
+            responseJsonObject.addProperty("message", starId);
+            response.getWriter().write(responseJsonObject.toString());
 
             System.out.println("star added");
 
             // Set response status to 200 (OK)
             response.setStatus(200);
+            System.out.println("Set Response 200");
         } catch (Exception e) {
             // Write error message JSON object to output
             JsonObject jsonObject = new JsonObject();
@@ -92,6 +92,7 @@ public class AddStarServlet extends HttpServlet {
             response.setStatus(500);
         } finally {
             response.getWriter().close();
+            System.out.println("Closing writer");
         }
 
     }

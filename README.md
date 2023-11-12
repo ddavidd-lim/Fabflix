@@ -1,3 +1,35 @@
+# **CS 122B Project 3**
+
+## Demo Video
+
+
+## Contributions
+
+Caitlynn Chang
+- Implementing Dashboard using Stored Procedure
+- Implementing PreparedStatements
+
+David Lim
+- Importing large XML data files into database
+
+## Files with Prepared Statements
+AddMovieServlet.java
+AddStarServlet.java
+CreditCardServlet.java
+EmployeeLoginServlet.java
+ItemsServlet.java
+LoginServlet.java
+SearchServlet.java
+SingleMovieServlet.java
+SingleStarServelet.java
+
+## Parsing time optimization strategies
+1. 
+2.
+
+## Inconsistent data reports from parsing
+
+
 # **CS 122B Project 2**
 
 ## Demo Video

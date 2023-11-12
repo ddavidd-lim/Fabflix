@@ -13,15 +13,15 @@ David Lim
 - Importing large XML data files into database
 
 ## Files with Prepared Statements
-AddMovieServlet.java
-AddStarServlet.java
-CreditCardServlet.java
-EmployeeLoginServlet.java
-ItemsServlet.java
-LoginServlet.java
-SearchServlet.java
-SingleMovieServlet.java
-SingleStarServelet.java
+- AddMovieServlet.java
+- AddStarServlet.java
+- CreditCardServlet.java
+- EmployeeLoginServlet.java
+- ItemsServlet.java
+- LoginServlet.java
+- SearchServlet.java
+- SingleMovieServlet.java
+- SingleStarServelet.java
 
 ## Parsing time optimization strategies
 1. 

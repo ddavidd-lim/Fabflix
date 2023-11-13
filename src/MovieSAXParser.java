@@ -49,6 +49,12 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
         cards = new ArrayList<CreditCard>();
     }
 
+    public String incrementId(String id){
+        String beginner_chars = id.substring(0, 2);
+        int incremented_id = Integer.parseInt(id.substring(2)) + 1;
+        return beginner_chars + incremented_id;
+    }
+
     public void getMaxMovieId(){
         String loginUser = "mytestuser";
         String loginPasswd = "My6$Password";
@@ -63,6 +69,7 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
             if (rs.next()) {
                 max_movie_id = rs.getString("movie_id");
                 System.out.println("max_movie_id = " + max_movie_id);
+                System.out.println("Incremented Movie Id = " + incrementId(max_movie_id));
             }
 
             rs.close();
@@ -87,6 +94,7 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
             if (rs.next()) {
                 max_star_id = rs.getString("star_id");
                 System.out.println("max_star_id = " + max_star_id);
+                System.out.println("Incremented Star Id = " + incrementId(max_star_id));
             }
 
             rs.close();

@@ -23,9 +23,9 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
     private String tempVal;
 
     //to maintain context
-    private Movie tempMovie;
-    private Star tempStar;
-    private Genre tempGenre;
+    private Movie tempMovie = new Movie();
+    private Star tempStar = new Star();
+    private Genre tempGenre = new Genre();
     private CreditCard tempCard;
 
     public MovieSAXParser() {
@@ -48,9 +48,8 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
 
             //get a new instance of parser
             SAXParser sp = spf.newSAXParser();
-
             //parse the file and also register this class for call backs
-            sp.parse("employees.xml", this);
+            sp.parse("actors63.xml", this);
 
         } catch (SAXException se) {
             se.printStackTrace();
@@ -58,6 +57,9 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
             pce.printStackTrace();
         } catch (IOException ie) {
             ie.printStackTrace();
+        } catch (Exception e)
+        {
+            System.out.println(e);
         }
     }
 
@@ -82,10 +84,10 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
         // Movies
         if (qName.equalsIgnoreCase("film")) {
             //create a new instance of movie
-            tempMovie = new Movie();
+            this.tempMovie = new Movie();
         }
         if (qName.equalsIgnoreCase("cat")) {
-            tempGenre = new Genre();
+            this.tempGenre = new Genre();
         }
     }
 

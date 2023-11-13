@@ -86,5 +86,5 @@ END
 $$
 DELIMITER ;
 
-CALL add_movie("help me2", 2011, "tom us", "anna", "t1");
+-- CALL add_movie("help me2", 2011, "tom us", "anna", "t1");
 

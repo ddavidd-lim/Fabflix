@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 
 @WebServlet(
         name = "Servlets.DashboardServlet",
-        urlPatterns = "/api/dashboard"
+        urlPatterns = "/_dashboard/api/dashboard"
 )
 public class DashboardServlet extends HttpServlet{
     private static final long serialVersionUID = 1L;

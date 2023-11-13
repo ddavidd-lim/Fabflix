@@ -16,7 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import Entities.User;
 
-@WebServlet(name = "Servlets.EmployeeLoginServlet", urlPatterns = "/_dashboard")
+@WebServlet(name = "Servlets.EmployeeLoginServlet", urlPatterns = "/_dashboard/api/employee_login")
 public class EmployeeLoginServlet extends HttpServlet {
     private static final long serialVersionUID = 2L;
 

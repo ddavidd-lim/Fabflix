@@ -19,7 +19,7 @@ import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.Objects;
 
-@WebServlet(name = "Servlets.AddStarServlet", urlPatterns = "/api/addStar")
+@WebServlet(name = "Servlets.AddStarServlet", urlPatterns = "/_dashboard/api/addStar")
 public class AddStarServlet extends HttpServlet {
     private static final long serialVersionUID = 2L;
 

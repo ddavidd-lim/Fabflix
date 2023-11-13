@@ -52,8 +52,9 @@ public class SearchServlet extends HttpServlet{
                 "JOIN stars as s ON sim.starId = s.id " +
                 "JOIN genres_in_movies as gim ON m.id = gim.movieId " +
                 "JOIN genres as g ON g.id = gim.genreId " +
-                "JOIN ratings as r ON m.id = r.movieId " +
-                "WHERE r.rating IS NOT NULL";
+                "LEFT JOIN ratings as r ON m.id = r.movieId " +
+                "WHERE ";
+//                "WHERE r.rating IS NOT NULL";
 
 
         try {
@@ -103,26 +104,26 @@ public class SearchServlet extends HttpServlet{
                 if (!title.isEmpty()) {
                     if (Objects.equals(type, "browse")) {
                         if (title.contains("*")) {
-                            query += " and title regexp '^[^a-zA-Z0-9]'";
+                            query += " title regexp '^[^a-zA-Z0-9]'";
                         } else {
-                            query +=" and LOWER(title) like LOWER(?) ";
+                            query +=" LOWER(title) like LOWER(?) ";
                             i += 1;
                             statementNumbers.put(i, title + "%");
                         }
                     } else {
-                        query += " and LOWER(title) like LOWER(?) ";
+                        query += " LOWER(title) like LOWER(?) ";
                         i += 1;
                         statementNumbers.put(i, "%" + title + "%");
                     }
                 }
                 else {
-                    query += " and LOWER(title) like LOWER(?) ";
+                    query += " LOWER(title) like LOWER(?) ";
                     i += 1;
                     statementNumbers.put(i, "%");
                 }
             }
             else {
-                query += " and LOWER(title) like LOWER(?) ";
+                query += " LOWER(title) like LOWER(?) ";
                 i += 1;
                 statementNumbers.put(i, "%");
             }
@@ -180,7 +181,7 @@ public class SearchServlet extends HttpServlet{
             if(star != null && !Objects.equals(star, "null"))
             {
                 if (!star.isEmpty()) {
-                    stars_query = star;
+                    stars_query = "%" + star + "%";
                 }
                 else
                 {

@@ -8,6 +8,7 @@
 Caitlynn Chang
 - Implementing Dashboard using Stored Procedure
 - Implementing PreparedStatements
+- Implementing recatpcha
 
 David Lim
 - Importing large XML data files into database

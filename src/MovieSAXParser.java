@@ -112,6 +112,7 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
         getMaxStarId();
         parseDocument();
         printData();
+        insertIntoDB();
     }
 
     private void parseDocument() {
@@ -174,9 +175,11 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
     public void endElement(String uri, String localName, String qName) throws SAXException {
 
         if (qName.equalsIgnoreCase("film")) {
+            tempMovie.setMovieId(incrementId(max_movie_id));
             movies.add(tempMovie);
         }
         if (qName.equalsIgnoreCase("actor")) {
+            tempStar.setStarId(incrementId(max_star_id));
             stars.add(tempStar);
         }
         if (qName.equalsIgnoreCase("cat")) {
@@ -197,31 +200,41 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
         }
     }
 
-//    public void insertIntoDB(){
-    //    String loginUser = "mytestuser";
-    //    String loginPasswd = "My6$Password";
-    //    String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
-//        try {
-//            Connection conn = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
-//            query = "INSERT INTO sales (customerId, movieId, salesDate) VALUES (?, ?, ?)";
-//            statement = conn.prepareStatement(query); // want customer_id out of query
-//            statement.setInt(1, customer_id);
-//            statement.setString(2, movie_id);
-//            statement.setDate(3, date);
-//            System.out.println("Before Insert");
-//            int rowsAffected = statement.executeUpdate();
-//            if (rs.next()) {
-//                // Login success:
+    public void insertIntoDB(){ // modifications starts at movieid = tt499470 hitchcock
+        String loginUser = "mytestuser";
+        String loginPasswd = "My6$Password";
+        String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
+        String query = null;
+        PreparedStatement statement = null;
+        int rowsAffected = 0;
+        try {
+            Connection conn = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+
+            for (Movie m : movies){
+                query = "INSERT INTO movies (id, title, year, director) VALUES (?, ?, ?, ?)";
+                statement = conn.prepareStatement(query);
+                statement.setString(1, m.getMovieId());
+                statement.setString(2, m.getTitle());
+                statement.setInt(3, m.getYear());
+                statement.setString(4, m.getDirector());
+                rowsAffected = statement.executeUpdate();
+                if (rowsAffected > 0) {
+                    out.println("Successfully added " + rowsAffected + " movies");
+                }
+//                for (Star s : m.getStars()){
 //
-//                // set this user into the session
-//                request.getSession().setAttribute("user", new User(username));
+//                }
+//                for (Genre g : m.getGenres()){
 //
-//                responseJsonObject.addProperty("status", "success");
-//                responseJsonObject.addProperty("message", "success");
-//
-//            }
-//        }
-//    }
+//                }
+            }
+
+        } catch (Exception e) {
+            out.println("exception: " + e);
+            out.print("SAXParser SQL Error");
+
+        }
+    }
 
     public static void main(String[] args) {
         MovieSAXParser spe = new MovieSAXParser();

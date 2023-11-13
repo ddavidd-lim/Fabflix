@@ -22,7 +22,7 @@ public class EmployeeLoginFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        System.out.println("Servlets.LoginFilter: " + httpRequest.getRequestURI());
+        System.out.println("Servlets.EmployeeLoginFilter: " + httpRequest.getRequestURI());
 
         // Check if this URL is allowed to access without logging in
         if (this.isUrlAllowedWithoutLogin(httpRequest.getRequestURI())) {
@@ -33,7 +33,8 @@ public class EmployeeLoginFilter implements Filter {
 
         // Redirect to login page if the "user" attribute doesn't exist in session
         if (httpRequest.getSession().getAttribute("user") == null) {
-            httpResponse.sendRedirect("employee_login.html");
+//            httpResponse.sendRedirect(httpResponse.encodeRedirectURL(httpRequest.getContextPath() + "/_dashboard/employee_login.html"));
+            httpResponse.sendRedirect(httpResponse.encodeRedirectURL("_dashboard/employee_login.html"));
         } else {
             chain.doFilter(request, response);
         }

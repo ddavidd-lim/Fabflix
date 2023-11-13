@@ -13,7 +13,10 @@ public class Movie {
     private float rating;
     private int ratingVotes;
 
-    public Movie(){}
+    public Movie(){
+        stars = new ArrayList<>();
+        genres = new ArrayList<>();
+    }
     public String getMovieId(){
         return movieId;
     }

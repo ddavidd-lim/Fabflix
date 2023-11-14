@@ -27,8 +27,8 @@ David Lim
 - SingleStarServelet.java
 
 ## Parsing time optimization strategies
-1. 
-2.
+1. Less to SQL
+2. Used a Hashmap while parsing through data to allow constant time getting
 
 ## Inconsistent data reports from parsing
 

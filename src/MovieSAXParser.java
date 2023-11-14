@@ -35,13 +35,15 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
     List<Genre> genres;
     List<CreditCard> cards;
     private String tempVal;
-    String max_movie_id; //max_movie_id = tt499472
-    String max_star_id; //max_star_id = nm9423080
+    String max_movie_id; //max_movie_id = tt499480
+    String max_star_id; //max_star_id = nm9423082
 
     //to maintain context
     private Movie tempMovie;
     private Star tempStar;
     private Genre tempGenre;
+    private int numStarErrors = 0;
+    private int numMovieErrors = 0;
 
 
     public MovieSAXParser() {
@@ -70,7 +72,7 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
             // Check if query returned anything
             if (rs.next()) {
                 max_movie_id = rs.getString("movie_id");
-//                System.out.println("max_movie_id = " + max_movie_id);
+                System.out.println("max_movie_id = " + max_movie_id);
 //                System.out.println("Incremented Movie Id = " + incrementId(max_movie_id));
             }
 
@@ -96,7 +98,7 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
             if (rs.next()) {
                 max_star_id = rs.getString("star_id");
                 System.out.println("max_star_id = " + max_star_id);
-                System.out.println("Incremented Star Id = " + incrementId(max_star_id));
+//                System.out.println("Incremented Star Id = " + incrementId(max_star_id));
             }
 
             rs.close();
@@ -117,6 +119,7 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
         parseDocument("actors63.xml");
         parseDocument("casts124.xml");
 //        printData();
+        out.println(" ! BEGINNING INSERTION");
         insertIntoDB();
     }
 
@@ -150,7 +153,7 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
             writer.write(line);
             writer.newLine();
 
-            System.out.println("Successfully appended to the file.");
+//            System.out.println(line + " appended to file");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -189,20 +192,24 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
         if (qName.equalsIgnoreCase("film")) {
             if (!tempMovie.getGenres().isEmpty() && tempMovie.getDirector() != null && tempMovie.getYear() != 0 && tempMovie.getTitle() != null){
                 tempMovie.setMovieId(incrementId(max_movie_id));
+                max_movie_id = incrementId(max_movie_id);
                 movies.put(tempMovie.getFID(), tempMovie);
             }
             else{
-                String element = "Movie Error: " + tempMovie.getTitle() + " " + tempMovie.getYear() + " " + tempMovie.getDirector();
+                String element = "Movie Error: " + tempMovie.getTitle() + " | Year: " + tempMovie.getYear() + " | Director: " + tempMovie.getDirector();
                 writeToReport(element);
+                numMovieErrors++;
             }
         }
         if (qName.equalsIgnoreCase("actor")){
-            if (tempStar.getName() != null && tempStar.getBirthYear() != 0){
+            if (tempStar.getName() != null){
                 tempStar.setStarId(incrementId(max_star_id));
+                max_star_id = incrementId(max_star_id);
                 stars.put(tempStar.getName(), tempStar);
             }
             else{
-                String element = "Star Error: " + tempStar.getName() + " " + tempStar.getName();
+                String element = "Star Error: " + tempStar.getName();
+                numStarErrors++;
                 writeToReport(element);
             }
         }
@@ -221,59 +228,62 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
 
         // movie xml -----------------
         if (qName.equalsIgnoreCase("cat")) {
+            String gen =  null;
             if (tempVal.equalsIgnoreCase("dram")){
                 tempGenre.setGenreId(9);
-                tempVal = "Drama";
+                gen = "Drama";
             }if (tempVal.equalsIgnoreCase("Advt")){
                 tempGenre.setGenreId(3);
-                tempVal = "Adventure";
+                gen = "Adventure";
             }if (tempVal.equalsIgnoreCase("Docu")){
                 tempGenre.setGenreId(8);
-                tempVal = "Documentary";
+                gen = "Documentary";
+            }if (tempVal.equalsIgnoreCase("Fant")){
+                tempGenre.setGenreId(11);
+                gen = "Fantasy";
             }if (tempVal.equalsIgnoreCase("Comd")){
                 tempGenre.setGenreId(6);
-                tempVal = "Comedy";
+                gen = "Comedy";
             }if (tempVal.equalsIgnoreCase("Epic")){
                 tempGenre.setGenreId(21);
-                tempVal = "Thriller";
+                gen = "Thriller";
             }if (tempVal.equalsIgnoreCase("Biop")){
                 tempGenre.setGenreId(5);
-                tempVal = "Biography";
+                gen = "Biography";
             }if (tempVal.equalsIgnoreCase("Susp")){
                 tempGenre.setGenreId(16);
-                tempVal = "Mystery";
+                gen = "Mystery";
             }if (tempVal.equalsIgnoreCase("Musc")){
                 tempGenre.setGenreId(15);
-                tempVal = "Musical";
+                gen = "Musical";
             }if (tempVal.equalsIgnoreCase("cnrb")){
                 tempGenre.setGenreId(7);
-                tempVal = "Crime";
+                gen = "Crime";
             }if (tempVal.equalsIgnoreCase("Romt")){
                 tempGenre.setGenreId(18);
-                tempVal = "Romance";
+                gen = "Romance";
             }if (tempVal.equalsIgnoreCase("Actn")){
                 tempGenre.setGenreId(1);
-                tempVal = "Action";
+                gen = "Action";
             }if (tempVal.equalsIgnoreCase("West")){
                 tempGenre.setGenreId(23);
-                tempVal = "Western";
+                gen = "Western";
             }if (tempVal.equalsIgnoreCase("Horr")){
                 tempGenre.setGenreId(13);
-                tempVal = "Horror";
+                gen = "Horror";
             }if (tempVal.equalsIgnoreCase("txx")) {
                 tempGenre.setGenreId(17);
-                tempVal = "Reality-TV";
+                gen = "Reality-TV";
             }if (tempVal.equalsIgnoreCase("Romt Comd")){
                 tempGenre.setGenreId(6);
-                tempVal = "Romantic Comedy";
+                gen = "Romantic Comedy";
             }
-            else{
-                tempVal = null;
+            else if (gen == null){
+                return;
             }
 
 
-
-            tempGenre.setName(tempVal);
+            tempGenre.setName(gen);
             genres.add(tempGenre);
             tempMovie.addGenre(tempGenre);
         } // genres
@@ -288,6 +298,7 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
                 tempMovie.setYear(Integer.parseInt(tempVal));
             } catch (Exception e){
                 String element = "Movie Year Error: " + tempVal + "</year>";
+                numMovieErrors++;
                 writeToReport(element);
             }
 
@@ -298,8 +309,7 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
                 tempStar.setBirthYear(Integer.parseInt(tempVal));
             }
             catch (Exception e){
-                String element = "DOB Error: <dob> " + tempVal + "</dob>";
-                writeToReport(element);
+                return;
             }
         } else if (qName.equalsIgnoreCase("stagename")) {
             tempStar.setName(tempVal);
@@ -336,9 +346,18 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
             query = "INSERT INTO genres_in_movies (genreId, movieId) VALUES (?, ?)";
             PreparedStatement genreInMoviesStatement = conn.prepareStatement(query);
 
-            String checkQuery = "SELECT g.id FROM genres as g WHERE g.name = ?";
-            PreparedStatement checkStatement = conn.prepareStatement(checkQuery);
-
+            // ------------INSERTING STARS -------------------
+            for (Map.Entry<String, Star> entry : stars.entrySet()){
+                Star s = entry.getValue();
+                starStatement.setString(1, s.getStarId());
+                starStatement.setString(2, s.getName());
+                starStatement.setInt(3, s.getBirthYear());
+                starsAdded += starStatement.executeUpdate();
+            }
+            if (starsAdded > 0) {
+                out.println("Successfully added " + starsAdded + " stars");
+            }
+            // ------------INSERTING MOVIES -------------------
             for (Map.Entry<String, Movie> entry : movies.entrySet()){
 
                 Movie m = entry.getValue();
@@ -353,36 +372,25 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
                     starInMoviesStatement.setString(2, m.getMovieId());
                     rowsAffected += starInMoviesStatement.executeUpdate();
                 }
-                if (rowsAffected > 0) {
-                    out.println("Successfully added " + rowsAffected + " stars in movies");
-                    rowsAffected = 0;
-                }
                 for (Genre g : m.getGenres()){
                     genreInMoviesStatement.setInt(1, g.getGenreId());
                     genreInMoviesStatement.setString(2, m.getMovieId());
-                    rowsAffected += genreInMoviesStatement.executeUpdate();
-                }
-                if (rowsAffected > 0) {
-                    out.println("Successfully added " + genresAdded + " genres");
-                    genresAdded++;
-                    rowsAffected = 0;
+                    genresAdded += genreInMoviesStatement.executeUpdate();
                 }
 
             }
             if (moviesAdded > 0) {
                 out.println("Successfully added " + moviesAdded + " movies");
             }
-            for (Map.Entry<String, Star> entry : stars.entrySet()){
-                Star s = entry.getValue();
-                starStatement.setString(1, s.getStarId());
-                starStatement.setString(2, s.getName());
-                starStatement.setInt(3, s.getBirthYear());
-                starsAdded += starStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                out.println("Successfully added " + genresAdded + " genres");
             }
-            if (starsAdded > 0) {
-                out.println("Successfully added " + starsAdded + " stars");
+            if (rowsAffected > 0) {
+                out.println("Successfully added " + rowsAffected + " stars in movies");
+                rowsAffected = 0;
             }
-
+            writeToReport(numMovieErrors + " Inconsistent Movies");
+            writeToReport(numStarErrors + " Missing Stars");
         } catch (Exception e) {
             out.println("exception: " + e);
             out.print("SAXParser SQL Error");

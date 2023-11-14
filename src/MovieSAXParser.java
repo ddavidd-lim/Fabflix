@@ -22,6 +22,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import static java.lang.System.out;
 
@@ -142,11 +145,15 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
      * Iterate through the list and print
      * the contents
      */
-    private void printReport() {
-        out.println("No of Movies '" + movies.size() + "'.");
+    private void writeToReport(String line) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("InconsistencyReport.txt", true))) {
+            writer.write(line);
+            writer.newLine();
 
-        for (Map.Entry<String, Movie> entry : movies.entrySet()) {
-            out.println(entry.getValue().toString());
+            System.out.println("Successfully appended to the file.");
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -185,13 +192,18 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
                 movies.put(tempMovie.getFID(), tempMovie);
             }
             else{
-                
+                String element = "Movie Error: " + tempMovie.getTitle() + " " + tempMovie.getYear() + " " + tempMovie.getDirector();
+                writeToReport(element);
             }
         }
         if (qName.equalsIgnoreCase("actor")){
             if (tempStar.getName() != null && tempStar.getBirthYear() != 0){
                 tempStar.setStarId(incrementId(max_star_id));
                 stars.put(tempStar.getName(), tempStar);
+            }
+            else{
+                String element = "Star Error: " + tempStar.getName() + " " + tempStar.getName();
+                writeToReport(element);
             }
         }
         if (qName.equalsIgnoreCase("m")) {  // casts
@@ -264,7 +276,8 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
             tempGenre.setName(tempVal);
             genres.add(tempGenre);
             tempMovie.addGenre(tempGenre);
-        } else if (qName.equalsIgnoreCase("t")) {
+        } // genres
+        else if (qName.equalsIgnoreCase("t")) {
             tempMovie.setTitle(tempVal);
         } else if (qName.equalsIgnoreCase("fid")) {
             tempMovie.setFID(tempVal);
@@ -274,13 +287,20 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
             try{
                 tempMovie.setYear(Integer.parseInt(tempVal));
             } catch (Exception e){
-
+                String element = "Movie Year Error: " + tempVal + "</year>";
+                writeToReport(element);
             }
 
         }
         // actor xml ----------------------
         else if (qName.equalsIgnoreCase("dob")) {
-            tempStar.setBirthYear(Integer.parseInt(tempVal));
+            try{
+                tempStar.setBirthYear(Integer.parseInt(tempVal));
+            }
+            catch (Exception e){
+                String element = "DOB Error: <dob> " + tempVal + "</dob>";
+                writeToReport(element);
+            }
         } else if (qName.equalsIgnoreCase("stagename")) {
             tempStar.setName(tempVal);
         }

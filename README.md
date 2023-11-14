@@ -6,9 +6,11 @@
 ## Contributions
 
 Caitlynn Chang
-- Implementing Dashboard using Stored Procedure
-- Implementing PreparedStatements
-- Implementing recatpcha
+- Implemented Dashboard using Stored Procedure
+- Implemented PreparedStatements
+- Implemented recatpcha
+- Implemented HTTPS
+- Implemented Encrypted Password
 
 David Lim
 - Importing large XML data files into database

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lexend">
+    <link rel="stylesheet" href="../main.css">
+    <title>Add Star</title>
+</head>
+<body>
+<div>
+    <nav id="employee_nav">
+        <ul id="employee_navigation-ul">
+            <li class="navigation-li"><a class="navigation-list" href="dashboard.html">Dashboard</a></li>
+            <li class="navigation-li"><a class="navigation-list" href="add_star.html">Add Star</a></li>
+            <li class="navigation-li"><a class="navigation-list" href="add_movie.html">Add Movie</a></li>
+            <li class="navigation-li"><a class="navigation-list" href="../main_page.html">Browse Movies</a></li>
+        </ul>
+    </nav>
+</div>
+<h1>Add a Star</h1>
+<div id="add_star">
+    <form id="add-star-form" method="post">
+        <label for="addStarName">Star Name (required)</label>
+        <input id="addStarName" type="text" name="starName">
+        <label for="addStarYear">Star Birth Year (optional)</label>
+        <input id="addStarYear" type="number" name="starYear">
+        <input id="addStarButton" type="submit" value="Add">
+    </form>
+</div>
+
+<div id="add_star_result">
+    <p id="add_star_id"></p>
+</div>
+<!-- Load jQuery and Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script src="add_star.js"></script>
+</body>
+</html>

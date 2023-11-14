@@ -10,8 +10,8 @@ import java.util.ArrayList;
 /**
  * Servlet Filter implementation class Servlets.LoginFilter
  */
-@WebFilter(filterName = "Servlets.LoginFilter", urlPatterns = "/*")
-public class LoginFilter implements Filter {
+@WebFilter(filterName = "Servlets.EmployeeLoginFilter", urlPatterns = "/_dashboard/*")
+public class EmployeeLoginFilter implements Filter {
     private final ArrayList<String> allowedURIs = new ArrayList<>();
 
     /**
@@ -22,7 +22,7 @@ public class LoginFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        System.out.println("Servlets.LoginFilter: " + httpRequest.getRequestURI());
+        System.out.println("Servlets.EmployeeLoginFilter: " + httpRequest.getRequestURI());
 
         // Check if this URL is allowed to access without logging in
         if (this.isUrlAllowedWithoutLogin(httpRequest.getRequestURI())) {
@@ -33,7 +33,8 @@ public class LoginFilter implements Filter {
 
         // Redirect to login page if the "user" attribute doesn't exist in session
         if (httpRequest.getSession().getAttribute("user") == null) {
-            httpResponse.sendRedirect("login.html");
+//            httpResponse.sendRedirect(httpResponse.encodeRedirectURL(httpRequest.getContextPath() + "/_dashboard/employee_login.html"));
+            httpResponse.sendRedirect(httpResponse.encodeRedirectURL(httpRequest.getContextPath() + "/_dashboard/employee_login.html"));
         } else {
             chain.doFilter(request, response);
         }
@@ -49,9 +50,8 @@ public class LoginFilter implements Filter {
     }
 
     public void init(FilterConfig fConfig) {
-        allowedURIs.add("login.html");
-        allowedURIs.add("login.js");
-        allowedURIs.add("api/login");
+        allowedURIs.add("employee_login.html");
+        allowedURIs.add("employee_login.js");
         allowedURIs.add("api/employee_login");
         allowedURIs.add("main.css");
     }

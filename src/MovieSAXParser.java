@@ -39,6 +39,7 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
     String max_star_id; //max_star_id = nm9423082
 
     //to maintain context
+
     private Movie tempMovie;
     private Star tempStar;
     private Genre tempGenre;
@@ -131,7 +132,6 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
 
             //get a new instance of parser
             SAXParser sp = spf.newSAXParser();
-
             //parse the file and also register this class for call backs
             sp.parse(file, this);
 
@@ -141,6 +141,9 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
             pce.printStackTrace();
         } catch (IOException ie) {
             ie.printStackTrace();
+        } catch (Exception e)
+        {
+            System.out.println(e);
         }
     }
 
@@ -168,7 +171,7 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
         // Movies
         if (qName.equalsIgnoreCase("film")) {
             //create a new instance of movie
-            tempMovie = new Movie();
+            this.tempMovie = new Movie();
         }
         if (qName.equalsIgnoreCase("actor")) {
             //create a new instance of star
@@ -179,7 +182,7 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
             tempStar = new Star();
         }
         if (qName.equalsIgnoreCase("cat")) {
-            tempGenre = new Genre();
+            this.tempGenre = new Genre();
         }
     }
 

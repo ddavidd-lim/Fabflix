@@ -16,8 +16,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import Entities.User;
 
-@WebServlet(name = "Servlets.LoginServlet", urlPatterns = "/api/login")
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "Servlets.EmployeeLoginServlet", urlPatterns = "/_dashboard/api/employee_login")
+public class EmployeeLoginServlet extends HttpServlet {
     private static final long serialVersionUID = 2L;
 
     // Create a dataSource which registered in web.xml
@@ -51,6 +51,7 @@ public class LoginServlet extends HttpServlet {
             return;
 
         }
+
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
@@ -65,7 +66,7 @@ public class LoginServlet extends HttpServlet {
             // Get a connection from dataSource
 
             // Construct a query with parameter represented by "?"
-            String query = "SELECT * FROM customers " +
+            String query = "SELECT * FROM employees " +
                     "WHERE email=? AND password=?";
 
             // Declare our statement

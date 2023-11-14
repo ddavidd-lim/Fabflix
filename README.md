@@ -1,3 +1,38 @@
+# **CS 122B Project 3**
+
+## Demo Video
+
+
+## Contributions
+
+Caitlynn Chang
+- Implemented Dashboard using Stored Procedure
+- Implemented PreparedStatements
+- Implemented recatpcha
+- Implemented HTTPS
+- Implemented Encrypted Password
+
+David Lim
+- Importing large XML data files into database
+
+## Files with Prepared Statements
+- AddMovieServlet.java
+- AddStarServlet.java
+- CreditCardServlet.java
+- EmployeeLoginServlet.java
+- ItemsServlet.java
+- LoginServlet.java
+- SearchServlet.java
+- SingleMovieServlet.java
+- SingleStarServelet.java
+
+## Parsing time optimization strategies
+1. Less to SQL
+2. Used a Hashmap while parsing through data to allow constant time getting
+
+## Inconsistent data reports from parsing
+In inconsistencyReport.txt. Can be seen in video.
+
 # **CS 122B Project 2**
 
 ## Demo Video

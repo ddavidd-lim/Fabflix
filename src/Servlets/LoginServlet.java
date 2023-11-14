@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import Entities.User;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 
 @WebServlet(name = "Servlets.LoginServlet", urlPatterns = "/api/login")
 public class LoginServlet extends HttpServlet {
@@ -66,7 +67,7 @@ public class LoginServlet extends HttpServlet {
 
             // Construct a query with parameter represented by "?"
             String query = "SELECT * FROM customers " +
-                    "WHERE email=? AND password=?";
+                    "WHERE email=?";
 
             // Declare our statement
             PreparedStatement statement = conn.prepareStatement(query);
@@ -74,7 +75,6 @@ public class LoginServlet extends HttpServlet {
             // Set the parameter represented by "?" in the query to the id we get from url,
             // num 1 indicates the first "?" in the query
             statement.setString(1, username);
-            statement.setString(2, password);
 
             // Perform the query
             ResultSet rs = statement.executeQuery();
@@ -85,6 +85,16 @@ public class LoginServlet extends HttpServlet {
 
                 // set this user into the session
                 request.getSession().setAttribute("user", new User(username));
+
+                if (new StrongPasswordEncryptor().checkPassword(password, rs.getString("password")))
+                {
+                    responseJsonObject.addProperty("status", "success");
+                    responseJsonObject.addProperty("message", "success");
+                }
+                else {
+                    responseJsonObject.addProperty("status", "fail");
+                    responseJsonObject.addProperty("message", "Incorrect Password");
+                }
 
                 responseJsonObject.addProperty("status", "success");
                 responseJsonObject.addProperty("message", "success");

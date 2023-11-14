@@ -15,6 +15,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import Entities.User;
+import org.jasypt.util.password.PasswordEncryptor;
+import org.jasypt.util.password.StrongPasswordEncryptor;
+import org.jasypt.util.text.AES256TextEncryptor;
 
 @WebServlet(name = "Servlets.EmployeeLoginServlet", urlPatterns = "/_dashboard/api/employee_login")
 public class EmployeeLoginServlet extends HttpServlet {
@@ -66,8 +69,9 @@ public class EmployeeLoginServlet extends HttpServlet {
             // Get a connection from dataSource
 
             // Construct a query with parameter represented by "?"
-            String query = "SELECT * FROM employees " +
-                    "WHERE email=? AND password=?";
+            String query = "SELECT password FROM employees " +
+                    "WHERE email=?";
+
 
             // Declare our statement
             PreparedStatement statement = conn.prepareStatement(query);
@@ -75,7 +79,6 @@ public class EmployeeLoginServlet extends HttpServlet {
             // Set the parameter represented by "?" in the query to the id we get from url,
             // num 1 indicates the first "?" in the query
             statement.setString(1, username);
-            statement.setString(2, password);
 
             // Perform the query
             ResultSet rs = statement.executeQuery();
@@ -87,8 +90,19 @@ public class EmployeeLoginServlet extends HttpServlet {
                 // set this user into the session
                 request.getSession().setAttribute("user", new User(username));
 
-                responseJsonObject.addProperty("status", "success");
-                responseJsonObject.addProperty("message", "success");
+                if (new StrongPasswordEncryptor().checkPassword(password, rs.getString("password")))
+                {
+                    responseJsonObject.addProperty("status", "success");
+                    responseJsonObject.addProperty("message", "success");
+                }
+                else {
+                    responseJsonObject.addProperty("status", "fail");
+                    responseJsonObject.addProperty("message", "Incorrect Password");
+                }
+
+
+
+
 
             } else {
                 // Login fail

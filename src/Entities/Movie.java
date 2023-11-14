@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Movie {
     private String movieId;
+    private String FID;
     private String title;
     private int year;
     private String director;
@@ -20,6 +21,8 @@ public class Movie {
     public String getMovieId(){
         return movieId;
     }
+
+    public String getFID() { return FID; }
 
     public String getTitle(){
         return title;
@@ -60,6 +63,7 @@ public class Movie {
     public void setMovieId(String movieId) {
         this.movieId = movieId;
     }
+    public void setFID(String FID) { this.FID = FID; }
 
     public void setTitle(String title) {
         this.title = title;

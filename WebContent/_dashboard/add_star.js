@@ -19,8 +19,8 @@ function submitStarForm(formSubmitEvent) {
             method: "POST",
             data: star_form.serialize(),
             success: handleAddStarResult,
-            error: function(xhr, status, error) {
-                console.error("Error:", error);
+            error: function(error) {
+                console.error("Error:", error["errorMessage"]);
             }
         }
     );

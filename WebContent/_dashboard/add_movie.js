@@ -16,8 +16,8 @@ function submitMovieForm(event) {
             method: "POST",
             data: movie_form.serialize(),
             success: handleAddMovieResult,
-            error: function(xhr, status, error) {
-                console.error("Error:", error);
+            error: function(error) {
+                console.error("Error:", error["errorMessage"]);
             }
         }
     );

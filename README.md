@@ -31,7 +31,7 @@ David Lim
 2. Used a Hashmap while parsing through data to allow constant time getting
 
 ## Inconsistent data reports from parsing
-In inconsistencyReport.txt. Can be seen in video.
+In ReferenceInconsistencyReport.txt. Can be seen in video, but named InconsistencyReport.txt.
 
 # **CS 122B Project 2**
 

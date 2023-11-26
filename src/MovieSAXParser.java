@@ -221,7 +221,7 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
             if (movie != null){
                 Star star = stars.get(tempStar.getName());
                 if (star != null){
-                    if (star.getName().equalsIgnoreCase(tempStar.getName())){
+                    if ((star.getName()).equalsIgnoreCase(tempStar.getName())){
                         movie.addStar(star);
                     }
                 }
@@ -268,6 +268,9 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
             }if (tempVal.equalsIgnoreCase("Actn")){
                 tempGenre.setGenreId(1);
                 gen = "Action";
+            }if (tempVal.equalsIgnoreCase("ScFi")){
+                tempGenre.setGenreId(19);
+                gen = "Action";
             }if (tempVal.equalsIgnoreCase("West")){
                 tempGenre.setGenreId(23);
                 gen = "Western";
@@ -281,8 +284,8 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
                 tempGenre.setGenreId(6);
                 gen = "Romantic Comedy";
             }
-            else if (gen == null){
-                return;
+            else {
+                assert gen != null;
             }
 
 
@@ -390,7 +393,6 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
             }
             if (rowsAffected > 0) {
                 out.println("Successfully added " + rowsAffected + " stars in movies");
-                rowsAffected = 0;
             }
             writeToReport(numMovieErrors + " Inconsistent Movies");
             writeToReport(numStarErrors + " Missing Stars");

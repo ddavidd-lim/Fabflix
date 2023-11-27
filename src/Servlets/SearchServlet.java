@@ -25,7 +25,7 @@ public class SearchServlet extends HttpServlet{
 
     private static final long serialVersionUID = 2L;
     private DataSource dataSource;
-
+    // search will call post and then intend from search to movie where it will call post
     public SearchServlet() {
     }
     public void init(ServletConfig config) {
@@ -356,7 +356,9 @@ public class SearchServlet extends HttpServlet{
             request.getServletContext().log("getting " + jsonArray.size() + " results");
 
             // Write JSON string to output
+            System.out.println("Wrote JSON to output: " + jsonArray.toString());
             out.write(jsonArray.toString());
+            System.out.println("Set response to 200");
             // Set response status to 200 (OK)
             response.setStatus(200);
 

@@ -8,9 +8,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
+import edu.uci.ics.fabflixmobile.R;
 import edu.uci.ics.fabflixmobile.data.NetworkManager;
 import edu.uci.ics.fabflixmobile.databinding.ActivitySearchBinding;
 import edu.uci.ics.fabflixmobile.ui.login.LoginActivity;
@@ -57,38 +59,26 @@ public class SearchActivity extends AppCompatActivity {
         final RequestQueue queue = NetworkManager.sharedManager(this).queue;
         // request type is POST
         final StringRequest searchRequest = new StringRequest(
-                Request.Method.POST,
+                Request.Method.GET,
                 baseURL + "/api/results",
                 response -> {
-                    // TODO: should parse the json response to redirect to appropriate functions
-                    //  upon different response value.
-                    JSONObject JSONresponse = null;
-                    String status = null;
-                    try {
-                        JSONresponse = new JSONObject(response);
-//                        Log.d("check Json", JSONresponse.toString());
-                        status = JSONresponse.getString("status");
-                    } catch (JSONException e) {
-                        message.setText("How did this happen");
-                        e.printStackTrace();
-                    }
-                    if (status.equals("success")){
+                    // TODO: pass the response(JSONarray of JSONobjects as string) and pass it to
+                    //  MovieListActivity using putExtra
+                    //  [{movie_id:, movie_title:, movie_director:, movie_year:, movie_rating:,
+                    //     top3stars:[s1,s2,s3], genres:[g1,g2,g3]}, {..}]
                         message.setText("Search Success");
                         Log.d("search.success", response);
-                        //Complete and destroy login activity once successful
-                        finish();
+
                         // initialize the activity(page)/destination
                         Intent MovieListPage = new Intent(SearchActivity.this, MovieListActivity.class);
+                        MovieListPage.putExtra("movies", response);
                         // activate the list page.
                         startActivity(MovieListPage);
-                    }
-                    else{
-                        message.setText("Invalid Login Credentials");
-                    }
+
                 },
                 error -> {
                     // error
-                    Log.d("login.error", error.toString());
+                    Log.d("search.error", error.toString());
                 }) {
             @Override
             protected Map<String, String> getParams() {
@@ -98,6 +88,7 @@ public class SearchActivity extends AppCompatActivity {
                 return params;
             }
         };
+        searchRequest.setRetryPolicy(new DefaultRetryPolicy(120000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // important: queue.add is where the login request is actually sent
         queue.add(searchRequest);
     }

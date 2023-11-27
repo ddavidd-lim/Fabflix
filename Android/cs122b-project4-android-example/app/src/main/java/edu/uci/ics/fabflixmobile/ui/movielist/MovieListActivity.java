@@ -20,6 +20,7 @@ public class MovieListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movielist);
         // TODO: this should be retrieved from the backend server
+        // TODO: call get method based on the post from the previous search
         final ArrayList<Movie> movies = new ArrayList<>();
         movies.add(new Movie("The Terminal", (short) 2004));
         movies.add(new Movie("The Final Season", (short) 2007));

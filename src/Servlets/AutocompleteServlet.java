@@ -46,7 +46,7 @@ public class AutocompleteServlet extends HttpServlet{
         try {
             Connection dbCon = dataSource.getConnection();
 
-            String title = request.getParameter("title");
+            String title = request.getParameter("movietitle");
             System.out.println("Title parameter: " + title);
             if (title == null || title.trim().isEmpty()) {
                 out.write(jsonArray.toString());
@@ -77,12 +77,7 @@ public class AutocompleteServlet extends HttpServlet{
                 String movie_title = rs.getString("title");
 
                 System.out.println("Movie id: " + movie_id + "\tMovie title: " + movie_title);
-
-                JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("id", movie_id);
-                jsonObject.addProperty("title", movie_title);
-
-                jsonArray.add(jsonObject);
+                jsonArray.add(generateJsonObject(movie_id, movie_title));
             }
 
             rs.close();
@@ -94,6 +89,7 @@ public class AutocompleteServlet extends HttpServlet{
 
             // Write JSON string to output
             out.write(jsonArray.toString());
+            System.out.println(jsonArray.toString());
             // Set response status to 200 (OK)
             response.setStatus(200);
 
@@ -109,6 +105,18 @@ public class AutocompleteServlet extends HttpServlet{
         finally {
             out.close();
         }
+    }
+
+    private static JsonObject generateJsonObject(String movieID, String movieName)
+    {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("value", movieName);
+
+        JsonObject additionalDataJsonObject = new JsonObject();
+        additionalDataJsonObject.addProperty("id", movieID);
+
+        jsonObject.add("data", additionalDataJsonObject);
+        return jsonObject;
     }
 
 

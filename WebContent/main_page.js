@@ -74,6 +74,87 @@ function changeTitle(letter) {
     typeForm.value = "browse";
 }
 
+function handleLookup(query, doneCallback) {
+    console.log("autocomplete initiated");
+
+    let cachedData = localStorage.getItem(query);
+    console.log(cachedData)
+    if (cachedData == null) {
+        console.log("sending AJAX request to backend Java Servlet")
+        jQuery.ajax(
+            {
+                "method": "GET",
+                "url": "api/autocomplete?movietitle=" + escape(query),
+                "success": function (data) {
+                    handleLookupAjaxSuccess(data, query, doneCallback, false)
+                },
+                "error": function (errorData) {
+                    console.log("lookup ajax error")
+                    console.log(errorData)
+                }
+            }
+        );
+    }
+    else
+    {
+        console.log("Found cached query, no call to servlet")
+        handleLookupAjaxSuccess(cachedData, query, doneCallback, true)
+    }
+}
+
+function handleLookupAjaxSuccess(data, query, doneCallback, cached)
+{
+    console.log("lookup ajax successful")
+
+    console.log(data);
+
+    if (!cached)
+    {
+        localStorage.setItem(query, JSON.stringify(data));
+        console.log("Caching query result");
+        var jsonData = data;
+    }
+    else
+    {
+        var jsonData = JSON.parse(data);
+        console.log(jsonData);
+    }
+
+    doneCallback( { suggestions: jsonData } );
+}
+
+function handleSelectSuggestion(suggestion) {
+    console.log("you selected " + suggestion["value"] + "with ID " + suggestion["data"]["id"]);
+    let url = "single-movie.html?id=" + suggestion["data"]["id"];
+    window.location.href = url;
+}
+
+function handleNormalSearch(query)
+{
+    console.log("doing normal search with query: " + query)
+}
+
+$('#autocomplete').autocomplete(
+    {
+        lookup: function (query, doneCallback) {
+            handleLookup(query, doneCallback)
+        },
+        onSelect: function (suggestion) {
+            handleSelectSuggestion(suggestion)
+        },
+        deferRequestBy: 300,
+        minChars: 3
+    }
+);
+
+$('#autocomplete').keypress(function (event)
+{
+    if (event.keyCode == 13)
+    {
+        handleNormalSearch($('autocomplete').val())
+    }
+})
+
 // Makes the HTTP GET request and registers on success callback function
 
 jQuery.ajax({

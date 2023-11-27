@@ -26,7 +26,7 @@ function getParameterByName(target) {
 }
 
 function handleResults(resultData) {
-    console.log("handleStarResult: populating results from resultData");
+    // console.log("handleStarResult: populating results from resultData");
 
     // Populate the star table
     // Find the empty table body by id "star_table_body"

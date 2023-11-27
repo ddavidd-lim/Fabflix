@@ -74,31 +74,31 @@ public class SearchServlet extends HttpServlet{
             String page = request.getParameter("page");
             System.out.println("Page Number: " + page);
 
-            if (Objects.equals(type, "fulltext"))
-            {
-                query ="SELECT m.id as movieId, r.rating as rating, m.title as title, m.year as year, m.director as director, " +
-                        "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC SEPARATOR ', ') as genres, " +
-                        "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY s.name ASC SEPARATOR ', ') as top3Stars " +
-                        "FROM movies as m " +
-                        "JOIN stars_in_movies as sim ON m.id = sim.movieId " +
-                        "JOIN stars as s ON sim.starId = s.id " +
-                        "JOIN genres_in_movies as gim ON m.id = gim.movieId " +
-                        "JOIN genres as g ON g.id = gim.genreId " +
-                        "LEFT JOIN ratings as r ON m.id = r.movieId " +
-                        "WHERE MATCH(title) AGAINST " +
-                        "(? IN BOOLEAN MODE) " +
-                        "GROUP BY m.id, r.rating " +
-                        "LIMIT 10;";
-                statement = dbCon.prepareStatement(query);
-                String title_keywords = "";
-                String[] keywords = title.split(" ");
-                for (String word : keywords)
-                {
-                    title_keywords += "+" + word + "* ";
-                }
-                statement.setString(1, title_keywords);
-            }
-            else {
+//            if (Objects.equals(type, "fulltext"))
+//            {
+//                query ="SELECT m.id as movieId, r.rating as rating, m.title as title, m.year as year, m.director as director, " +
+//                        "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC SEPARATOR ', ') as genres, " +
+//                        "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY s.name ASC SEPARATOR ', ') as top3Stars " +
+//                        "FROM movies as m " +
+//                        "JOIN stars_in_movies as sim ON m.id = sim.movieId " +
+//                        "JOIN stars as s ON sim.starId = s.id " +
+//                        "JOIN genres_in_movies as gim ON m.id = gim.movieId " +
+//                        "JOIN genres as g ON g.id = gim.genreId " +
+//                        "LEFT JOIN ratings as r ON m.id = r.movieId " +
+//                        "WHERE MATCH(title) AGAINST " +
+//                        "(? IN BOOLEAN MODE) " +
+//                        "GROUP BY m.id, r.rating " +
+//                        "LIMIT 10;";
+//                statement = dbCon.prepareStatement(query);
+//                String title_keywords = "";
+//                String[] keywords = title.split(" ");
+//                for (String word : keywords)
+//                {
+//                    title_keywords += "+" + word + "* ";
+//                }
+//                statement.setString(1, title_keywords);
+//            }
+//            else {
                 query = "SELECT m.id as movieId, r.rating as rating, m.title as title, m.year as year, m.director as director, " +
                         "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC SEPARATOR ', ') as genres, " +
                         "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY s.name ASC SEPARATOR ', ') as top3Stars " +
@@ -134,10 +134,20 @@ public class SearchServlet extends HttpServlet{
                                 i += 1;
                                 statementNumbers.put(i, title + "%");
                             }
-                        } else {
+                        } else if (Objects.equals(type, "search")) {
                             query += " LOWER(title) like LOWER(?) ";
                             i += 1;
                             statementNumbers.put(i, "%" + title + "%");
+                        } else {
+                            query += " MATCH(title) AGAINST (? IN BOOLEAN MODE) ";
+                            String title_keywords = "";
+                            String[] keywords = title.split(" ");
+                            for (String word : keywords)
+                            {
+                                title_keywords += "+" + word + "* ";
+                            }
+                            i += 1;
+                            statementNumbers.put(i, title_keywords);
                         }
                     }
                     else {
@@ -258,8 +268,8 @@ public class SearchServlet extends HttpServlet{
                     limitQuery = limit;
                 }
                 else {
-                    limit = "25";
-                    limitQuery = "25";
+                    limit = "10";
+                    limitQuery = "10";
                 }
                 if (page != null && !Objects.equals(page, "null"))
                 {
@@ -286,7 +296,7 @@ public class SearchServlet extends HttpServlet{
                         throw new RuntimeException(e);
                     }
                 });
-            }
+//            }
 
 
 

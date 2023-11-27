@@ -38,7 +38,7 @@ function getParameterByName(target) {
 
 function handleResult(resultData) {
 
-    console.log("handleResult: populating movie info from resultData");
+    // console.log("handleResult: populating movie info from resultData");
 
     // populate single movie h1
     let movieTitleElement = jQuery("#single_movie_title");
@@ -56,7 +56,7 @@ function handleResult(resultData) {
         // CREATE ADDTOCART CLASS for button
         "<button class='addtocart button' data-movie-id=" + resultData[0]["movie_id"] + ">Add</button>");
 
-    console.log("handleResult: populating movie table from resultData");
+    // console.log("handleResult: populating movie table from resultData");
 
     // Populate the genre/star table
     // Find the empty table body by id "star_movie_table_body"

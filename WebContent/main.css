@@ -219,6 +219,11 @@ h6 {
     display: block;
 }
 
+#full_search_box {
+    margin: auto;
+    display: block;
+}
+
 #search_button {
     color:black;
 }

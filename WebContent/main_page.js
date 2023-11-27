@@ -4,7 +4,7 @@
  */
 
 function handleGenreResult(resultData) {
-    console.log("handleStarResult: populating genres list from resultData");
+    // console.log("handleStarResult: populating genres list from resultData");
 
     let mainPageGenresBodyElement = jQuery("#main_page_genres");
 
@@ -27,7 +27,7 @@ function handleGenreResult(resultData) {
 }
 
 function handleMovieTitleResult(resultData) {
-    console.log("handleStarResult: populating movie letters from resultData");
+    // console.log("handleStarResult: populating movie letters from resultData");
 
     let mainPageMovieTitleBodyElement = jQuery("#numeric_alpha_titles");
     let result = 0;
@@ -57,7 +57,7 @@ function handleMovieTitleResult(resultData) {
     row += "</li>";
     mainPageMovieTitleBodyElement.append(row);
 
-    console.log("movieTitles added");
+    // console.log("movieTitles added");
 }
 
 function changeGenre(genre) {
@@ -110,7 +110,7 @@ function handleLookupAjaxSuccess(data, query, doneCallback, cached)
     {
         console.log(data);
         localStorage.setItem(query, JSON.stringify(data));
-        console.log("Caching query result");
+        // console.log("Caching query result");
         var jsonData = data;
     }
     else
@@ -123,14 +123,14 @@ function handleLookupAjaxSuccess(data, query, doneCallback, cached)
 }
 
 function handleSelectSuggestion(suggestion) {
-    console.log("you selected " + suggestion["value"] + "with ID " + suggestion["data"]["id"]);
+    // console.log("you selected " + suggestion["value"] + "with ID " + suggestion["data"]["id"]);
     let url = "single-movie.html?id=" + suggestion["data"]["id"];
     window.location.href = url;
 }
 
 function handleNormalSearch(query)
 {
-    console.log("doing normal search with query: " + query)
+    // console.log("doing normal search with query: " + query)
 }
 
 $('#autocomplete').autocomplete(

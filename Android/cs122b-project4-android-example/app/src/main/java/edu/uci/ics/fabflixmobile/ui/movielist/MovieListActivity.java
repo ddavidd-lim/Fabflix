@@ -47,12 +47,16 @@ public class MovieListActivity extends AppCompatActivity {
                         String title = movieObject.getString("movie_title");
                         String director = movieObject.getString("movie_director");
                         int year = movieObject.getInt("movie_year");
-                        String rating = movieObject.getString("rating");
+                        String rating = movieObject.getString("movie_rating");
                         String top3Stars = movieObject.getString("top3Stars");
                         String top3genres = movieObject.getString("genres");
 
-
-                        Log.d("top3Stars: ", top3Stars);
+                        Log.d("movie_id: ", movieId);
+                        Log.d("title: ", title);
+                        Log.d("director: ", director);
+                        Log.d("rating: ", rating);
+                        Log.d("top3stars: ", top3Stars);
+                        Log.d("top3Genres: ", top3genres);
                         String[] starArray = top3Stars.split(",");
                         ArrayList<String> starIdArray = new ArrayList<>();
                         ArrayList<String> starNameArray = new ArrayList<>();
@@ -64,7 +68,7 @@ public class MovieListActivity extends AppCompatActivity {
                             }
                         }
 
-                        Log.d("genres: ", top3genres);
+//                        Log.d("genres: ", top3genres);
                         String[] genreArray = top3genres.split(",");
                         ArrayList<String> genreIdArray = new ArrayList<>();
                         ArrayList<String> genreNameArray = new ArrayList<>();

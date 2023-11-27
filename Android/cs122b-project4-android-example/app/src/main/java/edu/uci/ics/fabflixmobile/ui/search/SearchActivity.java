@@ -66,14 +66,6 @@ public class SearchActivity extends AppCompatActivity {
                     //  MovieListActivity using putExtra
                     //  [{movie_id:, movie_title:, movie_director:, movie_year:, movie_rating:,
                     //     top3stars:[s1,s2,s3], genres:[g1,g2,g3]}, {..}]
-//                    JSONObject JSONresponse = null;
-//                    try {
-//                        JSONresponse = new JSONObject(response);
-////                        Log.d("check Json", JSONresponse.toString());
-//                    } catch (JSONException e) {
-//                        message.setText("How did this happen");
-//                        e.printStackTrace();
-//                    }
                         message.setText("Search Success");
                         Log.d("search.success", response);
 

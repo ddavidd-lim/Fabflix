@@ -46,7 +46,8 @@ public class AutocompleteServlet extends HttpServlet{
         try {
             Connection dbCon = dataSource.getConnection();
 
-            String title = request.getParameter("movietitle");
+            String title = request.getParameter("title");
+            System.out.println("Title parameter: " + title);
             if (title == null || title.trim().isEmpty()) {
                 out.write(jsonArray.toString());
                 dbCon.close();
@@ -54,7 +55,7 @@ public class AutocompleteServlet extends HttpServlet{
             }
 
             String query = "SELECT id, title FROM movies WHERE MATCH(title) AGAINST " +
-                    "(? IN BOOLEAN MODE) LIMIT 10";
+                    "(? IN BOOLEAN MODE) LIMIT 10;";
 
             PreparedStatement statement = dbCon.prepareStatement(query);
 
@@ -67,11 +68,15 @@ public class AutocompleteServlet extends HttpServlet{
             }
             statement.setString(1, title_keywords);
 
+            System.out.println("query: " + statement);
+
             ResultSet rs = statement.executeQuery();
             while (rs.next())
             {
                 String movie_id = rs.getString("id");
                 String movie_title = rs.getString("title");
+
+                System.out.println("Movie id: " + movie_id + "\tMovie title: " + movie_title);
 
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("id", movie_id);

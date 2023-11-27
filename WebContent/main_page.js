@@ -78,7 +78,7 @@ function handleLookup(query, doneCallback) {
     console.log("autocomplete initiated");
 
     let cachedData = localStorage.getItem(query);
-    console.log(cachedData)
+    // console.log(cachedData)
     if (cachedData == null) {
         console.log("sending AJAX request to backend Java Servlet")
         jQuery.ajax(
@@ -106,10 +106,9 @@ function handleLookupAjaxSuccess(data, query, doneCallback, cached)
 {
     console.log("lookup ajax successful")
 
-    console.log(data);
-
     if (!cached)
     {
+        console.log(data);
         localStorage.setItem(query, JSON.stringify(data));
         console.log("Caching query result");
         var jsonData = data;
@@ -142,6 +141,9 @@ $('#autocomplete').autocomplete(
         onSelect: function (suggestion) {
             handleSelectSuggestion(suggestion)
         },
+        select: function (suggestion) {
+            handleSelectSuggestion(suggestion)
+        },
         deferRequestBy: 300,
         minChars: 3
     }
@@ -151,7 +153,7 @@ $('#autocomplete').keypress(function (event)
 {
     if (event.keyCode == 13)
     {
-        handleNormalSearch($('autocomplete').val())
+        handleNormalSearch($('#autocomplete').val())
     }
 })
 

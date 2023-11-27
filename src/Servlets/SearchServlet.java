@@ -44,19 +44,6 @@ public class SearchServlet extends HttpServlet{
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
-        String query = "SELECT m.id as movieId, r.rating as rating, m.title as title, m.year as year, m.director as director, " +
-                "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC SEPARATOR ', ') as genres, " +
-                "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY s.name ASC SEPARATOR ', ') as top3Stars " +
-                "FROM movies as m " +
-                "JOIN stars_in_movies as sim ON m.id = sim.movieId " +
-                "JOIN stars as s ON sim.starId = s.id " +
-                "JOIN genres_in_movies as gim ON m.id = gim.movieId " +
-                "JOIN genres as g ON g.id = gim.genreId " +
-                "LEFT JOIN ratings as r ON m.id = r.movieId " +
-                "WHERE ";
-//                "WHERE r.rating IS NOT NULL";
-
-
         try {
             Connection dbCon = dataSource.getConnection();
 //            Statement statement = dbCon.createStatement();
@@ -66,7 +53,8 @@ public class SearchServlet extends HttpServlet{
 //                String paramName = params.nextElement();
 //                System.out.println("Parameter Name - "+paramName+", Value - "+request.getParameter(paramName));
 //            }
-
+            String query = "";
+            PreparedStatement statement;
             String title = request.getParameter("movietitle");
             System.out.println("Title: " + title);
             String year = request.getParameter("movieyear");
@@ -86,34 +74,76 @@ public class SearchServlet extends HttpServlet{
             String page = request.getParameter("page");
             System.out.println("Page Number: " + page);
 
+            if (Objects.equals(type, "fulltext"))
+            {
+                query ="SELECT m.id as movieId, r.rating as rating, m.title as title, m.year as year, m.director as director, " +
+                        "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC SEPARATOR ', ') as genres, " +
+                        "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY s.name ASC SEPARATOR ', ') as top3Stars " +
+                        "FROM movies as m " +
+                        "JOIN stars_in_movies as sim ON m.id = sim.movieId " +
+                        "JOIN stars as s ON sim.starId = s.id " +
+                        "JOIN genres_in_movies as gim ON m.id = gim.movieId " +
+                        "JOIN genres as g ON g.id = gim.genreId " +
+                        "LEFT JOIN ratings as r ON m.id = r.movieId " +
+                        "WHERE MATCH(title) AGAINST " +
+                        "(? IN BOOLEAN MODE) " +
+                        "GROUP BY m.id, r.rating " +
+                        "LIMIT 10;";
+                statement = dbCon.prepareStatement(query);
+                String title_keywords = "";
+                String[] keywords = title.split(" ");
+                for (String word : keywords)
+                {
+                    title_keywords += "+" + word + "* ";
+                }
+                statement.setString(1, title_keywords);
+            }
+            else {
+                query = "SELECT m.id as movieId, r.rating as rating, m.title as title, m.year as year, m.director as director, " +
+                        "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC SEPARATOR ', ') as genres, " +
+                        "GROUP_CONCAT(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY s.name ASC SEPARATOR ', ') as top3Stars " +
+                        "FROM movies as m " +
+                        "JOIN stars_in_movies as sim ON m.id = sim.movieId " +
+                        "JOIN stars as s ON sim.starId = s.id " +
+                        "JOIN genres_in_movies as gim ON m.id = gim.movieId " +
+                        "JOIN genres as g ON g.id = gim.genreId " +
+                        "LEFT JOIN ratings as r ON m.id = r.movieId " +
+                        "WHERE ";
+//                "WHERE r.rating IS NOT NULL";
 
-            String whereQuery = "";
-            String genres_query = "";
-            String stars_query = "";
-            Integer year_query = 0;
+                String whereQuery = "";
+                String genres_query = "";
+                String stars_query = "";
+                Integer year_query = 0;
 
-            String orderQuery = "title ASC, rating ASC"; // default
-            String limitQuery = "";
-            String pageQuery = "";
+                String orderQuery = "title ASC, rating ASC"; // default
+                String limitQuery = "";
+                String pageQuery = "";
 
-            int i = 0;
-            HashMap<Integer, String> statementNumbers = new HashMap<Integer, String>();
-            System.out.println("hashmap created");
-            // insert title into query
-            if (title != null && !Objects.equals(title, "null")) {
-                if (!title.isEmpty()) {
-                    if (Objects.equals(type, "browse")) {
-                        if (title.contains("*")) {
-                            query += " title regexp '^[^a-zA-Z0-9]'";
+                int i = 0;
+                HashMap<Integer, String> statementNumbers = new HashMap<Integer, String>();
+                System.out.println("hashmap created");
+                // insert title into query
+                if (title != null && !Objects.equals(title, "null")) {
+                    if (!title.isEmpty()) {
+                        if (Objects.equals(type, "browse")) {
+                            if (title.contains("*")) {
+                                query += " title regexp '^[^a-zA-Z0-9]'";
+                            } else {
+                                query +=" LOWER(title) like LOWER(?) ";
+                                i += 1;
+                                statementNumbers.put(i, title + "%");
+                            }
                         } else {
-                            query +=" LOWER(title) like LOWER(?) ";
+                            query += " LOWER(title) like LOWER(?) ";
                             i += 1;
-                            statementNumbers.put(i, title + "%");
+                            statementNumbers.put(i, "%" + title + "%");
                         }
-                    } else {
+                    }
+                    else {
                         query += " LOWER(title) like LOWER(?) ";
                         i += 1;
-                        statementNumbers.put(i, "%" + title + "%");
+                        statementNumbers.put(i, "%");
                     }
                 }
                 else {
@@ -121,138 +151,144 @@ public class SearchServlet extends HttpServlet{
                     i += 1;
                     statementNumbers.put(i, "%");
                 }
-            }
-            else {
-                query += " LOWER(title) like LOWER(?) ";
-                i += 1;
-                statementNumbers.put(i, "%");
-            }
-            System.out.println("title added " + i);
+                System.out.println("title added " + i);
 
-            // insert year into query
-            if (year != null && !Objects.equals(year, "null")) {
-                if (!year.isEmpty()) {
-                    query += " and year = ? ";
-                    year_query = Integer.parseInt(year);
-                    i += 1;
-                    statementNumbers.put(i, year);
+                // insert year into query
+                if (year != null && !Objects.equals(year, "null")) {
+                    if (!year.isEmpty()) {
+                        query += " and year = ? ";
+                        year_query = Integer.parseInt(year);
+                        i += 1;
+                        statementNumbers.put(i, year);
+                    }
                 }
-            }
-            System.out.println("year added" + i);
+                System.out.println("year added" + i);
 
-            // insert director into query
-            if (director != null && !Objects.equals(director, "null"))
-            {
-                if (director.isEmpty()) {
-                    director = "";
-                }
-            }
-            else {
-                director = "";
-            }
-            query += " and LOWER(director) like LOWER(?) ";
-            i += 1;
-            statementNumbers.put(i, "%" + director + "%");
-            System.out.println("director added " + i);
-
-            // Group by and now move to genres and stars
-            query += "GROUP BY m.id, r.rating HAVING ";
-
-
-            if (genre != null && !Objects.equals(genre, "null")) {
-                if (genre.isEmpty())
+                // insert director into query
+                if (director != null && !Objects.equals(director, "null"))
                 {
-                    genres_query = "%";
+                    if (director.isEmpty()) {
+                        director = "";
+                    }
                 }
                 else {
-                    genres_query = genre;
+                    director = "";
                 }
+                query += " and LOWER(director) like LOWER(?) ";
+                i += 1;
+                statementNumbers.put(i, "%" + director + "%");
+                System.out.println("director added " + i);
 
-            }
-            else {
-                genres_query = "%";
-            }
-            query += " genres LIKE ? AND ";
-            i += 1;
-            statementNumbers.put(i, genres_query);
-            System.out.println("genres added " + i);
+                // Group by and now move to genres and stars
+                query += "GROUP BY m.id, r.rating HAVING ";
 
 
-            if(star != null && !Objects.equals(star, "null"))
-            {
-                if (!star.isEmpty()) {
-                    stars_query = "%" + star + "%";
+                if (genre != null && !Objects.equals(genre, "null")) {
+                    if (genre.isEmpty())
+                    {
+                        genres_query = "%";
+                    }
+                    else {
+                        genres_query = genre;
+                    }
+
                 }
-                else
+                else {
+                    genres_query = "%";
+                }
+                query += " genres LIKE ? AND ";
+                i += 1;
+                statementNumbers.put(i, genres_query);
+                System.out.println("genres added " + i);
+
+
+                if(star != null && !Objects.equals(star, "null"))
                 {
+                    if (!star.isEmpty()) {
+                        stars_query = "%" + star + "%";
+                    }
+                    else
+                    {
+                        stars_query = "%";
+                    }
+                }
+                else {
                     stars_query = "%";
                 }
-            }
-            else {
-                stars_query = "%";
-            }
-            query += "LOWER(top3Stars) like LOWER(?) ";
-            i += 1;
-            statementNumbers.put(i, stars_query);
-            System.out.println("stars added " + i);
+                query += "LOWER(top3Stars) like LOWER(?) ";
+                i += 1;
+                statementNumbers.put(i, stars_query);
+                System.out.println("stars added " + i);
 
 
-            if (sort != null && !Objects.equals(sort, "null"))
-            {
-                if (sort.contains("AscTitleDecRating"))
+                if (sort != null && !Objects.equals(sort, "null"))
                 {
-                    orderQuery = "title ASC, rating DESC";
+                    if (sort.contains("AscTitleDecRating"))
+                    {
+                        orderQuery = "title ASC, rating DESC";
+                    }
+                    if (sort.contains("DecTitleAscRating"))
+                    {
+                        orderQuery = "title DESC, rating ASC";
+                    }
+                    if (sort.contains("DecTitleDecRating"))
+                    {
+                        orderQuery = "title DESC, rating DESC";
+                    }
+                    if (sort.contains("AscRatingAscTitle"))
+                    {
+                        orderQuery = "rating ASC, title ASC";
+                    }
+                    if (sort.contains("AscRatingDecTitle"))
+                    {
+                        orderQuery = "rating ASC, title DESC";
+                    }
+                    if (sort.contains("DecRatingAscTitle"))
+                    {
+                        orderQuery = "rating DESC, title ASC";
+                    }
+                    if (sort.contains("DecRatingDecTitle"))
+                    {
+                        orderQuery = "rating DESC, title DESC";
+                    }
                 }
-                if (sort.contains("DecTitleAscRating"))
+
+                if (limit != null && !Objects.equals(limit, "null"))
                 {
-                    orderQuery = "title DESC, rating ASC";
+                    limitQuery = limit;
                 }
-                if (sort.contains("DecTitleDecRating"))
+                else {
+                    limit = "25";
+                    limitQuery = "25";
+                }
+                if (page != null && !Objects.equals(page, "null"))
                 {
-                    orderQuery = "title DESC, rating DESC";
+                    var offset = Integer.parseInt(page) - 1; // page will start at 1
+                    var limit_num = Integer.parseInt(limit);
+                    offset = offset * limit_num;
+                    pageQuery = Integer.toString(offset);
+                } else if (Objects.equals(page, "1")) {
+                    pageQuery = "0";
                 }
-                if (sort.contains("AscRatingAscTitle"))
-                {
-                    orderQuery = "rating ASC, title ASC";
+                else {
+                    pageQuery = "0";
                 }
-                if (sort.contains("AscRatingDecTitle"))
-                {
-                    orderQuery = "rating ASC, title DESC";
-                }
-                if (sort.contains("DecRatingAscTitle"))
-                {
-                    orderQuery = "rating DESC, title ASC";
-                }
-                if (sort.contains("DecRatingDecTitle"))
-                {
-                    orderQuery = "rating DESC, title DESC";
-                }
+
+                query += "ORDER BY " + orderQuery + " LIMIT " + limitQuery + " OFFSET " + pageQuery + ";";
+                System.out.println("query: " + query);
+                statement = dbCon.prepareStatement(query);
+                statementNumbers.forEach((key, value) -> {
+                    System.out.println("Key=" + key + ", Value=" + value);
+                    try {
+                        statement.setString(key, value);
+                    } catch (SQLException e) {
+                        System.out.println(e);
+                        throw new RuntimeException(e);
+                    }
+                });
             }
 
-            if (limit != null && !Objects.equals(limit, "null"))
-            {
-                limitQuery = limit;
-            }
-            else {
-                limit = "25";
-                limitQuery = "25";
-            }
-            if (page != null && !Objects.equals(page, "null"))
-            {
-                var offset = Integer.parseInt(page) - 1; // page will start at 1
-                var limit_num = Integer.parseInt(limit);
-                offset = offset * limit_num;
-                pageQuery = Integer.toString(offset);
-            } else if (Objects.equals(page, "1")) {
-                pageQuery = "0";
-            }
-            else {
-                pageQuery = "0";
-            }
 
-            query += "ORDER BY " + orderQuery + " LIMIT " + limitQuery + " OFFSET " + pageQuery + ";";
-
-            System.out.println("query: " + query);
 
 //            query = "SELECT m.id as movieId, r.rating as rating, m.title as title, m.year as year, m.director as director, " +
 //                    "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC SEPARATOR ', ') as genres, " +
@@ -270,17 +306,6 @@ public class SearchServlet extends HttpServlet{
 //                    "HAVING genres LIKE ? AND " +
 //                    "LOWER(top3Stars) like LOWER(?) " +
 //                    "ORDER BY " + orderQuery + " LIMIT " + limitQuery + " OFFSET " + pageQuery + ";";
-
-            PreparedStatement statement = dbCon.prepareStatement(query);
-            statementNumbers.forEach((key, value) -> {
-                System.out.println("Key=" + key + ", Value=" + value);
-                try {
-                    statement.setString(key, value);
-                } catch (SQLException e) {
-                    System.out.println(e);
-                    throw new RuntimeException(e);
-                }
-            });
 
 
             // (select s.id, count(*) as count from stars_in_movies as sim, stars as s where sim.starId = s.id group by starId) as movie_count
@@ -331,6 +356,7 @@ public class SearchServlet extends HttpServlet{
             jsonObject.addProperty("errorMessage", e.toString());
             out.write(jsonObject.toString());
             System.out.println("Failed To Search");
+            System.out.println(jsonObject.toString());
 
             // Set response status to 500 (Internal Server Error)
             response.setStatus(500);

@@ -1,3 +1,16 @@
+# **CS 122B Project 4**
+
+## Demo Video
+
+
+## Contributions
+
+Caitlynn Chang
+- Implemented Autocomplete
+
+David Lim
+- Implemented Andoid
+
 # **CS 122B Project 3**
 
 ## Demo Video

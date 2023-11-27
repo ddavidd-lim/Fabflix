@@ -51,12 +51,7 @@ public class MovieListActivity extends AppCompatActivity {
                         String top3Stars = movieObject.getString("top3Stars");
                         String top3genres = movieObject.getString("genres");
 
-                        Log.d("movie_id: ", movieId);
-                        Log.d("title: ", title);
-                        Log.d("director: ", director);
-                        Log.d("rating: ", rating);
-                        Log.d("top3stars: ", top3Stars);
-                        Log.d("top3Genres: ", top3genres);
+
                         String[] starArray = top3Stars.split(",");
                         ArrayList<String> starIdArray = new ArrayList<>();
                         ArrayList<String> starNameArray = new ArrayList<>();
@@ -82,6 +77,12 @@ public class MovieListActivity extends AppCompatActivity {
                         // Do something with the movie data
                         // For instance, add it to a list, display it, etc.
                         movies.add(new Movie(movieId, title, director, year, starNameArray, genreNameArray, rating));
+                        Log.d("movie_id: ", movieId);
+                        Log.d("title: ", title);
+                        Log.d("director: ", director);
+                        Log.d("rating: ", rating);
+                        Log.d("top3stars: ", top3Stars);
+                        Log.d("top3Genres: ", top3genres);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

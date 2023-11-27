@@ -16,8 +16,13 @@ public class Movie {
     private String rating;
     public Movie(String movieID, String title, String director, int year, ArrayList<String> top3stars
         , ArrayList<String> top3genres, String rating){
-        top3stars = new ArrayList<>();
-        top3genres = new ArrayList<>();
+        this.movieId = movieID;
+        this.title = title;
+        this.director = director;
+        this.year = year;
+        this.rating = rating;
+        this.top3stars = top3stars;
+        this.top3genres = top3genres;
     }
     public String getMovieId(){
         return movieId;

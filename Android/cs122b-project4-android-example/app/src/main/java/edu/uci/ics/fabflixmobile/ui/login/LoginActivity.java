@@ -14,6 +14,9 @@ import com.android.volley.toolbox.StringRequest;
 import edu.uci.ics.fabflixmobile.data.NetworkManager;
 import edu.uci.ics.fabflixmobile.databinding.ActivityLoginBinding;
 import edu.uci.ics.fabflixmobile.ui.movielist.MovieListActivity;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private final String host = "10.0.2.2";
     private final String port = "8080";
-    private final String domain = "cs122b_project2_login_cart_example_war";
+    private final String domain = "Fabflix_war";
     private final String baseURL = "http://" + host + ":" + port + "/" + domain;
 
     @Override
@@ -61,13 +64,29 @@ public class LoginActivity extends AppCompatActivity {
                 response -> {
                     // TODO: should parse the json response to redirect to appropriate functions
                     //  upon different response value.
-                    Log.d("login.success", response);
-                    //Complete and destroy login activity once successful
-                    finish();
-                    // initialize the activity(page)/destination
-                    Intent MovieListPage = new Intent(LoginActivity.this, MovieListActivity.class);
-                    // activate the list page.
-                    startActivity(MovieListPage);
+                    JSONObject JSONresponse = null;
+                    String status = null;
+                    try {
+                        JSONresponse = new JSONObject(response);
+//                        Log.d("check Json", JSONresponse.toString());
+                        status = JSONresponse.getString("status");
+                    } catch (JSONException e) {
+                        message.setText("How did this happen");
+                        e.printStackTrace();
+                    }
+                    if (status.equals("success")){
+                        message.setText("Login Success");
+                        Log.d("login.success", response);
+                        //Complete and destroy login activity once successful
+                        finish();
+                        // initialize the activity(page)/destination
+                        Intent MovieListPage = new Intent(LoginActivity.this, MovieListActivity.class);
+                        // activate the list page.
+                        startActivity(MovieListPage);
+                    }
+                    else{
+                        message.setText("Invalid Login Credentials");
+                    }
                 },
                 error -> {
                     // error

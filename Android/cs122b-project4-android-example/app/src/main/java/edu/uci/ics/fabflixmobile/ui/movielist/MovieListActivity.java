@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MovieListActivity extends AppCompatActivity {
 
@@ -64,16 +65,7 @@ public class MovieListActivity extends AppCompatActivity {
                         }
 
 //                        Log.d("genres: ", top3genres);
-                        String[] genreArray = top3genres.split(",");
-                        ArrayList<String> genreIdArray = new ArrayList<>();
-                        ArrayList<String> genreNameArray = new ArrayList<>();
-                        for (String s : genreArray) {
-                            String[] idName = s.split(":"); // [0] = id, [1] = name
-                            if (idName.length >= 2) {
-                                genreIdArray.add(idName[0]);
-                                genreNameArray.add(idName[1]);
-                            }
-                        }
+                        ArrayList<String> genreNameArray = new ArrayList<>(Arrays.asList(top3genres.split(",")));
                         // Do something with the movie data
                         // For instance, add it to a list, display it, etc.
                         movies.add(new Movie(movieId, title, director, year, starNameArray, genreNameArray, rating));

@@ -40,12 +40,32 @@ public class Movie {
         return director;
     }
 
-    public ArrayList<String> getStars(){
-        return top3stars;
+    public String getStars(){
+        StringBuilder stars = new StringBuilder();
+        for (int i = 0; i < top3stars.size(); i++) {
+            stars.append(top3stars.get(i)); // Append the actor name
+
+            // Add a comma if it's not the last actor in the list
+            if (i < top3stars.size() - 1) {
+                stars.append(", ");
+            }
+        }
+
+        return stars.toString();
     }
 
-    public ArrayList<String> getGenres(){
-        return top3genres;
+    public String getGenres(){
+        StringBuilder genres = new StringBuilder();
+        for (int i = 0; i < top3genres.size(); i++) {
+            genres.append(top3genres.get(i)); // Append the actor name
+
+            // Add a comma if it's not the last actor in the list
+            if (i < top3genres.size() - 1) {
+                genres.append(", ");
+            }
+        }
+
+        return genres.toString();
     }
 
     public String getRating(){

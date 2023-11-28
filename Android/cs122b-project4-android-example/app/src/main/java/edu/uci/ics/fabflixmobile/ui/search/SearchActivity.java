@@ -72,6 +72,7 @@ public class SearchActivity extends AppCompatActivity {
                         // initialize the activity(page)/destination
                         Intent MovieListPage = new Intent(SearchActivity.this, MovieListActivity.class);
                         MovieListPage.putExtra("movies", response);
+                        MovieListPage.putExtra("searchQuery", movietitle.getText().toString());
                         // activate the list page.
                         startActivity(MovieListPage);
 

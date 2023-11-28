@@ -37,7 +37,7 @@ public class MovieListActivity extends AppCompatActivity {
      */
     private final String host = "54.241.114.175";
     private final String port = "8443";
-    private final String domain = "Fabflix_war";
+    private final String domain = "Fabflix";
     private final String baseURL = "https://" + host + ":" + port + "/" + domain;
     private String searchTitle;
 

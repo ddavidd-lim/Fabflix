@@ -132,6 +132,7 @@ public class SingleMovieServlet extends HttpServlet {
             // Write JSON string to output
             out.write(jsonArray.toString());
             // Set response status to 200 (OK)
+            System.out.println("Successfully loaded " + jsonArray.toString());
             response.setStatus(200);
 
         } catch (Exception e) {

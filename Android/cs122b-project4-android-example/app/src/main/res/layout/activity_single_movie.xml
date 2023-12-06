@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent">
+
+    <TextView
+            android:text="TextView"
+            android:layout_width="0dp"
+            android:layout_height="0dp" android:id="@+id/movietitle"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/movieyear" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="1dp" android:layout_marginEnd="1dp"
+
+            android:textSize="35sp"
+            android:textColor="@color/black"
+            android:background="#E64141"
+
+    />
+
+    <TextView
+            android:text="TextView"
+            android:layout_width="0dp"
+            android:layout_height="0dp" android:id="@+id/movieyear"
+            app:layout_constraintTop_toBottomOf="@+id/movietitle"
+            android:layout_marginBottom="1dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/movierating" app:layout_constraintStart_toStartOf="parent"
+            android:textSize="25sp"
+            android:layout_marginStart="1dp" android:layout_marginEnd="1dp"
+    />
+    <TextView
+            android:text="TextView"
+            android:layout_width="0dp"
+            android:layout_height="0dp" android:id="@+id/movierating"
+            app:layout_constraintTop_toBottomOf="@+id/movieyear"
+            android:layout_marginBottom="1dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/moviedirector" app:layout_constraintStart_toStartOf="parent"
+            android:textSize="25sp"
+            android:layout_marginStart="1dp" android:layout_marginEnd="1dp"
+            android:background="#285A5A5A"
+    />
+    <TextView
+            android:text="TextView"
+            android:layout_width="0dp"
+            android:layout_height="0dp" android:id="@+id/moviedirector"
+            app:layout_constraintTop_toBottomOf="@+id/movierating"
+            android:layout_marginBottom="1dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/moviegenres" app:layout_constraintStart_toStartOf="parent"
+            android:textSize="25sp"
+            android:layout_marginStart="1dp" android:layout_marginEnd="1dp"
+    />
+    <TextView
+            android:text="TextView"
+            android:layout_width="0dp"
+            android:layout_height="0dp" android:id="@+id/moviegenres"
+            app:layout_constraintTop_toBottomOf="@+id/moviedirector"
+            android:layout_marginBottom="1dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/moviestars" app:layout_constraintStart_toStartOf="parent"
+            android:textSize="25sp"
+            android:layout_marginStart="1dp" android:layout_marginEnd="1dp"
+            android:background="#285A5A5A"
+    />
+    <TextView
+            android:text="TextView"
+            android:layout_width="0dp"
+            android:layout_height="0dp" android:id="@+id/moviestars"
+            app:layout_constraintTop_toBottomOf="@+id/moviegenres"
+            android:layout_marginBottom="1dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="1dp"
+            android:textSize="15sp"
+            android:layout_marginEnd="1dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

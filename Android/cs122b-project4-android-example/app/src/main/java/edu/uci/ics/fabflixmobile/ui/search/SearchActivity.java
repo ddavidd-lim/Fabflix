@@ -31,10 +31,10 @@ public class SearchActivity extends AppCompatActivity {
       In Android, localhost is the address of the device or the emulator.
       To connect to your machine, you need to use the below IP address
      */
-    private final String host = "10.0.2.2";
-    private final String port = "8080";
-    private final String domain = "Fabflix_war";
-    private final String baseURL = "http://" + host + ":" + port + "/" + domain;
+    private final String host = "54.241.114.175";
+    private final String port = "8443";
+    private final String domain = "Fabflix";
+    private final String baseURL = "https://" + host + ":" + port + "/" + domain;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,7 @@ public class SearchActivity extends AppCompatActivity {
         // request type is POST
         final StringRequest searchRequest = new StringRequest(
                 Request.Method.GET,
-                baseURL + "/api/results",
+                baseURL + "/api/results?movietitle=" + movietitle.getText().toString(),
                 response -> {
                     // TODO: pass the response(JSONarray of JSONobjects as string) and pass it to
                     //  MovieListActivity using putExtra
@@ -72,6 +72,7 @@ public class SearchActivity extends AppCompatActivity {
                         // initialize the activity(page)/destination
                         Intent MovieListPage = new Intent(SearchActivity.this, MovieListActivity.class);
                         MovieListPage.putExtra("movies", response);
+                        MovieListPage.putExtra("searchQuery", movietitle.getText().toString());
                         // activate the list page.
                         startActivity(MovieListPage);
 
@@ -80,13 +81,13 @@ public class SearchActivity extends AppCompatActivity {
                     // error
                     Log.d("search.error", error.toString());
                 }) {
-            @Override
-            protected Map<String, String> getParams() {
-                // POST request form data
-                final Map<String, String> params = new HashMap<>();
-                params.put("movietitle", movietitle.getText().toString());
-                return params;
-            }
+//            @Override
+//            protected Map<String, String> getParams() {
+//                // POST request form data
+//                final Map<String, String> params = new HashMap<>();
+//                params.put("movietitle", movietitle.getText().toString());
+//                return params;
+//            }
         };
         searchRequest.setRetryPolicy(new DefaultRetryPolicy(120000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // important: queue.add is where the login request is actually sent

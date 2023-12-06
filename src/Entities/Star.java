@@ -14,7 +14,7 @@ public class Star {
         return starId;
     }
     public String getFID() {
-        return starId;
+        return FID;
     }
 
     public String getName() {

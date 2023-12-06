@@ -194,8 +194,9 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
 
         if (qName.equalsIgnoreCase("film")) {
             if (!tempMovie.getGenres().isEmpty() && tempMovie.getDirector() != null && tempMovie.getYear() != 0 && tempMovie.getTitle() != null){
-                tempMovie.setMovieId(incrementId(max_movie_id));
                 max_movie_id = incrementId(max_movie_id);
+                tempMovie.setMovieId(max_movie_id);
+//                System.out.println(max_movie_id);
                 movies.put(tempMovie.getFID(), tempMovie);
             }
             else{
@@ -232,60 +233,61 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
         // movie xml -----------------
         if (qName.equalsIgnoreCase("cat")) {
             String gen =  null;
-            if (tempVal.equalsIgnoreCase("dram")){
-                tempGenre.setGenreId(9);
-                gen = "Drama";
+            if (tempVal.equalsIgnoreCase("Actn")){
+                tempGenre.setGenreId(1);
+                gen = "Action";
             }if (tempVal.equalsIgnoreCase("Advt")){
                 tempGenre.setGenreId(3);
                 gen = "Adventure";
-            }if (tempVal.equalsIgnoreCase("Docu")){
-                tempGenre.setGenreId(8);
-                gen = "Documentary";
-            }if (tempVal.equalsIgnoreCase("Fant")){
-                tempGenre.setGenreId(11);
-                gen = "Fantasy";
-            }if (tempVal.equalsIgnoreCase("Comd")){
-                tempGenre.setGenreId(6);
-                gen = "Comedy";
-            }if (tempVal.equalsIgnoreCase("Epic")){
-                tempGenre.setGenreId(21);
-                gen = "Thriller";
             }if (tempVal.equalsIgnoreCase("Biop")){
                 tempGenre.setGenreId(5);
                 gen = "Biography";
-            }if (tempVal.equalsIgnoreCase("Susp")){
-                tempGenre.setGenreId(16);
-                gen = "Mystery";
-            }if (tempVal.equalsIgnoreCase("Musc")){
-                tempGenre.setGenreId(15);
-                gen = "Musical";
+            }if (tempVal.equalsIgnoreCase("Comd")){
+                tempGenre.setGenreId(6);
+                gen = "Comedy";
+            }if (tempVal.equalsIgnoreCase("Romt Comd")){
+                tempGenre.setGenreId(6);
+                gen = "Romantic Comedy";
             }if (tempVal.equalsIgnoreCase("cnrb")){
                 tempGenre.setGenreId(7);
                 gen = "Crime";
+            }if (tempVal.equalsIgnoreCase("Docu")){
+                tempGenre.setGenreId(8);
+                gen = "Documentary";
+            }if (tempVal.equalsIgnoreCase("dram")){
+                tempGenre.setGenreId(9);
+                gen = "Drama";
+            }if (tempVal.equalsIgnoreCase("Fant")){
+                tempGenre.setGenreId(11);
+                gen = "Fantasy";
+            }if (tempVal.equalsIgnoreCase("Horr")){
+                tempGenre.setGenreId(13);
+                gen = "Horror";
+            }if (tempVal.equalsIgnoreCase("Epic")){
+                tempGenre.setGenreId(21);
+                gen = "Thriller";
+            }if (tempVal.equalsIgnoreCase("Musc")){
+                tempGenre.setGenreId(15);
+                gen = "Musical";
+            }if (tempVal.equalsIgnoreCase("Susp")){
+                tempGenre.setGenreId(16);
+                gen = "Mystery";
+            }if (tempVal.equalsIgnoreCase("txx")) {
+                tempGenre.setGenreId(17);
+                gen = "Reality-TV";
             }if (tempVal.equalsIgnoreCase("Romt")){
                 tempGenre.setGenreId(18);
                 gen = "Romance";
-            }if (tempVal.equalsIgnoreCase("Actn")){
-                tempGenre.setGenreId(1);
-                gen = "Action";
             }if (tempVal.equalsIgnoreCase("ScFi")){
                 tempGenre.setGenreId(19);
                 gen = "Action";
             }if (tempVal.equalsIgnoreCase("West")){
                 tempGenre.setGenreId(23);
                 gen = "Western";
-            }if (tempVal.equalsIgnoreCase("Horr")){
-                tempGenre.setGenreId(13);
-                gen = "Horror";
-            }if (tempVal.equalsIgnoreCase("txx")) {
-                tempGenre.setGenreId(17);
-                gen = "Reality-TV";
-            }if (tempVal.equalsIgnoreCase("Romt Comd")){
-                tempGenre.setGenreId(6);
-                gen = "Romantic Comedy";
             }
             else {
-                assert gen != null;
+                tempGenre.setGenreId(1);
+                gen = "Action";
             }
 
 
@@ -377,10 +379,14 @@ public class MovieSAXParser extends DefaultHandler { // SAX PARSER IS LIKE EVENT
                     starInMoviesStatement.setString(1, s.getStarId());
                     starInMoviesStatement.setString(2, m.getMovieId());
                     rowsAffected += starInMoviesStatement.executeUpdate();
+                    System.out.println(s.getStarId());
+                    System.out.println(m.getMovieId());
                 }
                 for (Genre g : m.getGenres()){
                     genreInMoviesStatement.setInt(1, g.getGenreId());
                     genreInMoviesStatement.setString(2, m.getMovieId());
+//                    System.out.println(g.getGenreId());
+//                    System.out.println(m.getMovieId());
                     genresAdded += genreInMoviesStatement.executeUpdate();
                 }
 

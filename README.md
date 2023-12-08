@@ -20,9 +20,26 @@
 
 - # Connection Pooling
     - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
-    
+        - WebContent/META-INF/context.xml
+        - src/Servlets/AddMovieServlet.java
+        - src/Servlets/AddStarServlet.java
+        - src/Servlets/AutocompleteServlet.java
+        - src/Servlets/CreditCardServlet.java
+        - src/Servlets/DashboardServlet.java
+        - src/Servlets/EmployeeLoginServlet.java
+        - src/Servlets/GenreServlet.java
+        - src/Servlets/ItemsServlet.java
+        - src/Servlets/LoginServlet.java
+        - src/Servlets/MovieServlet.java
+        - src/Servlets/MovieTitleServlet.java
+        - src/Servlets/SearchServlet.java
+        - src/Servlets/SingleMovieServlet.java
+        - src/Servlets/SingleStarServlet.java
+        - src/Servlets/StarsServlet.java (although never actually used)
+          
     - #### Explain how Connection Pooling is utilized in the Fabflix code.
-    
+    Connection pooling is used to reduce the amount of time it takes to establish a connections whenever a servlet wants to connect to the database. When a servlet gets a connection, it gets a connection from the pool on connections already established in context.xml. When the servlet is done using the connection, close() is called. This call does not close the connection. Instead, the connection is returned to the pool of connections for other servlets to use.
+  
     - #### Explain how Connection Pooling works with two backend SQL.
     
 

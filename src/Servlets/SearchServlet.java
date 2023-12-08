@@ -386,7 +386,7 @@ public class SearchServlet extends HttpServlet{
         {
             writer = new FileWriter(getServletContext().getRealPath("/") + outfile.getName(), true);
         }
-        writer.write("TS: " + elaspedTimeTS + ", TJ: " + elapsedTimeTJ + "\n");
+        writer.write("TS," + elaspedTimeTS + ",TJ," + elapsedTimeTJ + "\n");
         writer.close();
     }
 

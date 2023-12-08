@@ -1,8 +1,10 @@
 import sys
-import numpy
 
 TS_times = []
 TJ_times = []
+
+def average(list):
+    return sum(list)/len(list)
 
 if __name__ == "__main__":
     filename = sys.argv[1]
@@ -13,8 +15,8 @@ if __name__ == "__main__":
                 line_array = line.split(",")
                 TS_times.append(int(line_array[1]))
                 TJ_times.append(int(line_array[3]))
-    TS_average = numpy.average(TS_times)
-    TJ_average = numpy.average(TJ_times)
+    TS_average = average(TS_times)
+    TJ_average = average(TJ_times)
 
     print(f"TS average: {TS_average/1000000} ms")
     print(f"TJ average: {TJ_average/1000000} ms")

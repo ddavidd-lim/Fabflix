@@ -10,7 +10,13 @@
     - #### Instruction of deployment:
 
     - #### Collaborations and Work Distribution:
+      Caitlynn Chang:
+      - Task 1 (JDBC Connection Pooling)
+      - Task 4.1 (Preparing code for time measurement)
 
+      David Lim:
+      - Task 2-3 (MYSQL Master-Slave Replication, Cluster and Load Balancer)
+      - Task 4.2-4.3 (JMeter)
 
 - # Connection Pooling
     - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.

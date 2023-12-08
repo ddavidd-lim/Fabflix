@@ -34,6 +34,7 @@
 
 - # JMeter TS/TJ Time Logs
     - #### Instructions of how to use the `log_processing.*` script to process the JMeter logs.
+        - In the base of the repo, run python log_processing.py [LOG_FILENAME]
 
 
 - # JMeter TS/TJ Time Measurement Report

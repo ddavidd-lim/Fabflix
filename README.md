@@ -12,11 +12,11 @@
  
       2. Navigate into the repository (cd 2023-fall-cs122b-proj-zot)
       
-      3. Populate the 'moviedb' database by running 'movie-data.sql.'
+      3. If moviedb not populated yet, populate the 'moviedb' database by running 'movie-data.sql.'
       
       4. Run the 'alter_movie_table_fulltext.sql' to allow full-text search in the SQL database and 'stored-procedure.sql' to add the stored procedure into the SQL database.
       
-      5. Run the UpdateSecturePassword example to encrypt the customer database.
+      5. If the customer and employee login information is not encrypted yet, navigate to the 'cs122b-project3-excryption-example-main' folder and run the UpdateSecturePassword example to encrypt the customer and employee databases.
       
       6. If using local, run the program on IntelliJ with Tomcat configurations. If using a server, run 'mvn package' in the main repository, copy the war file into the Tomcat, open the Tomcat manager and select FabFlix. 
 

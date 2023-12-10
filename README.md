@@ -78,6 +78,7 @@
           - src/Servlets/SearchServlet.java
           - src/Servlets/SingleMovieServlet.java
           - src/Servlets/SingleStarServlet.java
+          - cs122b-project3-encryption-example-main/src/main/java/VerifyPassword.java (although never actually used)
           - src/Servlets/StarsServlet.java (although never actually used)
 
     - #### How read/write requests were routed to Master/Slave SQL?

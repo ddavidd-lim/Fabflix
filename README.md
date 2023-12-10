@@ -16,7 +16,7 @@
       
       4. Run the 'alter_movie_table_fulltext.sql' to allow full-text search in the SQL database and 'stored-procedure.sql' to add the stored procedure into the SQL database.
       
-      5. If the customer and employee login information is not encrypted yet, navigate to the 'cs122b-project3-excryption-example-main' folder and run the UpdateSecturePassword example to encrypt the customer and employee databases.
+      5. If the customer and employee login information is not encrypted yet, move the 'cs122b-project3-excryption-example-main' folder outside of root repository and run the UpdateSecturePassword example to encrypt the customer and employee databases.
       
       6. If using local, run the program on IntelliJ with Tomcat configurations. If using a server, run 'mvn package' in the main repository, copy the war file into the Tomcat, open the Tomcat manager and select FabFlix. 
 

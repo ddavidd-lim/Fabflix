@@ -8,22 +8,28 @@
     - #### Project 5 Video Demo Link:
 
     - #### Instruction of deployment:
-      Populate the 'moviedb' database by running 'movie-data.sql' to add the base data and src/MovieSAXParser.java to add the data from 'mains243.xml,' 'actors63.xml,' and 'casts124.xml.'
+      1. Clone the repository (git clone https://github.com/uci-jherold2-fall23-cs122b/2023-fall-cs122b-proj-zot.git)
+ 
+      2. Navigate into the repository (cd 2023-fall-cs122b-proj-zot)
       
-      Run the 'alter_movie_table_fulltext.sql' to allow full-text search in the SQL database and 'stored-procedure.sql' to add the stored procedure into the SQL database.
+      3. Populate the 'moviedb' database by running 'movie-data.sql.'
       
-      Run the UpdateSecturePassword example to encrupt the customer database.
+      4. Run the 'alter_movie_table_fulltext.sql' to allow full-text search in the SQL database and 'stored-procedure.sql' to add the stored procedure into the SQL database.
       
-      If using local, run the program on IntelliJ with Tomcat configurations. If using a server, run 'mvn package' in the main repository.
+      5. Run the UpdateSecturePassword example to encrypt the customer database.
+      
+      6. If using local, run the program on IntelliJ with Tomcat configurations. If using a server, run 'mvn package' in the main repository, copy the war file into the Tomcat, open the Tomcat manager and select FabFlix. 
 
     - #### Collaborations and Work Distribution:
       Caitlynn Chang:
       - Task 1 (JDBC Connection Pooling)
       - Task 4.1 (Preparing code for time measurement)
+      - Collaborated on 4.2 - 4.3 (JMeter)
 
       David Lim:
-      - Task 2-3 (MYSQL Master-Slave Replication, Cluster and Load Balancer)
-      - Task 4.2-4.3 (JMeter)
+      - Task 2 (MYSQL Master-Slave Replication)
+      - Task 3 (Cluster and Load Balancer)
+      - Collaborated on Task 4.2-4.3 (JMeter)
 
 - # Connection Pooling
     - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.

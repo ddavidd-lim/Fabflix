@@ -17,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -37,14 +38,6 @@ public class CreditCardServlet extends HttpServlet{
     public CreditCardServlet() {
     }
 
-    public void init(ServletConfig config) {
-        try {
-            this.dataSource = (DataSource)(new InitialContext()).lookup("java:comp/env/jdbc/moviedb");
-        } catch (NamingException var3) {
-            var3.printStackTrace();
-        }
-    }
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         response.setContentType("application/json"); // Response mime type
@@ -63,8 +56,11 @@ public class CreditCardServlet extends HttpServlet{
         PrintWriter out = response.getWriter();
 
         // Get a connection from dataSource and let resource manager close the connection after usage.
-        try (Connection conn = dataSource.getConnection()) {
-
+        try {
+            Context initContext = new InitialContext();
+            Context envContext = (Context) initContext.lookup("java:/comp/env");
+            dataSource = (DataSource) envContext.lookup("jdbc/moviedb");
+            Connection conn = dataSource.getConnection();
 
             String query = "SELECT * FROM creditcards WHERE id = ? AND firstName = ? AND lastName = ? AND expiration = ?";
             // Declare our statement
@@ -121,8 +117,12 @@ public class CreditCardServlet extends HttpServlet{
         ArrayList<JsonObject> previousItems = (ArrayList<JsonObject>) session.getAttribute("previousItems");
 
         PrintWriter out = response.getWriter();
-        try (Connection conn = dataSource.getConnection()) {
+        try {
             // Get a connection from dataSource
+            Context initContext = new InitialContext();
+            Context envContext = (Context) initContext.lookup("java:/comp/env");
+            dataSource = (DataSource) envContext.lookup("jdbc/master");
+            Connection conn = dataSource.getConnection();
 
             // for item in previous items, get movieid and insert into query
             PreparedStatement statement = null;

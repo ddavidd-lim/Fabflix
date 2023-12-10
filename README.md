@@ -64,7 +64,7 @@
 
 - # JMeter TS/TJ Time Logs
     - #### Instructions of how to use the `log_processing.*` script to process the JMeter logs.
-        - In the base of the repo, run python log_processing.py [LOG_FILENAME]
+        - Navigate to the base of the repo (cd 2023-fall-cs122b-proj-zot), run 'python log_processing.py [LOG_FILENAME]' on the command line. The TS and TJ averages will print on in the terminal.
 
 
 - # JMeter TS/TJ Time Measurement Report

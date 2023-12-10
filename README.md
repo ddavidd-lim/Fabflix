@@ -58,13 +58,34 @@
 
 - # Master/Slave
     - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
+      - WebContent/META-INF/context.xml (configuration file)
+      - To Master SQL:
+            - src/Servlets/AddMovieServlet.java
+            - src/Servlets/AddStarServlet.java
+            - src/Servlets/CreditCardServlet.java
+            - cs122b-project3-encryption-example-main/src/main/java/UpdateSecurePassword.java
+            
+      - To Slave or Master SQL:
+            - src/Servlets/AutocompleteServlet.java
+            - src/Servlets/DashboardServlet.java
+            - src/Servlets/EmployeeLoginServlet.java
+            - src/Servlets/GenreServlet.java
+            - src/Servlets/ItemsServlet.java
+            - src/Servlets/LoginServlet.java
+            - src/Servlets/MovieServlet.java
+            - src/Servlets/MovieTitleServlet.java
+            - src/Servlets/SearchServlet.java
+            - src/Servlets/SingleMovieServlet.java
+            - src/Servlets/SingleStarServlet.java
+            - src/Servlets/StarsServlet.java (although never actually used)
 
     - #### How read/write requests were routed to Master/Slave SQL?
+      In the context.xml, we defined two resources for the SQL database connections. The original (jdbc/moviedb) routes read request to either the Master or Slave instances. The new resource (jdbc/master) routes write request to only the master class.
     
 
 - # JMeter TS/TJ Time Logs
     - #### Instructions of how to use the `log_processing.*` script to process the JMeter logs.
-        - Navigate to the base of the repo (cd 2023-fall-cs122b-proj-zot), run 'python log_processing.py [LOG_FILENAME]' on the command line. The TS and TJ averages will print on in the terminal.
+        - Navigate to the root of the repository (cd 2023-fall-cs122b-proj-zot), run 'python log_processing.py [LOG_FILENAME]' on the command line. The TS and TJ averages will print on in the terminal.
 
 
 - # JMeter TS/TJ Time Measurement Report

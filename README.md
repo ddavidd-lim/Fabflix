@@ -8,6 +8,13 @@
     - #### Project 5 Video Demo Link:
 
     - #### Instruction of deployment:
+      Populate the 'moviedb' database by running 'movie-data.sql' to add the base data and src/MovieSAXParser.java to add the data from 'mains243.xml,' 'actors63.xml,' and 'casts124.xml.'
+      
+      Run the 'alter_movie_table_fulltext.sql' to allow full-text search in the SQL database and 'stored-procedure.sql' to add the stored procedure into the SQL database.
+      
+      Run the UpdateSecturePassword example to encrupt the customer database.
+      
+      If using local, run the program on IntelliJ with Tomcat configurations. If using a server, run 'mvn package' in the main repository.
 
     - #### Collaborations and Work Distribution:
       Caitlynn Chang:
@@ -20,7 +27,7 @@
 
 - # Connection Pooling
     - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
-        - WebContent/META-INF/context.xml
+        - WebContent/META-INF/context.xml (configuration file)
         - src/Servlets/AddMovieServlet.java
         - src/Servlets/AddStarServlet.java
         - src/Servlets/AutocompleteServlet.java
@@ -41,7 +48,7 @@
     Connection pooling is used to reduce the amount of time it takes to establish a connections whenever a servlet wants to connect to the database. When a servlet gets a connection, it gets a connection from the pool on connections already established in context.xml. When the servlet is done using the connection, close() is called. This call does not close the connection. Instead, the connection is returned to the pool of connections for other servlets to use.
   
     - #### Explain how Connection Pooling works with two backend SQL.
-    
+    With the two backend SQL, the database connection is either to the master database or the local/slave database. When a servlet needs to read from the database, it gets a connection from the the connection pool associated with the local/slave database. When a servlet needs to write to the database, it gets a connection from the connection pool associated with the master database.
 
 - # Master/Slave
     - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.

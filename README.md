@@ -24,11 +24,12 @@
       Caitlynn Chang:
       - Task 1 (JDBC Connection Pooling)
       - Task 4.1 (Preparing code for time measurement)
+      - Task 3 (Code editing part)
       - Collaborated on 4.2 - 4.3 (JMeter)
 
       David Lim:
       - Task 2 (MYSQL Master-Slave Replication)
-      - Task 3 (Cluster and Load Balancer)
+      - Task 3 (Server part)
       - Collaborated on Task 4.2-4.3 (JMeter)
 
 - # Connection Pooling

@@ -61,24 +61,24 @@
     - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
       - WebContent/META-INF/context.xml (configuration file)
       - To Master SQL:
-            - src/Servlets/AddMovieServlet.java
-            - src/Servlets/AddStarServlet.java
-            - src/Servlets/CreditCardServlet.java
-            - cs122b-project3-encryption-example-main/src/main/java/UpdateSecurePassword.java
+      -     src/Servlets/AddMovieServlet.java
+      -     src/Servlets/AddStarServlet.java
+      -     src/Servlets/CreditCardServlet.java
+      -     cs122b-project3-encryption-example-main/src/main/java/UpdateSecurePassword.java
             
       - To Slave or Master SQL:
-            - src/Servlets/AutocompleteServlet.java
-            - src/Servlets/DashboardServlet.java
-            - src/Servlets/EmployeeLoginServlet.java
-            - src/Servlets/GenreServlet.java
-            - src/Servlets/ItemsServlet.java
-            - src/Servlets/LoginServlet.java
-            - src/Servlets/MovieServlet.java
-            - src/Servlets/MovieTitleServlet.java
-            - src/Servlets/SearchServlet.java
-            - src/Servlets/SingleMovieServlet.java
-            - src/Servlets/SingleStarServlet.java
-            - src/Servlets/StarsServlet.java (although never actually used)
+      -     src/Servlets/AutocompleteServlet.java
+      -     src/Servlets/DashboardServlet.java
+      -     src/Servlets/EmployeeLoginServlet.java
+      -     src/Servlets/GenreServlet.java
+      -     src/Servlets/ItemsServlet.java
+      -     src/Servlets/LoginServlet.java
+      -     src/Servlets/MovieServlet.java
+      -     src/Servlets/MovieTitleServlet.java
+      -     src/Servlets/SearchServlet.java
+      -     src/Servlets/SingleMovieServlet.java
+      -     src/Servlets/SingleStarServlet.java
+      -     src/Servlets/StarsServlet.java (although never actually used)
 
     - #### How read/write requests were routed to Master/Slave SQL?
       In the context.xml, we defined two resources for the SQL database connections. The original (jdbc/moviedb) routes read request to either the Master or Slave instances. The new resource (jdbc/master) routes write request to only the master class.

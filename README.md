@@ -101,9 +101,9 @@
 
 | **Scaled Version Test Plan**                   | **Graph Results Screenshot** | **Average Query Time(ms)** | **Average Search Servlet Time(ms)** | **Average JDBC Time(ms)** | **Analysis** |
 |------------------------------------------------|------------------------------|----------------------------|-------------------------------------|---------------------------|--------------|
-| Case 1: HTTP/1 thread                          | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
-| Case 2: HTTP/10 threads                        | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
-| Case 3: HTTP/10 threads/No connection pooling  | ![](img/case3_scaled_HTTP_10_threads_noPooling.png)   | 58    | Master: 53.04652505188679, Slave: 23.012047691328522, Average: 40.23549614303076    | Master: 52.76119158234208, Slave: 22.6770740152107, Average: 39.92898893658976                         | ??           |
+| Case 1: HTTP/1 thread                          | ![](img/case1_scaled_HTTP_1_thread.png)   | 27   | 9.992673349892641                  | 9.614842659964864                        | The average query time is very close the the single instance with 1 thread. This makes sense since only one thread is active, so only one session is active.           |
+| Case 2: HTTP/10 threads                        | ![](img/case2_scaled_HTTP_10_threads.png)   | 93                         | 75.13781912828296                                  | 74.8412896763855                        | The average query time is less that the average query time compared to when it was only a single instance, which is exected since there are more instanced to balance the load of inputs coming in.          |
+| Case 3: HTTP/10 threads/No connection pooling  | ![](img/case3_scaled_HTTP_10_threads_noPooling.png)   | 58    | 40.23549614303076    | 39.92898893658976                         | The average is way lower than exepected. It should be faster than the since instance, but it shouldn't be faster than case 2 of the scaled version since connection pooling is not enabled. This unusual output may be due to AWS inconsistent query times.|
 
 # **CS 122B Project 4**
 

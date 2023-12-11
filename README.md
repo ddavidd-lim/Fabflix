@@ -52,7 +52,7 @@
         - src/Servlets/StarsServlet.java (although never actually used)
           
     - #### Explain how Connection Pooling is utilized in the Fabflix code.
-    Connection pooling is used to reduce the amount of time it takes to establish a connections whenever a servlet wants to connect to the database. When a servlet gets a connection, it gets a connection from the pool on connections already established in context.xml. When the servlet is done using the connection, close() is called. This call does not close the connection. Instead, the connection is returned to the pool of connections for other servlets to use.
+    Connection pooling is used to reduce the amount of time it takes to establish a connection whenever a servlet wants to connect to the database. When a servlet gets a connection, it gets a connection from the pool of connections already established in context.xml. When the servlet is done using the connection, close() is called. This call does not close the connection. Instead, the connection is returned to the pool of connections for other servlets to use.
   
     - #### Explain how Connection Pooling works with two backend SQL.
     With the two backend SQL, the database connection is either to the master database or the local/slave database. When a servlet needs to read from the database, it gets a connection from the the connection pool associated with the local/slave database. When a servlet needs to write to the database, it gets a connection from the connection pool associated with the master database.
@@ -87,15 +87,15 @@
 
 - # JMeter TS/TJ Time Logs
     - #### Instructions of how to use the `log_processing.*` script to process the JMeter logs.
-        - Navigate to the root of the repository (cd 2023-fall-cs122b-proj-zot), run 'python log_processing.py [LOG_FILENAME]' on the command line. The TS and TJ averages will print on in the terminal.
+        - Navigate to the root of the repository (cd 2023-fall-cs122b-proj-zot), run 'python log_processing.py [LOG_FILENAME_WITH_PATH]' on the command line. The TS and TJ averages will print on in the terminal.
 
 
 - # JMeter TS/TJ Time Measurement Report
 
 | **Single-instance Version Test Plan**          | **Graph Results Screenshot** | **Average Query Time(ms)** | **Average Search Servlet Time(ms)** | **Average JDBC Time(ms)** | **Analysis** |
 |------------------------------------------------|------------------------------|----------------------------|-------------------------------------|---------------------------|--------------|
-| Case 1: HTTP/1 thread                          | ![](img/case1_single_instance_HTTP_1_thread.png)  | 27                         | 10.618427945814194             | 10.23943828920971         | ??           |
-| Case 2: HTTP/10 threads                        | ![](img/case2_single_instance_HTTP_10_threads.png)   | 104                         | 85.45868345411533          | 85.19410142339412         | ??           |
+| Case 1: HTTP/1 thread                          | ![](img/case1_single_instance_HTTP_1_thread.png)  | 27                         | 10.618427945814194             | 10.23943828920971         | The average search servlet time is really close the the JDBC time, which shows that most of the servlet time is related to JDBC tasks.            |
+| Case 2: HTTP/10 threads                        | ![](img/case2_single_instance_HTTP_10_threads.png)   | 104                         | 85.45868345411533          | 85.19410142339412         | The increase from one thread to 10 threads           |
 | Case 3: HTTPS/10 threads                       | ![](img/case3_single_instance_HTTPS_10_threads.png)   | 102                         | 84.24469687639824           | 83.9398164747883                        | ??           |
 | Case 4: HTTP/10 threads/No connection pooling  | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
 

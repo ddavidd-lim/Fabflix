@@ -5,7 +5,7 @@
     
     - #### Names: Caitlynn Chang & David Lim
     
-    - #### Project 5 Video Demo Link:
+    - #### Project 5 Video Demo Link: https://www.youtube.com/watch?v=z3EL3lsBGUs&feature=youtu.be&ab_channel=DavidLim
 
     - #### Instruction of deployment:
       1. Clone the repository (git clone https://github.com/uci-jherold2-fall23-cs122b/2023-fall-cs122b-proj-zot.git)

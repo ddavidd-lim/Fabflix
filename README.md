@@ -95,15 +95,15 @@
 | **Single-instance Version Test Plan**          | **Graph Results Screenshot** | **Average Query Time(ms)** | **Average Search Servlet Time(ms)** | **Average JDBC Time(ms)** | **Analysis** |
 |------------------------------------------------|------------------------------|----------------------------|-------------------------------------|---------------------------|--------------|
 | Case 1: HTTP/1 thread                          | ![](img/case1_single_instance_HTTP_1_thread.png)  | 27                         | 10.618427945814194             | 10.23943828920971         | The average search servlet time is really close the the JDBC time, which shows that most of the servlet time is related to JDBC tasks.            |
-| Case 2: HTTP/10 threads                        | ![](img/case2_single_instance_HTTP_10_threads.png)   | 104                         | 85.45868345411533          | 85.19410142339412         | The increase from one thread to 10 threads           |
-| Case 3: HTTPS/10 threads                       | ![](img/case3_single_instance_HTTPS_10_threads.png)   | 102                         | 84.24469687639824           | 83.9398164747883                        | ??           |
+| Case 2: HTTP/10 threads                        | ![](img/case2_single_instance_HTTP_10_threads.png)   | 104                         | 85.45868345411533          | 85.19410142339412         | The increase from one thread to 10 threads increased the average time it takes to query. The throughput also increased, which may correlate with the increase in average query time since more calls are being made to the server. All threads had relatively the same average times.           |
+| Case 3: HTTPS/10 threads                       | ![](img/case3_single_instance_HTTPS_10_threads.png)   | 102                         | 84.24469687639824           | 83.9398164747883                        | HTTPS seems relatively the same as HTTP, but faster by 1-2 seconds in average query time, average search servlet time, and average JDBC time           |
 | Case 4: HTTP/10 threads/No connection pooling  | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
 
 | **Scaled Version Test Plan**                   | **Graph Results Screenshot** | **Average Query Time(ms)** | **Average Search Servlet Time(ms)** | **Average JDBC Time(ms)** | **Analysis** |
 |------------------------------------------------|------------------------------|----------------------------|-------------------------------------|---------------------------|--------------|
 | Case 1: HTTP/1 thread                          | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
 | Case 2: HTTP/10 threads                        | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
-| Case 3: HTTP/10 threads/No connection pooling  | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
+| Case 3: HTTP/10 threads/No connection pooling  | ![](img/case3_scaled_HTTP_10_threads_noPooling.png)   | 58    | Master: 53.04652505188679, Slave: 23.012047691328522, Average: 40.23549614303076    | Master: 52.76119158234208, Slave: 22.6770740152107, Average: 39.92898893658976                         | ??           |
 
 # **CS 122B Project 4**
 
